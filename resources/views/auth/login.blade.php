@@ -4,7 +4,7 @@
     <div class="col-md-6">
         <div class="card mx-4">
             <div class="card-body p-4">
-                <h1 style="text-align:center">{{ trans('panel.site_title') }}</h1>
+                <h1 style="text-align:center"><img src="img/act.png" style="width:160px;height:120px"/>{{ trans('panel.site_title') }}</h1>
                 <hr>
                 <p class="text-muted">{{ trans('global.login') }}</p>
 

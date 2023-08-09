@@ -34,6 +34,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('teams/destroy', 'TeamController@massDestroy')->name('teams.massDestroy');
     Route::resource('teams', 'TeamController');
 
+    // Hospitals
+    Route::delete('hospitals/destroy', 'HospitalsController@massDestroy')->name('hospitals.massDestroy');
+    Route::resource('hospitals', 'HospitalsController');
+
     // Stocks
     Route::delete('stocks/destroy', 'StocksController@massDestroy')->name('stocks.massDestroy');
     Route::resource('stocks', 'StocksController');

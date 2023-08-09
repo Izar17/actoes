@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateTransactionRequest;
 use App\Stock;
 use App\Transaction;
 use App\User;
+use App\Hospital;
 use Exception;
 use Gate;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -44,11 +45,13 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('transaction_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.transactions.create', compact('assets', 'users'));
+        return view('admin.transactions.create', compact('hospitals', 'assets', 'users'));
     }
 
     /**

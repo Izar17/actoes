@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'ACTOES',
+    'site_title' => 'RPDOS',
 ];

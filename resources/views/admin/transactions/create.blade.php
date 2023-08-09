@@ -10,10 +10,24 @@
         <form method="POST" action="{{ route("admin.transactions.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
+                <label class="required" for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
+                <select class="form-control select2 {{ $errors->has('hospital') ? 'is-invalid' : '' }}" name="hospital_id" id="hospital_id" required>
+                    @foreach($hospitals as $id => $hospital)
+                        <option value="{{ $id }}" {{ old('hospital_id') == $id ? 'selected' : '' }}>{{ $hospital }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('hospital'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('hospital') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.transaction.fields.hospital_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="asset_id">{{ trans('cruds.transaction.fields.asset') }}</label>
                 <select class="form-control select2 {{ $errors->has('asset') ? 'is-invalid' : '' }}" name="asset_id" id="asset_id" required>
                     @foreach($assets as $id => $asset)
-                        <option value="{{ $id }}" {{ old('asset_id') == $id ? 'selecte' : '' }}>{{ $asset }}</option>
+                        <option value="{{ $id }}" {{ old('asset_id') == $id ? 'selected' : '' }}>{{ $asset }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('asset'))

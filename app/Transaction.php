@@ -20,10 +20,11 @@ class Transaction extends Model
     ];
 
     protected $fillable = [
-        'stock',
-        'team_id',
-        'user_id',
+        'hospital_id',
+        'rx_no',
         'asset_id',
+        'item',
+        'lead_pot',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -32,6 +33,11 @@ class Transaction extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('m/d/Y H:i:s');
+    }
+
+    public function hospital()
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id');
 
     }
 
@@ -41,10 +47,14 @@ class Transaction extends Model
 
     }
 
-    public function team()
+    public function asset_product()
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Asset_product::class, 'item');
+    }
 
+    public function product_activity()
+    {
+        return $this->belongsTo(Product_activity::class, 'lead_pot');
     }
 
     public function user()

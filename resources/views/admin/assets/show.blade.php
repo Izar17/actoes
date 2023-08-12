@@ -39,14 +39,14 @@
                             {{ $asset->description }}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             Danger level
                         </th>
                         <td>
                             {{ $asset->danger_level }}
                         </td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
             <div class="form-group">

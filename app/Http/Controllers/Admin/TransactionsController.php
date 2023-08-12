@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Asset;
+use App\{Asset, Stock, Transaction, User, Hospital};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
-use App\Stock;
-use App\Transaction;
-use App\User;
-use App\Hospital;
 use Exception;
 use Gate;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -47,11 +43,21 @@ class TransactionsController extends Controller
 
         $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $assets = Asset::get(["name", "id"]);
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('admin.transactions.create', compact('hospitals', 'assets', 'users'));
+        $fromDate = "2023-01-01";
+        $toDate = "2023-08-10";
+        
+        $counts = Transaction::where("asset_id",1)
+        ->whereRaw(
+            "(created_at >= ? AND created_at <= ?)", 
+            [
+               $fromDate ." 00:00:00", 
+               $toDate ." 23:59:59"
+            ]
+          )
+        ->count();
+       return view('admin.transactions.create', compact('hospitals','assets','counts'));
     }
 
     /**
@@ -60,8 +66,21 @@ class TransactionsController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        $transaction = Transaction::create($request->all());
-
+        $currentYear = date('Y');
+        $fromDate = "$currentYear-01-01";
+        $toDate = "$currentYear-08-10";
+        
+        $counts = Transaction::where("asset_id",1)
+        ->whereRaw(
+            "(created_at >= ? AND created_at <= ?)", 
+            [
+               $fromDate ." 00:00:00", 
+               $toDate ." 23:59:59"
+            ]
+          )
+        ->count();
+        $rx_no = 'SI-'.str_pad($counts, 5, '0', STR_PAD_LEFT).'-'.$currentYear;
+        $transaction = Transaction::create(array_merge($request->all(), ['rx_no' => $rx_no ]));
         return redirect()->route('admin.transactions.index');
 
     }
@@ -78,7 +97,7 @@ class TransactionsController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $transaction->load('asset', 'team', 'user');
+        $transaction->load('asset', 'user');
 
         return view('admin.transactions.edit', compact('assets', 'users', 'transaction'));
     }
@@ -104,7 +123,7 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transaction->load('asset', 'team', 'user');
+        $transaction->load('asset', 'user');
 
         return view('admin.transactions.show', compact('transaction'));
     }
@@ -155,7 +174,6 @@ class TransactionsController extends Controller
         Transaction::create([
             'stock'    => $sign . $stockAmount,
             'asset_id' => $stock->asset->id,
-            'team_id'  => $stock->team->id,
             'user_id'  => auth()->user()->id,
         ]);
 

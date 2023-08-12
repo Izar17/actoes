@@ -20,17 +20,12 @@ class StoreTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'asset_id' => [
+            'hospital_id' => [
                 'required',
                 'integer'],
-            'user_id'  => [
+            'asset_id'  => [
                 'required',
                 'integer'],
-            'stock'    => [
-                'required',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647'],
         ];
 
     }

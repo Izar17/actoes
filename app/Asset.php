@@ -33,8 +33,8 @@ class Asset extends Model
         return $date->format('m/d/Y H:i:s');
     }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class, 'asset_id');
-    }
+    // public function transactions()
+    // {
+    //     return $this->hasMany(Transaction::class, 'asset_id');
+    // }
 }

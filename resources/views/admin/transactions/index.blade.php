@@ -33,13 +33,19 @@
                             Created at
                         </th>
                         <th>
+                            {{ trans('cruds.transaction.fields.hospital') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.transaction.fields.rx_number') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.transaction.fields.asset') }}
                         </th>
                         <th>
-                            {{ trans('cruds.transaction.fields.user') }}
+                            {{ trans('cruds.transaction.fields.asset_product') }}
                         </th>
                         <th>
-                            {{ trans('cruds.transaction.fields.stock') }}
+                            {{ trans('cruds.transaction.fields.product_activity') }}
                         </th>
                     </tr>
                 </thead>
@@ -50,15 +56,20 @@
                                 {{ $transaction->created_at}}
                             </td>
                             <td>
+                                {{ $transaction->hospital->hospital ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->rx_no ?? '' }}
+                            </td>
+                            <td>
                                 {{ $transaction->asset->name ?? '' }}
                             </td>
                             <td>
-                                {{ $transaction->user->name ?? '' }}
+                                {{ $transaction->asset_product->product_name ?? '' }}
                             </td>
                             <td>
-                                {{ $transaction->stock ?? '' }}
+                                {{ $transaction->product_activity->activity_name ?? '' }}
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>

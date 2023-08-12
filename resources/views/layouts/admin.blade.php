@@ -29,9 +29,9 @@
         <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">
-            <span class="navbar-brand-full">{{ trans('panel.site_title') }}</span>
-            <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
+        <a class="navbar-brand" href="#"><img src="{{url('/img/act.png')}}" alt="Image" style="width:50px;height:30px;padding-right:5px;"/>
+            <span class="navbar-brand-full" style="color:cyan;">{{ trans('panel.site_title') }}</span>
+            <span class="navbar-brand-minimized" style="color:cyan;">{{ trans('panel.site_title') }}</span>
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>
@@ -53,6 +53,8 @@
 
 
         </ul>
+          <span  style="padding-right: 50px;color:cyan;">{{ old('email', auth()->user()->email) }}</span>
+        
     </header>
 
     <div class="app-body">

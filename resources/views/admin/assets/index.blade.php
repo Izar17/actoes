@@ -31,9 +31,9 @@
                         <th>
                             {{ trans('cruds.asset.fields.description') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             Danger level
-                        </th>
+                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -54,9 +54,9 @@
                             <td>
                                 {{ $asset->description ?? '' }}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $asset->danger_level }}
-                            </td>
+                            </td> --}}
                             <td>
                                 @can('asset_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.assets.show', $asset->id) }}">

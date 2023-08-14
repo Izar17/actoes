@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('stock_create')
+@can('product_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12 mt-2">
            <a class="btn btn-success" href="{{ route("admin.stocks.create") }}">
@@ -86,18 +86,18 @@
                                 </td>
                             @enduser
                             <td>
-                                @can('stock_show')
+                                @can('product_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.show', $stock->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
-                                @can('stock_edit')
+                                @can('product_edit')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.edit', $stock->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('asset_delete')
+                                @can('isotope_delete')
                                     <form action="{{ route('admin.stocks.destroy', $stock->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">

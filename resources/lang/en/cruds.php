@@ -5,6 +5,10 @@ return [
         'title'          => 'User management',
         'title_singular' => 'User management',
     ],
+    'assetManagement' => [
+        'title'          => 'Asset management',
+        'title_singular' => 'Asset management',
+    ],
     'permission'     => [
         'title'          => 'Permissions',
         'title_singular' => 'Permission',
@@ -188,7 +192,7 @@ return [
         ],
     ],
     'transaction'    => [
-        'title'          => 'Manage Order',
+        'title'          => 'Manage Orders',
         'title_singular' => 'Order',
         'fields'         => [
             'id'                    => 'ID',
@@ -197,11 +201,11 @@ return [
             'hospital_helper'       => '',
             'rx_number'             => 'RX Number',
             'rx_number_helper'      => '',
-            'asset'                 => 'Asset',
+            'asset'                 => 'Isotope',
             'asset_helper'          => '',
             'asset_product'         => 'Product',
             'asset_product_helper'  => '',
-            'product_activity'             => 'Activity',
+            'product_activity'      => 'Activity',
             'product_activity_helper'      => '',
             'created_at'            => 'Created at',
             'created_at_helper'     => '',

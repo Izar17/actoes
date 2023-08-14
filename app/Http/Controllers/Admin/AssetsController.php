@@ -15,7 +15,7 @@ class AssetsController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('asset_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $assets = Asset::all();
 
@@ -24,7 +24,7 @@ class AssetsController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('asset_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.assets.create');
     }
@@ -39,7 +39,7 @@ class AssetsController extends Controller
 
     public function edit(Asset $asset)
     {
-        abort_if(Gate::denies('asset_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.assets.edit', compact('asset'));
     }
@@ -54,14 +54,14 @@ class AssetsController extends Controller
 
     public function show(Asset $asset)
     {
-        abort_if(Gate::denies('asset_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.assets.show', compact('asset'));
     }
 
     public function destroy(Asset $asset)
     {
-        abort_if(Gate::denies('asset_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $asset->delete();
 

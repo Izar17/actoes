@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('asset_create')
+@can('isotope_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route("admin.assets.create") }}">
@@ -58,19 +58,19 @@
                                 {{ $asset->danger_level }}
                             </td> --}}
                             <td>
-                                @can('asset_show')
+                                @can('isotope_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.assets.show', $asset->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('asset_edit')
+                                @can('isotope_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.assets.edit', $asset->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('asset_delete')
+                                @can('isotope_delete')
                                     <form action="{{ route('admin.assets.destroy', $asset->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -96,7 +96,7 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('asset_delete')
+@can('isotope_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,

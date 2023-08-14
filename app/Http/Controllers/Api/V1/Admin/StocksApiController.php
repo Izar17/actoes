@@ -15,7 +15,7 @@ class StocksApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('stock_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new StockResource(Stock::with(['asset', 'team'])->get());
 
@@ -33,7 +33,7 @@ class StocksApiController extends Controller
 
     public function show(Stock $stock)
     {
-        abort_if(Gate::denies('stock_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new StockResource($stock->load(['asset', 'team']));
 
@@ -51,7 +51,7 @@ class StocksApiController extends Controller
 
     public function destroy(Stock $stock)
     {
-        abort_if(Gate::denies('stock_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $stock->delete();
 

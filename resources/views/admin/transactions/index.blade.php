@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@can('stock_create')
+@can('product_create')
 <div style="margin-bottom: 10px;" class="row">
     <div class="col-lg-12 mt-2">
        <a class="btn btn-success" href="{{ route("admin.transactions.create") }}">
@@ -47,6 +47,9 @@
                         <th>
                             {{ trans('cruds.transaction.fields.product_activity') }}
                         </th>
+                        <th>
+                            &nbsp;
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,6 +73,28 @@
                             <td>
                                 {{ $transaction->product_activity->activity_name ?? '' }}
                             </td>
+                            <td>
+                                @can('order_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.transactions.show', $transaction->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
+
+                                @can('order_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.transactions.edit', $transaction->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
+
+                                @can('order_delete')
+                                    <form action="{{ route('admin.transactions.destroy', $transaction->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -86,7 +111,35 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+@can('team_delete')
+  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+  let deleteButton = {
+    text: deleteButtonTrans,
+    url: "{{ route('admin.transactions.massDestroy') }}",
+    className: 'btn-danger',
+    action: function (e, dt, node, config) {
+      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+          return $(entry).data('entry-id')
+      });
 
+      if (ids.length === 0) {
+        alert('{{ trans('global.datatables.zero_selected') }}')
+
+        return
+      }
+
+      if (confirm('{{ trans('global.areYouSure') }}')) {
+        $.ajax({
+          headers: {'x-csrf-token': _token},
+          method: 'POST',
+          url: config.url,
+          data: { ids: ids, _method: 'DELETE' }})
+          .done(function () { location.reload() })
+      }
+    }
+  }
+  dtButtons.push(deleteButton)
+@endcan
   $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 0, 'desc' ]],
     pageLength: 100,

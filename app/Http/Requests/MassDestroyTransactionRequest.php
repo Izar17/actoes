@@ -11,7 +11,7 @@ class MassDestroyTransactionRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('transaction_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
 

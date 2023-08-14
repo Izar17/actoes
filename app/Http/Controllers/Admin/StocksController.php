@@ -16,7 +16,7 @@ class StocksController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('stock_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $stocks = Stock::all();
 
@@ -25,7 +25,7 @@ class StocksController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('stock_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -42,7 +42,7 @@ class StocksController extends Controller
 
     public function edit(Stock $stock)
     {
-        abort_if(Gate::denies('stock_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -61,7 +61,7 @@ class StocksController extends Controller
 
     public function show(Stock $stock)
     {
-        abort_if(Gate::denies('stock_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $stock->load('asset.transactions.user.team');
 
@@ -70,7 +70,7 @@ class StocksController extends Controller
 
     public function destroy(Stock $stock)
     {
-        abort_if(Gate::denies('stock_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $stock->delete();
 

@@ -11,7 +11,7 @@ class StoreAssetRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('asset_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('isotope_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
 

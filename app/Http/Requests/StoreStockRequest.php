@@ -18,7 +18,7 @@ class StoreStockRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        abort_if(Gate::denies('stock_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('product_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }

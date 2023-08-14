@@ -27,7 +27,7 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $transactions = Transaction::all();
 
@@ -39,7 +39,7 @@ class TransactionsController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('transaction_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -47,12 +47,12 @@ class TransactionsController extends Controller
 
         $fromDate = "2023-01-01";
         $toDate = "2023-08-10";
-        
+
         $counts = Transaction::where("asset_id",1)
         ->whereRaw(
-            "(created_at >= ? AND created_at <= ?)", 
+            "(created_at >= ? AND created_at <= ?)",
             [
-               $fromDate ." 00:00:00", 
+               $fromDate ." 00:00:00",
                $toDate ." 23:59:59"
             ]
           )
@@ -69,18 +69,45 @@ class TransactionsController extends Controller
         $currentYear = date('Y');
         $fromDate = "$currentYear-01-01";
         $toDate = "$currentYear-08-10";
-        
+
         $counts = Transaction::where("asset_id",1)
         ->whereRaw(
-            "(created_at >= ? AND created_at <= ?)", 
+            "(created_at >= ? AND created_at <= ?)",
             [
-               $fromDate ." 00:00:00", 
+               $fromDate ." 00:00:00",
                $toDate ." 23:59:59"
             ]
           )
         ->count();
         $rx_no = 'SI-'.str_pad($counts, 5, '0', STR_PAD_LEFT).'-'.$currentYear;
-        $transaction = Transaction::create(array_merge($request->all(), ['rx_no' => $rx_no ]));
+
+
+
+            // $transactions = new Transaction;
+            // $transactions->hospital_id = $request->hospital_id;
+            // $transactions->asset_id= $request->asset_id;
+            // $transactions->item  = $request->item;
+            // $transactions->lead_pot = $request->lead_pot;
+            // $transactions->save();
+
+
+            foreach($request->orderform_no as $key => $orderform_nos)
+            {
+                $transactions['hospital_id']            = $request->hospital_id;
+                $transactions['asset_id']               = $request->asset_id;
+                $transactions['item']                   = $request->item;
+                $transactions['lead_pot']               = $request->lead_pot;
+                $transactions['orderform_no']           = $request->orderform_nos;
+                $transactions['activity_mci']           = $request->activity_mci[$key];
+                $transactions['activity_mbq']           = $request->activity_mbq[$key];
+                Transaction::create(array_merge($transactions, ['rx_no' => $rx_no ]));
+            }
+
+            // $transaction = Transaction::create($request->all());
+
+
+        //$transaction = Transaction::create(array_merge($request->all(), ['rx_no' => $rx_no ]));
+        //$transaction = Transaction::create($request->all());
         return redirect()->route('admin.transactions.index');
 
     }
@@ -91,7 +118,7 @@ class TransactionsController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        abort_if(Gate::denies('transaction_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -121,7 +148,7 @@ class TransactionsController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $transaction->load('asset', 'user');
 
@@ -135,7 +162,7 @@ class TransactionsController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        abort_if(Gate::denies('transaction_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $transaction->delete();
 

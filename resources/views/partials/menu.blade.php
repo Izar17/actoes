@@ -13,7 +13,8 @@
                     <ul class="nav-dropdown-items">
                         @can('permission_access')
                             <li class="nav-item">
-                                <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is('admin/permissions') || request()->is('admin/permissions/*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.permissions.index') }}"
+                                    class="nav-link {{ request()->is('admin/permissions') || request()->is('admin/permissions/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-unlock-alt nav-icon">
 
                                     </i>
@@ -23,7 +24,8 @@
                         @endcan
                         @can('role_access')
                             <li class="nav-item">
-                                <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is('admin/roles') || request()->is('admin/roles/*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.roles.index') }}"
+                                    class="nav-link {{ request()->is('admin/roles') || request()->is('admin/roles/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-briefcase nav-icon">
 
                                     </i>
@@ -33,7 +35,8 @@
                         @endcan
                         @can('user_access')
                             <li class="nav-item">
-                                <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.users.index') }}"
+                                    class="nav-link {{ request()->is('admin/users') || request()->is('admin/users/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-user nav-icon">
 
                                     </i>
@@ -43,7 +46,8 @@
                         @endcan
                         @can('team_access')
                             <li class="nav-item">
-                                <a href="{{ route("admin.teams.index") }}" class="nav-link {{ request()->is('admin/teams') || request()->is('admin/teams/*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.teams.index') }}"
+                                    class="nav-link {{ request()->is('admin/teams') || request()->is('admin/teams/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-users nav-icon">
 
                                     </i>
@@ -53,7 +57,8 @@
                         @endcan
                         @can('hospital_access')
                             <li class="nav-item">
-                                <a href="{{ route("admin.hospitals.index") }}" class="nav-link {{ request()->is('admin/hospitals') || request()->is('admin/hospitals/*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.hospitals.index') }}"
+                                    class="nav-link {{ request()->is('admin/hospitals') || request()->is('admin/hospitals/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-cogs nav-icon">
 
                                     </i>
@@ -64,40 +69,55 @@
                     </ul>
                 </li>
             @endcan
-            @can('asset_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.assets.index") }}" class="nav-link {{ request()->is('admin/assets') || request()->is('admin/assets/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
 
-                        </i>
-                        {{ trans('cruds.asset.title') }}
-                    </a>
-                </li>
-            @endcan
-            @can('stock_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.stocks.index") }}" class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link  nav-dropdown-toggle" href="#">
+                    <i class="fa-fw fas fa-cogs nav-icon">
 
-                        </i>
-                        {{ trans('cruds.stock.title') }}
-                    </a>
-                </li>
-            @endcan
-            @can('transaction_access')
+                    </i>
+                    {{ trans('cruds.assetManagement.title') }}
+                </a>
+                <ul class="nav-dropdown-items">
+                    @can('isotope_access')
+                        <li class="nav-item">
+                            <a href="{{ route('admin.assets.index') }}"
+                                class="nav-link {{ request()->is('admin/assets') || request()->is('admin/assets/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-cogs nav-icon">
+
+                                </i>
+                                {{ trans('cruds.asset.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('product_access')
+                        <li class="nav-item">
+                            <a href="{{ route('admin.stocks.index') }}"
+                                class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-cogs nav-icon">
+
+                                </i>
+                                {{ trans('cruds.stock.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    </ul>
+            </li>
+            @can('order_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.transactions.index") }}" class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
+                    <a href="{{ route('admin.transactions.index') }}"
+                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-shopping-cart nav-icon">
 
                         </i>
                         {{ trans('cruds.transaction.title') }}
                     </a>
                 </li>
             @endcan
-            @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
+            @if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
                 @can('profile_password_edit')
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'active' : '' }}" href="{{ route('profile.password.edit') }}">
+                        <a class="nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'active' : '' }}"
+                            href="{{ route('profile.password.edit') }}">
                             <i class="fa-fw fas fa-key nav-icon">
                             </i>
                             {{ trans('global.change_password') }}
@@ -106,7 +126,8 @@
                 @endcan
             @endif
             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+                <a href="#" class="nav-link"
+                    onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
                     <i class="nav-icon fas fa-fw fa-sign-out-alt">
 
                     </i>

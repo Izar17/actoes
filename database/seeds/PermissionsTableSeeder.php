@@ -74,23 +74,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '17',
-                'title' => 'asset_create',
+                'title' => 'isotope_create',
             ],
             [
                 'id'    => '18',
-                'title' => 'asset_edit',
+                'title' => 'isotope_edit',
             ],
             [
                 'id'    => '19',
-                'title' => 'asset_show',
+                'title' => 'isotope_show',
             ],
             [
                 'id'    => '20',
-                'title' => 'asset_delete',
+                'title' => 'isotope_delete',
             ],
             [
                 'id'    => '21',
-                'title' => 'asset_access',
+                'title' => 'isotope_access',
             ],
             [
                 'id'    => '22',
@@ -114,43 +114,43 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '27',
-                'title' => 'stock_create',
+                'title' => 'product_create',
             ],
             [
                 'id'    => '28',
-                'title' => 'stock_edit',
+                'title' => 'product_edit',
             ],
             [
                 'id'    => '29',
-                'title' => 'stock_show',
+                'title' => 'product_show',
             ],
             [
                 'id'    => '30',
-                'title' => 'stock_delete',
+                'title' => 'product_delete',
             ],
             [
                 'id'    => '31',
-                'title' => 'stock_access',
+                'title' => 'product_access',
             ],
             [
                 'id'    => '32',
-                'title' => 'transaction_create',
+                'title' => 'order_create',
             ],
             [
                 'id'    => '33',
-                'title' => 'transaction_edit',
+                'title' => 'order_edit',
             ],
             [
                 'id'    => '34',
-                'title' => 'transaction_show',
+                'title' => 'order_show',
             ],
             [
                 'id'    => '35',
-                'title' => 'transaction_delete',
+                'title' => 'order_delete',
             ],
             [
                 'id'    => '36',
-                'title' => 'transaction_access',
+                'title' => 'order_access',
             ],
             [
                 'id'    => '37',

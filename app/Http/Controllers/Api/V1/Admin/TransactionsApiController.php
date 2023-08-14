@@ -15,7 +15,7 @@ class TransactionsApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new TransactionResource(Transaction::with(['asset', 'user', 'hospital','asset_product','product_activity'])->get());
 
@@ -33,7 +33,7 @@ class TransactionsApiController extends Controller
 
     public function show(Transaction $transaction)
     {
-        abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new TransactionResource($transaction->load(['asset', 'user']));
 
@@ -51,7 +51,7 @@ class TransactionsApiController extends Controller
 
     public function destroy(Transaction $transaction)
     {
-        abort_if(Gate::denies('transaction_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('order_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $transaction->delete();
 

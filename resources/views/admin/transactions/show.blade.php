@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.transaction.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.transaction.title_singular') }}
     </div>
 
     <div class="card-body">
@@ -25,6 +25,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.transaction.fields.hospital') }}
+                        </th>
+                        <td>
+                            {{ $transaction->hospital->hospital ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.transaction.fields.asset') }}
                         </th>
                         <td>
@@ -33,18 +41,26 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transaction.fields.user') }}
+                            {{ trans('cruds.transaction.fields.rx_number') }}
                         </th>
                         <td>
-                            {{ $transaction->user->name ?? '' }}
+                            {{ $transaction->rx_no ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transaction.fields.stock') }}
+                            {{ trans('cruds.transaction.fields.asset_product') }}
                         </th>
                         <td>
-                            {{ $transaction->stock }}
+                            {{ $transaction->asset_product->product_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.transaction.fields.product_activity') }}
+                        </th>
+                        <td>
+                            {{ $transaction->product_activity->activity_name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

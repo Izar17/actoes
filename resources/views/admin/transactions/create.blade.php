@@ -30,6 +30,12 @@
                             <span class="help-block">{{ trans('cruds.transaction.fields.hospital_helper') }}</span>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="required" for="hospital_id">{{ trans('cruds.transaction.fields.process_yr') }}</label>
+                            <input class="form-control process_yr" type="date" name="process_yr"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="row my-3">
                     <div class="col-md-3">

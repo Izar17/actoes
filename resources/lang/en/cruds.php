@@ -199,6 +199,8 @@ return [
             'id_helper'             => '',
             'hospital'              => 'Hospital',
             'hospital_helper'       => '',
+            'process_yr'              => 'Process Year',
+            'process_yr_helper'       => '',
             'rx_number'             => 'RX Number',
             'rx_number_helper'      => '',
             'asset'                 => 'Isotope',

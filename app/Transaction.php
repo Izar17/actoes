@@ -29,6 +29,7 @@ class Transaction extends Model
         'activity_mci',
         'activity_mbq',
         'discrepancy',
+        'calibration_date',
         'created_at',
         'updated_at',
         'deleted_at',

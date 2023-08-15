@@ -66,19 +66,32 @@ class TransactionsController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
+        $cal_yr = date("Y",strtotime($request->process_yr));
+        $cal_date = date($request->process_yr);
 
         $currentYear = date('Y');
         $currentDate = date('Y-m-d');
-        $fromDate = "$currentYear-01-01";
+
+        if($currentYear != $cal_yr){
+            $fromDate = "$cal_yr-01-01";
+            $toDate = $cal_date;
+            $rx_query = "(calibration_date >= ? AND calibration_date <= ?)";
+            $rx_yr = $cal_yr;
+        } else {
+            $nextYear = $currentYear + 1;
+            $fromDate = "$currentYear-01-01";
+            $toDate = $currentDate;
+            $rx_query = "DATE_PART('year', to_date(left(calibration_date,4),'YYYY')) != '$nextYear' AND (created_at >= ? AND created_at <= ?)";
+            $rx_yr = $currentYear;
+        }
 
             foreach($request->orderform_no as $key => $orderform_nos)
             {
                 $counts = Transaction::where("asset_id",$request->asset_id)
-                ->whereRaw(
-                    "(created_at >= ? AND created_at <= ?)",
+                ->whereRaw($rx_query,
                     [
                        $fromDate ." 00:00:00",
-                       $currentDate ." 23:59:59"
+                       $toDate ." 23:59:59"
                     ]
                   )
                 ->count();
@@ -94,16 +107,17 @@ class TransactionsController extends Controller
                         $act = 'SI';
                     }
                 }
-                $rx_no = $act.'-'.str_pad($rx_number, 5, '0', STR_PAD_LEFT).'-'.$currentYear;
+                $rx_no = $act.'-'.str_pad($rx_number, 5, '0', STR_PAD_LEFT).'-'.$rx_yr;
 
                 $transactions['hospital_id']            = $request->hospital_id;
+                $transactions['calibration_date']       = $request->process_yr;
                 $transactions['asset_id']               = $request->asset_id;
                 $transactions['orderform_no']           = $request->orderform_nos;
                 $transactions['item']                   = $request->item[$key];
             //    $transactions['lead_pot']               = $request->lead_pot;
                 $transactions['activity_mci']           = $request->activity_mci[$key];
                 $transactions['activity_mbq']           = $request->activity_mbq[$key];
-                $transactions['discrepancy']             = $request->discrepancy[$key];
+                $transactions['discrepancy']            = $request->discrepancy[$key];
                 Transaction::create(array_merge($transactions, ['rx_no' => $rx_no ]));
             }
 

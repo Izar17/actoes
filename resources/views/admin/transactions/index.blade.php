@@ -36,6 +36,9 @@
                             {{ trans('cruds.transaction.fields.hospital') }}
                         </th>
                         <th>
+                            {{ trans('cruds.transaction.fields.ofm') }}
+                        </th>
+                        <th style="width:70px;">
                             {{ trans('cruds.transaction.fields.rx_number') }}
                         </th>
                         <th>
@@ -54,6 +57,12 @@
                             {{ trans('cruds.transaction.fields.discrepancy') }}
                         </th>
                         <th>
+                            {{ trans('cruds.transaction.fields.particular') }}
+                        </th>
+                        <th style="width:60px;">
+                            {{ trans('cruds.transaction.fields.calibration_date') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -66,6 +75,9 @@
                             </td>
                             <td>
                                 {{ $transaction->hospital->hospital ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->orderform_no ?? '' }}
                             </td>
                             <td>
                                 {{ $transaction->rx_no ?? '' }}
@@ -84,6 +96,13 @@
                             </td>
                             <td>
                                 {{ $transaction->discrepancy ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->activity_mci ?? '' }} mCi {{ $transaction->asset_product->product_name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->calibration_date ?? '' }}
+                                {{ $transaction->calibration_time ?? '' }}
                             </td>
                             <td>
                                 @can('order_show')

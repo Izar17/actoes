@@ -32,8 +32,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label class="required" for="hospital_id">{{ trans('cruds.transaction.fields.process_yr') }}</label>
-                            <input class="form-control process_yr" type="date" name="process_yr"/>
+
                         </div>
                     </div>
                 </div>
@@ -59,38 +58,7 @@
                             <span class="help-block">{{ trans('cruds.transaction.fields.asset_helper') }}</span>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            {{-- <select class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
-                                name="item" id="asset_product_id" required>
-                            </select> --}}
-                            @if ($errors->has('asset_product'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('asset_product') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.transaction.fields.asset_product_helper') }}</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            {{--
-                            <select class="form-control select2 {{ $errors->has('product_activity') ? 'is-invalid' : '' }}"
-                                name="lead_pot" id="product_activity_id" required>
-                            </select> --}}
-                            @if ($errors->has('product_activity'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('product_activity') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.transaction.fields.product_activity_helper') }}</span>
-                        </div>
-                    </div>
                 </div>
-
-
-
-
 
                 <div id="show1" class="myDiv">
 
@@ -124,11 +92,14 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">#</th>
-                                        <th class="col-sm-1">ORDER FORM NUMBER</th>
-                                        <th class="col-md-2">PRODUCT</th>
-                                        <th class="col-md-1">mCi</th>
-                                        <th style="width:80px;">mBq</th>
-                                        <th style="width:80px;">10%</th>
+                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
+                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }}</th>
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                        <th style="width:80px;">{{ trans('cruds.transaction.fields.activity_mbq') }}</th>
+                                        <th style="width:80px;">{{ trans('cruds.transaction.fields.discrepancy') }}</th>
+                                        <th style="width:100px;">{{ trans('cruds.transaction.fields.leadpot') }}</th>
+                                        <th style="width:80px;">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                        </th>
                                         <th> </th>
                                     </tr>
                                 </thead>
@@ -156,6 +127,18 @@
                                         <td>
                                             <input class="form-control discrepancy" style="width:80px" type="text"
                                                 id="discrepancy" name="discrepancy[]" readonly>
+                                        </td>
+                                        <td>
+                                            <select
+                                                class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
+                                                name="leadpot[]" id="leadpot_id" required>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input class="form-control calibration_date" type="date"
+                                                name="calibration_date[]" id="calibration_date" required />
+                                            <input class="form-control calibration_time" type="time" value="12:00"
+                                                name="calibration_time[]" id="calibration_time" />
                                         </td>
                                         <td>
                                             <a href="javascript:void(0)" class="text-success font-18" title="Add"
@@ -222,7 +205,22 @@
                             $("#asset_product_id").append('<option value="' + value
                                 .id + '">' + value.product_name + '</option>');
                         });
-                        $('#product_activity_id').html('<option value="">Select City</option>');
+                    }
+                });
+                $("#leadpot_id").html('');
+                $.ajax({
+                    url: "{{ url('api/fetch-leadpot') }}",
+                    type: "POST",
+                    data: {
+                        asset_id: idAsset,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $.each(result.lead_pots, function(key, value) {
+                            $("#leadpot_id").append('<option value="' + value
+                                .id + '">' + value.lead_code + '</option>');
+                        });
                     }
                 });
             });
@@ -264,7 +262,7 @@
                     <td>
                         <select
                             class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
-                            name="item[]" id="asset_product_id" required>
+                            name="item[]" id="asset_product_id">
                         </select>
                     </td>
                     <td>
@@ -276,6 +274,16 @@
                     <td>
                         <input class="form-control activity_mbq" style="width:80px" type="text"
                             id="activity_mbq" name="activity_mbq[]" readonly>
+                    </td>
+                    <td>
+                        <select
+                            class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
+                            name="leadpot[]" id="leadpot_id">
+                        </select>
+                    </td>
+                    <td>
+                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date" required/>
+                        <input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
                     </td>
                     <td><a href="javascript:void(0)" class="text-danger font-18 remove" title="Remove"><i class="fa fa-trash-o"></i></a></td>
                 </tr>`);

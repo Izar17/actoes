@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DropdownController;
 Route::post('api/fetch-product', [DropdownController::class, 'fetchProduct']);
 Route::post('api/fetch-activities', [DropdownController::class, 'fetchActivity']);
+Route::post('api/fetch-leadpot', [DropdownController::class, 'fetchLeadPot']);
 
 
 Route::redirect('/', '/login');

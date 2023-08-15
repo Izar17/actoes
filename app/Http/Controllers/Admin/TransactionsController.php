@@ -125,7 +125,7 @@ class TransactionsController extends Controller
             $transactions['lead_pot']           = $request->leadpot[$key];
             $transactions['activity_mci']       = $request->activity_mci[$key];
             $transactions['activity_mbq']       = $request->activity_mbq[$key];
-            $transactions['discrepancy']        = $request->discrepancy[$key];
+        //    $transactions['discrepancy']        = $request->discrepancy[$key];
             $transactions['particular']         = $particular;
             $transactions['calibration_date']   = $request->calibration_date[$key];
             $transactions['calibration_date']   = $request->calibration_date[$key];

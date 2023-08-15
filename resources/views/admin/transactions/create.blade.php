@@ -60,9 +60,6 @@
                     </div>
                 </div>
 
-                <div id="show1" class="myDiv">
-
-                </div>
                 <div id="show2" class="myDiv">
                     <strong>I-131 (RAI)</strong>
                 </div>
@@ -88,7 +85,7 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
-                            <table class="table table-hover table-white" id="tableEstimate">
+                            <table class="table table-hover table-white" id="tableOrder">
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">#</th>
@@ -104,34 +101,36 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr id="1">
                                         <td>1</td>
-                                        <td><input class="form-control" style="min-width:100px" type="text"
-                                                id="orderform_no" name="orderform_no[]"></td>
+                                        <td>
+                                            <input class="form-control" style="min-width:100px" type="text"
+                                                id="orderform_no" name="orderform_no[]">
+                                        </td>
                                         <td>
                                             <select
                                                 class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
-                                                name="item[]" id="asset_product_id" required>
+                                                name="item[]" id="asset_product_id1" required>
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="text" name="activity_mci[]" id="activity_mci"
-                                                list="product_activity_id" class="form-control activity_mci">
-                                            <datalist id="product_activity_id">
+                                            <input type="text" name="activity_mci[]" id="activity_mci1"
+                                                list="product_activity_id1" class="form-control activity_mci">
+                                            <datalist id="product_activity_id1">
                                             </datalist>
                                         </td>
                                         <td>
                                             <input class="form-control activity_mbq" style="width:80px" type="text"
-                                                id="activity_mbq" name="activity_mbq[]" readonly>
+                                                id="activity_mbq1" name="activity_mbq[]" readonly>
                                         </td>
                                         <td>
                                             <input class="form-control discrepancy" style="width:80px" type="text"
-                                                id="discrepancy" name="discrepancy[]" readonly>
+                                                id="discrepancy1" name="discrepancy[]" readonly>
                                         </td>
                                         <td>
                                             <select
                                                 class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
-                                                name="leadpot[]" id="leadpot_id" required>
+                                                name="leadpot[]" id="leadpot_id1" required>
                                             </select>
                                         </td>
                                         <td>
@@ -141,8 +140,10 @@
                                                 name="calibration_time[]" id="calibration_time" />
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0)" class="text-success font-18" title="Add"
-                                                id="addBtn"><i class="fa fa-plus"></i></a>
+                                            <div id="show1" class="myDiv">
+                                                <a href="javascript:void(0)" class="text-success font-18" title="Add"
+                                                    id="addBtn"><i class="fa fa-plus"></i></a>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -189,8 +190,14 @@
     <script>
         $(document).ready(function() {
             $('#asset_id').on('change', function() {
+                var table = document.getElementById("tableOrder");
+                // Iterate through each row in the table
+                for (var i = 0; i < table.rows.length; i++) {
+                    var row = table.rows[i];
+                    var rowId = row.id;
+                }
                 var idAsset = this.value;
-                $("#asset_product_id").html('');
+                $("#asset_product_id" + rowId).html('');
                 $.ajax({
                     url: "{{ url('api/fetch-product') }}",
                     type: "POST",
@@ -200,14 +207,16 @@
                     },
                     dataType: 'json',
                     success: function(result) {
-                        $('#asset_product_id').html('<option value="">Select Product</option>');
+                        $('#asset_product_id' + rowId).html(
+                            '<option value="">Select Product</option>');
                         $.each(result.asset_products, function(key, value) {
-                            $("#asset_product_id").append('<option value="' + value
+                            $("#asset_product_id" + rowId).append('<option value="' +
+                                value
                                 .id + '">' + value.product_name + '</option>');
                         });
                     }
                 });
-                $("#leadpot_id").html('');
+                $("#leadpot_id" + rowId).html('');
                 $.ajax({
                     url: "{{ url('api/fetch-leadpot') }}",
                     type: "POST",
@@ -218,15 +227,15 @@
                     dataType: 'json',
                     success: function(result) {
                         $.each(result.lead_pots, function(key, value) {
-                            $("#leadpot_id").append('<option value="' + value
+                            $("#leadpot_id" + rowId).append('<option value="' + value
                                 .id + '">' + value.lead_code + '</option>');
                         });
                     }
                 });
             });
-            $('#asset_product_id').on('change', function() {
+            $('#asset_product_id1').on('change', function() {
                 var idProduct = this.value;
-                $("#product_activity_id").html('');
+                $("#product_activity_id1").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-activities') }}",
                     type: "POST",
@@ -237,48 +246,114 @@
                     dataType: 'json',
                     success: function(res) {
                         $.each(res.product_activities, function(key, value) {
-                            $("#product_activity_id").append('<option value="' + value
+                            $("#product_activity_id1").append('<option value="' + value
                                 .activity_name + '">');
                         });
                     }
                 });
             });
-            $('#activity_mci').on('keyup', function() {
+            $('#activity_mci1').on('keyup', function() {
                 var idActivity = this.value;
                 discrepancy = +idActivity * .10 + +idActivity;
-                $("#activity_mbq").val((idActivity * 37).toFixed(2));
-                $("#discrepancy").val(discrepancy.toFixed(2));
+                $("#activity_mbq1").val((idActivity * 37).toFixed(2));
+                $("#discrepancy1").val(discrepancy.toFixed(2));
             });
         });
-
         // add multiple row
-        var rowIdx = 1;
+        var rowId = 1;
         $("#addBtn").on("click", function() {
+            ++rowId;
+
+            var idAsset = document.getElementById("asset_id").value;
+
+            $("#asset_product_id" + rowId).html('');
+            $.ajax({
+                url: "{{ url('api/fetch-product') }}",
+                type: "POST",
+                data: {
+                    asset_id: idAsset,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#asset_product_id' + rowId).html(
+                        '<option value="">Select Product</option>');
+                    $.each(result.asset_products, function(key, value) {
+                        $("#asset_product_id" + rowId).append('<option value="' +
+                            value
+                            .id + '">' + value.product_name + '</option>');
+                    });
+                }
+            });
+            $("#leadpot_id" + rowId).html('');
+            $.ajax({
+                url: "{{ url('api/fetch-leadpot') }}",
+                type: "POST",
+                data: {
+                    asset_id: idAsset,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $.each(result.lead_pots, function(key, value) {
+                        $("#leadpot_id" + rowId).append('<option value="' + value
+                            .id + '">' + value.lead_code + '</option>');
+                    });
+                }
+            });
+            //alert(rowId);
+            $('#asset_product_id' + rowId).on('change', function() {
+                alert('wew');
+                var idProduct = this.value;
+                $("#product_activity_id" + rowId).html('');
+                $.ajax({
+                    url: "{{ url('api/fetch-activities') }}",
+                    type: "POST",
+                    data: {
+                        product_id: idProduct,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $.each(res.product_activities, function(key, value) {
+                            $("#product_activity_id" + rowId).append('<option value="' +
+                                value
+                                .activity_name + '">');
+                        });
+                    }
+                });
+            });
+            $('#activity_mci' + rowId).on('keyup', function() {
+                var idActivity = this.value;
+                discrepancy = +idActivity * .10 + +idActivity;
+                $("#activity_mbq" + rowId).val((idActivity * 37).toFixed(2));
+                $("#discrepancy" + rowId).val(discrepancy.toFixed(2));
+            });
             // Adding a row inside the tbody.
-            $("#tableEstimate tbody").append(`
-                <tr id="R${++rowIdx}">
-                    <td class="row-index text-center"><p> ${rowIdx}</p></td>
+            $("#tableOrder tbody").append(`
+                <tr id="${rowId}">
+                    <td class="row-index text-center"><p> ${rowId}</p></td>
                     <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]"></td>
                     <td>
                         <select
                             class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
-                            name="item[]" id="asset_product_id">
+                            name="item[]" id="asset_product_id${rowId}">
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="activity_mci[]" id="activity_mci" list="product_activity_id" class="form-control activity_mci">
-                        <datalist id="product_activity_id">
+                        <input type="text" name="activity_mci[]" id="activity_mci${rowId}" list="product_activity_id${rowId}" class="form-control activity_mci">
+                        <datalist id="product_activity_id${rowId}">
                         </datalist>
                         </td>
-                    <td><input class="form-control activity_mbq" style="width:80px" type="text" id="activity_mbq" name="activity_mbq[]" readonly></td>
+                    <td><input class="form-control activity_mbq" style="width:80px" type="text" id="activity_mbq${rowId}" name="activity_mbq[]" readonly></td>
                     <td>
-                        <input class="form-control activity_mbq" style="width:80px" type="text"
-                            id="activity_mbq" name="activity_mbq[]" readonly>
+                        <input class="form-control discrepancy" style="width:80px" type="text"
+                            id="discrepancy${rowId}" name="discrepancy[]" readonly>
                     </td>
                     <td>
                         <select
                             class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
-                            name="leadpot[]" id="leadpot_id">
+                            name="leadpot[]" id="leadpot_id${rowId}">
                         </select>
                     </td>
                     <td>
@@ -289,7 +364,7 @@
                 </tr>`);
         });
         //<input class="form-control activity_mci" style="width:100px" type="text" id="activity_mci" name="activity_mci[]">
-        $("#tableEstimate tbody").on("click", ".remove", function() {
+        $("#tableOrder tbody").on("click", ".remove", function() {
             // Getting all the rows next to the row
             // containing the clicked button
             var child = $(this).closest("tr").nextAll();
@@ -316,10 +391,10 @@
             $(this).closest("tr").remove();
 
             // Decreasing total number of rows by 1.
-            rowIdx--;
+            rowId--;
         });
 
-        $("#tableEstimate tbody").on("input", ".unit_price", function() {
+        $("#tableOrder tbody").on("input", ".unit_price", function() {
             var unit_price = parseFloat($(this).val());
             $("#qty").val(37 * unit_price);
 
@@ -331,7 +406,7 @@
             calc_total();
         });
 
-        $("#tableEstimate tbody").on("input", ".qty", function() {
+        $("#tableOrder tbody").on("input", ".qty", function() {
             var qty = parseFloat($(this).val());
             var unit_price = parseFloat($(this).closest("tr").find(".unit_price").val());
             var total = $(this).closest("tr").find(".total");

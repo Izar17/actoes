@@ -66,48 +66,47 @@ class TransactionsController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
+
         $currentYear = date('Y');
+        $currentDate = date('Y-m-d');
         $fromDate = "$currentYear-01-01";
-        $toDate = "$currentYear-08-10";
-
-        $counts = Transaction::where("asset_id",1)
-        ->whereRaw(
-            "(created_at >= ? AND created_at <= ?)",
-            [
-               $fromDate ." 00:00:00",
-               $toDate ." 23:59:59"
-            ]
-          )
-        ->count();
-        $rx_no = 'SI-'.str_pad($counts, 5, '0', STR_PAD_LEFT).'-'.$currentYear;
-
-
-
-            // $transactions = new Transaction;
-            // $transactions->hospital_id = $request->hospital_id;
-            // $transactions->asset_id= $request->asset_id;
-            // $transactions->item  = $request->item;
-            // $transactions->lead_pot = $request->lead_pot;
-            // $transactions->save();
-
 
             foreach($request->orderform_no as $key => $orderform_nos)
             {
+                $counts = Transaction::where("asset_id",$request->asset_id)
+                ->whereRaw(
+                    "(created_at >= ? AND created_at <= ?)",
+                    [
+                       $fromDate ." 00:00:00",
+                       $currentDate ." 23:59:59"
+                    ]
+                  )
+                ->count();
+                $rx_number = $counts + 1;
+                if ($request->asset_id == 1){
+                    $act = 'Tc';
+                }
+                else if ($request->asset_id == 2){
+                    if ($request->item[$key] == 13){
+                        $act = 'IC';
+                    }
+                    else{
+                        $act = 'SI';
+                    }
+                }
+                $rx_no = $act.'-'.str_pad($rx_number, 5, '0', STR_PAD_LEFT).'-'.$currentYear;
+
                 $transactions['hospital_id']            = $request->hospital_id;
                 $transactions['asset_id']               = $request->asset_id;
-                $transactions['item']                   = $request->item;
-                $transactions['lead_pot']               = $request->lead_pot;
                 $transactions['orderform_no']           = $request->orderform_nos;
+                $transactions['item']                   = $request->item[$key];
+            //    $transactions['lead_pot']               = $request->lead_pot;
                 $transactions['activity_mci']           = $request->activity_mci[$key];
                 $transactions['activity_mbq']           = $request->activity_mbq[$key];
+                $transactions['discrepancy']             = $request->discrepancy[$key];
                 Transaction::create(array_merge($transactions, ['rx_no' => $rx_no ]));
             }
 
-            // $transaction = Transaction::create($request->all());
-
-
-        //$transaction = Transaction::create(array_merge($request->all(), ['rx_no' => $rx_no ]));
-        //$transaction = Transaction::create($request->all());
         return redirect()->route('admin.transactions.index');
 
     }

@@ -45,7 +45,13 @@
                             {{ trans('cruds.transaction.fields.asset_product') }}
                         </th>
                         <th>
-                            {{ trans('cruds.transaction.fields.product_activity') }}
+                            {{ trans('cruds.transaction.fields.activity_mci') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.transaction.fields.activity_mbq') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.transaction.fields.discrepancy') }}
                         </th>
                         <th>
                             &nbsp;
@@ -71,7 +77,13 @@
                                 {{ $transaction->asset_product->product_name ?? '' }}
                             </td>
                             <td>
-                                {{ $transaction->product_activity->activity_name ?? '' }}
+                                {{ $transaction->activity_mci ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->activity_mbq ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->discrepancy ?? '' }}
                             </td>
                             <td>
                                 @can('order_show')

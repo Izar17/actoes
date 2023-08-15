@@ -28,6 +28,7 @@ class Transaction extends Model
         'orderform_no',
         'activity_mci',
         'activity_mbq',
+        'discrepancy',
         'created_at',
         'updated_at',
         'deleted_at',

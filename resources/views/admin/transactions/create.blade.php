@@ -55,8 +55,6 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="required"
-                                for="asset_product_id">{{ trans('cruds.transaction.fields.asset_product') }}</label>
                             {{-- <select class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
                                 name="item" id="asset_product_id" required>
                             </select> --}}
@@ -70,8 +68,6 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="required"
-                                for="product_activity_id">{{ trans('cruds.transaction.fields.product_activity') }}</label>
                             {{--
                             <select class="form-control select2 {{ $errors->has('product_activity') ? 'is-invalid' : '' }}"
                                 name="lead_pot" id="product_activity_id" required>
@@ -142,13 +138,6 @@
                                             </select>
                                         </td>
                                         <td>
-                                            {{-- <input class="form-control activity_mci" style="width:80px" type="text"
-                                                id="activity_mci" name="activity_mci[]"> --}}
-                                            {{-- <select
-                                                class="form-control select2 {{ $errors->has('product_activity') ? 'is-invalid' : '' }}"
-                                                name="lead_pot[]" id="product_activity_id" required>
-                                                <option><input type="text"/></option>
-                                            </select> --}}
                                             <input type="text" name="activity_mci[]" id="activity_mci"
                                                 list="product_activity_id" class="form-control activity_mci">
                                             <datalist id="product_activity_id">

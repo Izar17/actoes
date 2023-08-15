@@ -97,15 +97,6 @@
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
-
-                                @can('order_delete')
-                                    <form action="{{ route('admin.transactions.destroy', $transaction->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
                             </td>
                         </tr>
                     @endforeach

@@ -69,14 +69,19 @@ class TransactionsController extends Controller
         foreach ($request->orderform_no as $key => $orderform_no) {
 
             //Format Time with AM/PM
-            $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
+            $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');         
 
-            //Current & Calibrate Date
+            //Calibrate Date
             $cal_yr = date("Y", strtotime($request->calibration_date[$key]));
             $cal_date = date($request->calibration_date[$key]);
 
+            //Current Date
             $currentYear = date('Y');
             $currentDate = date('Y-m-d');
+
+            //Get WeekNumber and last 2 digit of the year
+            $weekNumber = date('W', strtotime($cal_date));
+            $lastTwoDigitsOfYear = date('y', strtotime($cal_date));
 
             if ($currentYear != $cal_yr) {
                 $fromDate = "$cal_yr-01-01";
@@ -90,10 +95,17 @@ class TransactionsController extends Controller
                 $rx_query = "DATE_PART('year', to_date(left(calibration_date,4),'YYYY')) != '$nextYear' AND (created_at >= ? AND created_at <= ?)";
                 $rx_yr = $currentYear;
             }
+            //Lot No.
+            if ($request->asset_id == 2) {
+                $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
+            } else {
+                $lotNumber = $request->lot_no[$key];
+            }
             //RX Activity
             if ($request->asset_id == 1) {
                 $act = 'Tc';
             } else if ($request->asset_id == 2) {
+                $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
                 if ($request->item[$key] == 13) {
                     $act = 'IC';
                 } else {
@@ -120,16 +132,17 @@ class TransactionsController extends Controller
 
             $transactions['hospital_id']        = $request->hospital_id;
             $transactions['asset_id']           = $request->asset_id;
+            $transactions['remarks']            = $request->remarks[$key];
             $transactions['orderform_no']       = $request->orderform_no[$key];
             $transactions['item']               = $request->item[$key];
             $transactions['lead_pot']           = $request->leadpot[$key];
             $transactions['activity_mci']       = $request->activity_mci[$key];
             $transactions['activity_mbq']       = $request->activity_mbq[$key];
-        //    $transactions['discrepancy']        = $request->discrepancy[$key];
+            $transactions['discrepancy']        = $request->discrepancy[$key];
             $transactions['particular']         = $particular;
             $transactions['calibration_date']   = $request->calibration_date[$key];
-            $transactions['calibration_date']   = $request->calibration_date[$key];
             $transactions['calibration_time']   = $calibration_time;
+            $transactions['lot_no']             = $lotNumber;
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 

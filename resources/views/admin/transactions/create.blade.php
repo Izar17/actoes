@@ -10,33 +10,6 @@
                 autocomplete="off">
                 @csrf
                 <div class="row my-3">
-                    <div class="col-md-9">
-                        <div class="form-group">
-
-                            <label class="required"
-                                for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
-                            <select class="form-control select2 {{ $errors->has('hospital') ? 'is-invalid' : '' }}"
-                                name="hospital_id" id="hospital_id" required>
-                                @foreach ($hospitals as $id => $hospital)
-                                    <option value="{{ $id }}" {{ old('hospital_id') == $id ? 'selected' : '' }}>
-                                        {{ $hospital }}</option>
-                                @endforeach
-                            </select>
-                            @if ($errors->has('hospital'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('hospital') }}
-                                </div>
-                            @endif
-                            <span class="help-block">{{ trans('cruds.transaction.fields.hospital_helper') }}</span>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row my-3">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="required" for="asset_id">{{ trans('cruds.transaction.fields.asset') }}</label>
@@ -58,8 +31,35 @@
                             <span class="help-block">{{ trans('cruds.transaction.fields.asset_helper') }}</span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="required" for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
+                            <select class="form-control select2 {{ $errors->has('hospital') ? 'is-invalid' : '' }}"
+                                name="hospital_id" id="hospital_id" required>
+                                @foreach ($hospitals as $id => $hospital)
+                                    <option value="{{ $id }}" {{ old('hospital_id') == $id ? 'selected' : '' }}>
+                                        {{ $hospital }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('hospital'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('hospital') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.transaction.fields.hospital_helper') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="created_date">Created Date</label>
+                            <input type="text" class="form-control created_date" readonly/>
+                        </div>
+                    </div>
                 </div>
 
+                <div id="show1" class="myDiv">
+
+                </div>
                 <div id="show2" class="myDiv">
                     <strong>I-131 (RAI)</strong>
                 </div>
@@ -89,13 +89,16 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">#</th>
-                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }}</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
-                                        <th style="width:80px;">{{ trans('cruds.transaction.fields.activity_mbq') }}</th>
-                                        <th style="width:80px;">{{ trans('cruds.transaction.fields.discrepancy') }}</th>
-                                        <th style="width:100px;">{{ trans('cruds.transaction.fields.leadpot') }}</th>
+                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
                                         <th style="width:80px;">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.lot_no') }}
+                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
+                                        <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
+                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.max_doserate') }}</th>
+                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.doserate_meter') }}</th>
+                                        <th class="col-sm-1">{{ trans('cruds.transaction.fields.leadpot') }}</th>
                                         </th>
                                         <th> </th>
                                     </tr>
@@ -103,10 +106,6 @@
                                 <tbody>
                                     <tr id="1">
                                         <td>1</td>
-                                        <td>
-                                            <input class="form-control" style="min-width:100px" type="text"
-                                                id="orderform_no" name="orderform_no[]">
-                                        </td>
                                         <td>
                                             <select
                                                 class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
@@ -118,20 +117,15 @@
                                                 list="product_activity_id1" class="form-control activity_mci">
                                             <datalist id="product_activity_id1">
                                             </datalist>
+                                            <input type="hidden" id="activity_mbq1" name="activity_mbq[]" />
+                                            <input type="hidden" id="discrepancy1" name="discrepancy[]" />
                                         </td>
                                         <td>
-                                            <input class="form-control activity_mbq" style="width:80px" type="text"
-                                                id="activity_mbq1" name="activity_mbq[]" readonly>
-                                        </td>
-                                        <td>
-                                            <input class="form-control discrepancy" style="width:80px" type="text"
-                                                id="discrepancy1" name="discrepancy[]" readonly>
-                                        </td>
-                                        <td>
-                                            <select
-                                                class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
-                                                name="leadpot[]" id="leadpot_id1" required>
-                                            </select>
+                                            <input type="text" name="patient[]" id="patient" list="patient_list_id"
+                                                class="form-control activity_mci">
+                                            <datalist id="patient_list_id">
+                                                <option value="Confidential">
+                                            </datalist>
                                         </td>
                                         <td>
                                             <input class="form-control calibration_date" type="date"
@@ -140,7 +134,33 @@
                                                 name="calibration_time[]" id="calibration_time" />
                                         </td>
                                         <td>
-                                            <div id="show1" class="myDiv">
+                                            <input class="form-control lot_no" type="text" id="lot_no"
+                                                name="lot_no[]" readonly />
+                                        </td>
+                                        <td>
+                                            <input class="form-control" style="min-width:100px" type="text"
+                                                id="orderform_no" name="orderform_no[]">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control remarks" id="remarks"
+                                                name="remarks[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control max_doserate" id="max_doserate"
+                                                name="max_doserate[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control doserate_meter" id="doserate_meter"
+                                                name="doserate_meter[]" />
+                                        </td>
+                                        <td>
+                                            <select
+                                                class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
+                                                name="leadpot[]" id="leadpot_id1" required>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <div id="show_add" class="myDiv">
                                                 <a href="javascript:void(0)" class="text-success font-18" title="Add"
                                                     id="addBtn"><i class="fa fa-plus"></i></a>
                                             </div>
@@ -150,16 +170,8 @@
                             </table>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Remarks</label>
-                                    <textarea class="form-control" rows="3" id="other_information" name="other_information"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
+                        <div class="form-group"style="text-align:center;">
+                            <hr>
                             <button class="btn btn-danger" type="submit">
                                 {{ trans('global.save') }}
                             </button>
@@ -182,6 +194,9 @@
                 var demovalue = $(this).val();
                 $("div.myDiv").hide();
                 $("#show" + demovalue).show();
+                if (demovalue != '') {
+                    $("#show_add").show();
+                }
             });
         });
     </script>
@@ -190,14 +205,21 @@
     <script>
         $(document).ready(function() {
             $('#asset_id').on('change', function() {
-                var table = document.getElementById("tableOrder");
-                // Iterate through each row in the table
-                for (var i = 0; i < table.rows.length; i++) {
-                    var row = table.rows[i];
-                    var rowId = row.id;
-                }
                 var idAsset = this.value;
-                $("#asset_product_id" + rowId).html('');
+
+                const lot_no = document.getElementById('lot_no');
+                if (idAsset == 2) {
+                    lot_no.value = '';
+                    // If 'readonly' attribute is not set, add it and make the field read-only
+                    lot_no.setAttribute('readonly', 'readonly');
+                    lot_no.removeAttribute('required');
+                } else {
+                    // If 'readonly' attribute is already set, remove it and make the field editable
+                    lot_no.removeAttribute('readonly');
+                    lot_no.setAttribute('required', 'required');
+                }
+
+                $("#asset_product_id1").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-product') }}",
                     type: "POST",
@@ -210,13 +232,13 @@
                         $('#asset_product_id' + rowId).html(
                             '<option value="">Select Product</option>');
                         $.each(result.asset_products, function(key, value) {
-                            $("#asset_product_id" + rowId).append('<option value="' +
+                            $("#asset_product_id1").append('<option value="' +
                                 value
                                 .id + '">' + value.product_name + '</option>');
                         });
                     }
                 });
-                $("#leadpot_id" + rowId).html('');
+                $("#leadpot_id1").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-leadpot') }}",
                     type: "POST",
@@ -227,11 +249,12 @@
                     dataType: 'json',
                     success: function(result) {
                         $.each(result.lead_pots, function(key, value) {
-                            $("#leadpot_id" + rowId).append('<option value="' + value
+                            $("#leadpot_id1").append('<option value="' + value
                                 .id + '">' + value.lead_code + '</option>');
                         });
                     }
                 });
+
             });
             $('#asset_product_id1').on('change', function() {
                 var idProduct = this.value;
@@ -261,11 +284,11 @@
         });
         // add multiple row
         var rowId = 1;
+        var rowIdx = 1;
         $("#addBtn").on("click", function() {
             ++rowId;
 
             var idAsset = document.getElementById("asset_id").value;
-
             $("#asset_product_id" + rowId).html('');
             $.ajax({
                 url: "{{ url('api/fetch-product') }}",
@@ -282,6 +305,49 @@
                         $("#asset_product_id" + rowId).append('<option value="' +
                             value
                             .id + '">' + value.product_name + '</option>');
+                    });
+                    const lot_no = document.getElementById("lot_no" + rowId);
+                    if (idAsset == 2) {
+                        lot_no.value = '';
+                        // If 'readonly' attribute is not set, add it and make the field read-only
+                        lot_no.setAttribute('readonly', 'readonly');
+                        lot_no.removeAttribute('required');
+                        $("#lot_no" + rowId).html('');
+                    } else {
+                        // If 'readonly' attribute is already set, remove it and make the field editable
+                        lot_no.removeAttribute('readonly');
+                        lot_no.setAttribute('required', 'required');
+                    }
+                    $('#asset_product_id' + rowId).on('change', function() {
+                        var idProduct = this.value;
+                        $("#product_activity_id" + rowId).html('');
+                        $.ajax({
+                            url: "{{ url('api/fetch-activities') }}",
+                            type: "POST",
+                            data: {
+                                product_id: idProduct,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            dataType: 'json',
+                            success: function(res) {
+                                $.each(res.product_activities, function(key,
+                                    value) {
+                                    $("#product_activity_id" + rowId)
+                                        .append('<option value="' +
+                                            value
+                                            .activity_name + '">');
+                                });
+                                $('#activity_mci' + rowId).on('keyup', function() {
+                                    var idActivity = this.value;
+                                    discrepancy = +idActivity * .10 + +
+                                        idActivity;
+                                    $("#activity_mbq" + rowId).val((
+                                        idActivity * 37).toFixed(2));
+                                    $("#discrepancy" + rowId).val(
+                                        discrepancy.toFixed(2));
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -301,68 +367,52 @@
                     });
                 }
             });
-            //alert(rowId);
-            $('#asset_product_id' + rowId).on('change', function() {
-                alert('wew');
-                var idProduct = this.value;
-                $("#product_activity_id" + rowId).html('');
-                $.ajax({
-                    url: "{{ url('api/fetch-activities') }}",
-                    type: "POST",
-                    data: {
-                        product_id: idProduct,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-                        $.each(res.product_activities, function(key, value) {
-                            $("#product_activity_id" + rowId).append('<option value="' +
-                                value
-                                .activity_name + '">');
-                        });
-                    }
-                });
-            });
-            $('#activity_mci' + rowId).on('keyup', function() {
-                var idActivity = this.value;
-                discrepancy = +idActivity * .10 + +idActivity;
-                $("#activity_mbq" + rowId).val((idActivity * 37).toFixed(2));
-                $("#discrepancy" + rowId).val(discrepancy.toFixed(2));
-            });
+
             // Adding a row inside the tbody.
             $("#tableOrder tbody").append(`
-                <tr id="${rowId}">
-                    <td class="row-index text-center"><p> ${rowId}</p></td>
-                    <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]"></td>
+                <tr id="R${++rowIdx}">                  
+                    <td class="row-index text-center"><p> ${rowIdx}</p></td>
                     <td>
                         <select
                             class="form-control select2 {{ $errors->has('asset_product') ? 'is-invalid' : '' }}"
-                            name="item[]" id="asset_product_id${rowId}">
+                            name="item[]" id="asset_product_id${rowIdx}">
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="activity_mci[]" id="activity_mci${rowId}" list="product_activity_id${rowId}" class="form-control activity_mci">
-                        <datalist id="product_activity_id${rowId}">
+                        <input type="text" name="activity_mci[]" id="activity_mci${rowIdx}" list="product_activity_id${rowIdx}" class="form-control activity_mci">
+                        <datalist id="product_activity_id${rowIdx}">
                         </datalist>
-                        </td>
-                    <td><input class="form-control activity_mbq" style="width:80px" type="text" id="activity_mbq${rowId}" name="activity_mbq[]" readonly></td>
-                    <td>
-                        <input class="form-control discrepancy" style="width:80px" type="text"
-                            id="discrepancy${rowId}" name="discrepancy[]" readonly>
+                        <input type="hidden" id="activity_mbq${rowIdx}" name="activity_mbq[]"/>
+                        <input type="hidden" id="discrepancy${rowIdx}" name="discrepancy[]"/>
                     </td>
                     <td>
-                        <select
-                            class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
-                            name="leadpot[]" id="leadpot_id${rowId}">
-                        </select>
+                        <input type="text" name="patient[]" id="patient"
+                            list="patient_list_id" class="form-control activity_mci">
+                        <datalist id="patient_list_id"><option value="Confidential"></datalist>
                     </td>
+                                        
                     <td>
                         <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date" required/>
                         <input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
                     </td>
+                    <td>
+                        <input class="form-control lot_no" type="text" id="lot_no${rowIdx}" name="lot_no[]" readonly/>
+                    </td>
+                    <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]"></td>               
+                    <td>
+                        <input type="text" class="form-control remarks" id="remarks"
+                            name="remarks[]" />
+                    </td>
+                    <td>
+                        <select
+                            class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
+                            name="leadpot[]" id="leadpot_id${rowIdx}">
+                        </select>
+                    </td>
                     <td><a href="javascript:void(0)" class="text-danger font-18 remove" title="Remove"><i class="fa fa-trash-o"></i></a></td>
                 </tr>`);
         });
+
         //<input class="form-control activity_mci" style="width:100px" type="text" id="activity_mci" name="activity_mci[]">
         $("#tableOrder tbody").on("click", ".remove", function() {
             // Getting all the rows next to the row
@@ -391,7 +441,7 @@
             $(this).closest("tr").remove();
 
             // Decreasing total number of rows by 1.
-            rowId--;
+            rowIdx--;
         });
 
         $("#tableOrder tbody").on("input", ".unit_price", function() {

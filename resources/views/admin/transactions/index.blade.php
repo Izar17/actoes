@@ -30,7 +30,7 @@
                 <thead>
                     <tr>
                         <th>
-                            Created at
+                            ID | Created Date
                         </th>
                         <th>
                             {{ trans('cruds.transaction.fields.hospital') }}
@@ -63,7 +63,10 @@
                             {{ trans('cruds.transaction.fields.calibration_date') }}
                         </th>
                         <th>
-                            &nbsp;
+                            {{ trans('cruds.transaction.fields.lot_no') }}
+                        </th>
+                        <th>
+                            Action
                         </th>
                     </tr>
                 </thead>
@@ -71,7 +74,7 @@
                     @foreach($transactions as $key => $transaction)
                         <tr data-entry-id="{{ $transaction->id }}">
                             <td>
-                                {{ $transaction->created_at}}
+                                {{ $transaction->id}} | {{ $transaction->created_at}}
                             </td>
                             <td>
                                 {{ $transaction->hospital->hospital ?? '' }}
@@ -103,6 +106,9 @@
                             <td>
                                 {{ $transaction->calibration_date ?? '' }}
                                 {{ $transaction->calibration_time ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->lot_no ?? '' }}
                             </td>
                             <td>
                                 @can('order_show')

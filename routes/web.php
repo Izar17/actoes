@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DropdownController;
 Route::post('api/fetch-product', [DropdownController::class, 'fetchProduct']);
 Route::post('api/fetch-activities', [DropdownController::class, 'fetchActivity']);
 Route::post('api/fetch-leadpot', [DropdownController::class, 'fetchLeadPot']);
+Route::post('api/fetch-procedure', [DropdownController::class, 'fetchProcedure']);
 
 
 Route::redirect('/', '/login');

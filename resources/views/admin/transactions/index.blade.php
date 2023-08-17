@@ -51,16 +51,13 @@
                             {{ trans('cruds.transaction.fields.activity_mci') }}
                         </th>
                         <th>
-                            {{ trans('cruds.transaction.fields.activity_mbq') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.transaction.fields.discrepancy') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.transaction.fields.particular') }}
                         </th>
                         <th style="width:60px;">
                             {{ trans('cruds.transaction.fields.calibration_date') }}
+                        </th>
+                        <th style="width:60px;">
+                            {{ trans('cruds.transaction.fields.run_no') }}
                         </th>
                         <th>
                             {{ trans('cruds.transaction.fields.lot_no') }}
@@ -95,17 +92,14 @@
                                 {{ $transaction->activity_mci ?? '' }}
                             </td>
                             <td>
-                                {{ $transaction->activity_mbq ?? '' }}
-                            </td>
-                            <td>
-                                {{ $transaction->discrepancy ?? '' }}
-                            </td>
-                            <td>
                                 {{ $transaction->activity_mci ?? '' }} mCi {{ $transaction->asset_product->product_name ?? '' }}
                             </td>
                             <td>
                                 {{ $transaction->calibration_date ?? '' }}
                                 {{ $transaction->calibration_time ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->runNumber->run_name ?? '' }}
                             </td>
                             <td>
                                 {{ $transaction->lot_no ?? '' }}

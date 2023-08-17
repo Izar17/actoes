@@ -76,6 +76,11 @@ class Transaction extends Model
         return $this->belongsTo(Product_activity::class, 'lead_pot');
     }
 
+    public function runNumber()
+    {
+        return $this->belongsTo(RunNumber::class, 'run_no');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

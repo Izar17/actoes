@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\{Asset, Stock, Transaction, User, Hospital, LeadPot};
+use App\{Asset, Stock, Transaction, User, Hospital, LeadPot, Doserate, RunNumber};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
@@ -43,6 +43,8 @@ class TransactionsController extends Controller
 
         $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $run_nos = RunNumber::all()->pluck('run_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
 
         $fromDate = "2023-01-01";
@@ -57,7 +59,7 @@ class TransactionsController extends Controller
                 ]
             )
             ->count();
-        return view('admin.transactions.create', compact('hospitals', 'assets', 'counts'));
+        return view('admin.transactions.create', compact('hospitals', 'assets', 'counts','run_nos'));
     }
 
     /**
@@ -111,6 +113,8 @@ class TransactionsController extends Controller
                 } else {
                     $act = 'SI';
                 }
+            } else if ($request->asset_id == 3){
+                $act = 'Tl';
             }
 
             //RX Count
@@ -128,7 +132,24 @@ class TransactionsController extends Controller
             //Concat RX Activity, Count and Calibration Year
             $rx_no = $act . '-' . str_pad($rx_number, 5, '0', STR_PAD_LEFT) . '-' . $rx_yr;
 
-            $particular = $request->activity_mci[$key].' mCi '.$request->item[$key];
+            //Activity mCi functions auto generate
+            $activityMci = $request->activity_mci[$key];
+            $mbq = number_format($activityMci * 37, 2);
+            $discrepancy = ($activityMci * .10) + $activityMci;
+
+            
+
+            $doserates = Doserate::select('max_doserate', 'doserate_m')
+            ->where("asset_product_id",$request->item[$key])
+            ->whereRaw('? BETWEEN lower_limit AND upper_limit',$activityMci)
+            ->get("doserate_m");
+            foreach ($doserates as $doserate) {
+                $max_doserate = $doserate->max_doserate;
+                $doserates_meter = $doserate->doserate_m;
+            }
+
+            //particular
+            $particular = $activityMci.' mCi '.$request->item[$key];
 
             $transactions['hospital_id']        = $request->hospital_id;
             $transactions['asset_id']           = $request->asset_id;
@@ -137,12 +158,17 @@ class TransactionsController extends Controller
             $transactions['item']               = $request->item[$key];
             $transactions['lead_pot']           = $request->leadpot[$key];
             $transactions['activity_mci']       = $request->activity_mci[$key];
-            $transactions['activity_mbq']       = $request->activity_mbq[$key];
-            $transactions['discrepancy']        = $request->discrepancy[$key];
+            $transactions['activity_mbq']       = $mbq;
+            $transactions['discrepancy']        = $discrepancy;
             $transactions['particular']         = $particular;
             $transactions['calibration_date']   = $request->calibration_date[$key];
             $transactions['calibration_time']   = $calibration_time;
             $transactions['lot_no']             = $lotNumber;
+            $transactions['max_doserate']       = $max_doserate;
+            $transactions['doserate_meter']     = $doserates_meter;
+            $transactions['procedure1']         = $request->procedure[$key];
+            $transactions['volume']             = $request->volume[$key];
+            $transactions['run_no']             = $request->run_no[$key];
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 

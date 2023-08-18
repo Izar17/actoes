@@ -30,13 +30,15 @@
         <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#"><img src="{{url('/img/act.png')}}" alt="Image" style="width:50px;height:30px;padding-right:5px;"/>
+        <a class="navbar-brand" href="#">
+          <img src="{{url('/img/act.png')}}" alt="Image" style="width:50px;height:30px;padding-right:5px;"/>
             <span class="navbar-brand-full" style="color:cyan;">{{ trans('panel.site_title') }}</span>
             <span class="navbar-brand-minimized" style="color:cyan;">{{ trans('panel.site_title') }}</span>
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
 
         <ul class="nav navbar-nav ml-auto">
             @if(count(config('panel.available_languages', [])) > 1)
@@ -54,7 +56,8 @@
 
 
         </ul>
-          <span  style="padding-right: 50px;color:cyan;">{{ old('email', auth()->user()->email) }}</span>
+          <div id="datetime" style="padding-right: 10px;color:aqua;"></div> 
+          <span  style="padding-right: 50px;color:cyan;">| {{ old('email', auth()->user()->email) }}</span>
 
     </header>
 
@@ -219,6 +222,16 @@
   $.fn.dataTable.ext.classes.sPageButton = '';
 });
 
+        //Time
+        function updateDateTime() {
+            const now = new Date();
+            const datetimeDiv = document.getElementById('datetime');
+            datetimeDiv.textContent = now.toLocaleString();
+        }
+
+        // Call the function initially and then update it every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
     </script>
     @yield('scripts')
 </body>

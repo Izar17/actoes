@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 @section('content')
-@can('product_create')
+@can('order_create')
 <div style="margin-bottom: 10px;" class="row">
     <div class="col-lg-12 mt-2">
        <a class="btn btn-success" href="{{ route("admin.transactions.create") }}">
-            {{ trans('global.add') }} {{ trans('cruds.transaction.title_singular') }}
+            {{ trans('global.add') }} {{ trans('cruds.transaction.order_title_singular') }}
         </a>
         @if(session('status'))
             <div class="alert alert-success" role="alert">
@@ -21,7 +21,7 @@
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.transaction.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">

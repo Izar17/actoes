@@ -22,14 +22,6 @@ class UpdateTransactionRequest extends FormRequest
             'asset_id' => [
                 'required',
                 'integer'],
-            'user_id'  => [
-                'required',
-                'integer'],
-            'stock'    => [
-                'required',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647'],
         ];
 
     }

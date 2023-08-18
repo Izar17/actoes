@@ -69,7 +69,7 @@
                     </ul>
                 </li>
             @endcan
-
+            @can('asset_management_access')
             <li class="nav-item nav-dropdown">
                 <a class="nav-link  nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-cogs nav-icon">
@@ -102,6 +102,7 @@
                     @endcan
                     </ul>
             </li>
+            @endcan
             @can('order_access')
                 <li class="nav-item">
                     <a href="{{ route('admin.transactions.index') }}"
@@ -109,7 +110,29 @@
                         <i class="fa-fw fas fa-shopping-cart nav-icon">
 
                         </i>
-                        {{ trans('cruds.transaction.title') }}
+                        {{ trans('cruds.transaction.order_title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('production_access')
+                <li class="nav-item">
+                    <a href="{{ route('admin.transactions.index') }}"
+                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-file nav-icon">
+
+                        </i>
+                        {{ trans('cruds.transaction.production_title') }}
+                    </a>
+                </li>
+            @endcan
+            @can('drsi_access')
+                <li class="nav-item">
+                    <a href="{{ route('admin.transactions.index') }}"
+                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-file-invoice nav-icon">
+
+                        </i>
+                        {{ trans('cruds.transaction.drsi_title') }}
                     </a>
                 </li>
             @endcan

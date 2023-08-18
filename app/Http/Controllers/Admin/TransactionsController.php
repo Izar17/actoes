@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\{Asset, Stock, Transaction, User, Hospital, LeadPot, Doserate, RunNumber};
+use App\{Asset, Stock, Transaction, User, Hospital, LeadPot, Doserate, RunNumber, Asset_product};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
@@ -100,9 +100,8 @@ class TransactionsController extends Controller
             //Lot No.
             if ($request->asset_id == 2) {
                 $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
-            } else {
-                $lotNumber = $request->lot_no[$key];
-            }
+            } 
+            
             //RX Activity
             if ($request->asset_id == 1) {
                 $act = 'Tc';
@@ -141,7 +140,7 @@ class TransactionsController extends Controller
 
             $doserates = Doserate::select('max_doserate', 'doserate_m')
             ->where("asset_product_id",$request->item[$key])
-            ->whereRaw('? BETWEEN lower_limit AND upper_limit',$activityMci)
+            ->whereRaw('? BETWEEN CAST(lower_limit AS numeric) AND CAST(upper_limit AS numeric)',$activityMci)
             ->get("doserate_m");
             foreach ($doserates as $doserate) {
                 $max_doserate = $doserate->max_doserate;
@@ -156,19 +155,22 @@ class TransactionsController extends Controller
             $transactions['remarks']            = $request->remarks[$key];
             $transactions['orderform_no']       = $request->orderform_no[$key];
             $transactions['item']               = $request->item[$key];
-            $transactions['lead_pot']           = $request->leadpot[$key];
             $transactions['activity_mci']       = $request->activity_mci[$key];
             $transactions['activity_mbq']       = $mbq;
             $transactions['discrepancy']        = $discrepancy;
+            $transactions['max_doserate']       = $max_doserate;
+            $transactions['doserate_meter']     = $doserates_meter;
             $transactions['particular']         = $particular;
+            $transactions['patient']            = $request->patient[$key];
             $transactions['calibration_date']   = $request->calibration_date[$key];
             $transactions['calibration_time']   = $calibration_time;
             $transactions['lot_no']             = $lotNumber;
-            $transactions['max_doserate']       = $max_doserate;
-            $transactions['doserate_meter']     = $doserates_meter;
+            $transactions['lead_pot']           = $request->leadpot[$key];
+            $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
             $transactions['volume']             = $request->volume[$key];
-            $transactions['run_no']             = $request->run_no[$key];
+            $transactions['created_by']         = $request->user;
+            $transactions['cancelled']          = 'NO';
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 
@@ -183,14 +185,17 @@ class TransactionsController extends Controller
     public function edit(Transaction $transaction)
     {
         abort_if(Gate::denies('order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $run_nos = RunNumber::all()->pluck('run_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $asset_products = Asset_product::all()->pluck('product_name', 'id','asset_id')->prepend(trans('global.pleaseSelect'), '');
+        
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $transaction->load('asset', 'user');
-
-        return view('admin.transactions.edit', compact('assets', 'users', 'transaction'));
+        return view('admin.transactions.edit', compact('assets', 'asset_products', 'users', 'transaction','hospitals','run_nos'));
     }
 
     /**

@@ -100,8 +100,10 @@ class TransactionsController extends Controller
             //Lot No.
             if ($request->asset_id == 2) {
                 $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
-            } 
-            
+            } else {
+                $lotNumber = '';
+            }
+
             //RX Activity
             if ($request->asset_id == 1) {
                 $act = 'Tc';
@@ -165,7 +167,6 @@ class TransactionsController extends Controller
             $transactions['calibration_date']   = $request->calibration_date[$key];
             $transactions['calibration_time']   = $calibration_time;
             $transactions['lot_no']             = $lotNumber;
-            $transactions['lead_pot']           = $request->leadpot[$key];
             $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
             $transactions['volume']             = $request->volume[$key];

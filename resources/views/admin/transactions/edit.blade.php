@@ -7,10 +7,10 @@
 
         <div class="card-body">
             <form method="POST" action="{{ route('admin.transactions.update', [$transaction->id]) }}"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" autocomplete="off">
                 @method('PUT')
                 @csrf
-                
+
                 <div class="form-group">
                     <a class="btn btn-default" href="{{ route('admin.transactions.index') }}">
                         {{ trans('global.back_to_list') }}
@@ -34,14 +34,14 @@
                                 </div>
                             @endif
                             <span class="help-block">{{ trans('cruds.transaction.fields.asset_helper') }}</span>
-                            <input type="hidden" value="{{$transaction->asset_id}}" name="asset_id"/>
+                            <input type="hidden" value="{{ $transaction->asset_id }}" name="asset_id" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
                             <select class="form-control hospital_id {{ $errors->has('hospital') ? 'is-invalid' : '' }}"
-                                 id="hospital_id" disabled>
+                                id="hospital_id" disabled>
                                 @foreach ($hospitals as $id => $hospital)
                                     <option value="{{ $id }}"
                                         {{ ($transaction->hospital ? $transaction->hospital->id : old('hospital_id')) == $id ? 'selected' : '' }}>
@@ -54,7 +54,7 @@
                                 </div>
                             @endif
                             <span class="help-block">{{ trans('cruds.transaction.fields.hospital_helper') }}</span>
-                            <input type="hidden" value="{{$transaction->hospital_id}}" name="hospital_id"/>
+                            <input type="hidden" value="{{ $transaction->hospital_id }}" name="hospital_id" />
                         </div>
                     </div>
 
@@ -78,12 +78,15 @@
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
-                                        <th style="width: 80px">{{ trans('cruds.transaction.fields.volume') }}</th>
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.volume') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
+                                        @can('create_transport')
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.can') }}</th>
+                                        @endcan
                                         <th style="width: 80px">{{ trans('cruds.transaction.fields.cancel') }}</th>
                                     </tr>
                                 </thead>
@@ -99,25 +102,30 @@
                                                         {{ $transaction->item == $id ? 'selected' : '' }}>
                                                         {{ $asset_product }}</option>
                                                 @endforeach
-                                                
-                                            </select> 
+
+                                            </select>
                                         </td>
                                         <td>
                                             <input type="text" name="activity_mci" id="activity_mci"
-                                                list="product_activity_id" class="form-control activity_mci" value="{{ $transaction->activity_mci }}" required>
+                                                list="product_activity_id" class="form-control activity_mci"
+                                                value="{{ $transaction->activity_mci }}" required>
                                             <datalist id="product_activity_id">
                                             </datalist>
                                             <input type="hidden" id="activity_mbq" name="activity_mbq" />
                                             <input type="hidden" id="discrepancy" name="discrepancy" />
                                         </td>
                                         <td>
-                                            <input type="text" name="procedure1" id="procedure" value="{{ $transaction->procedure1 }}"
-                                                list="product_activity_ids" class="form-control procedure" required>
+                                            <input type="text" name="procedure1" id="procedure"
+                                                value="{{ $transaction->procedure1 }}" list="product_activity_ids"
+                                                class="form-control procedure" required>
                                             <datalist id="product_activity_ids"></datalist>
                                         </td>
                                         <td>
-                                            <input class="form-control volume" type="text" id="volume" value="{{ $transaction->volume }}"
-                                                name="volume" />
+                                            <input class="form-control volume" list="vol_id" type="text" id="volume"
+                                                value="{{ $transaction->volume }}" name="volume" />
+                                            <datalist id="vol_id">
+                                                <option value="N/A">
+                                            </datalist>
                                         </td>
                                         <td>
                                             <input type="text" name="patient" id="patient" list="patient_list_id"
@@ -127,56 +135,63 @@
                                             </datalist>
                                         </td>
                                         <td>
-                                            <input class="form-control calibration_date" type="date" value="{{ $transaction->calibration_date }}"
-                                                name="calibration_date" id="calibration_date" required />
-                                            <input class="form-control calibration_time" type="time" value="{{ substr($transaction->calibration_time, 0, 5) ?? '' }}"
-                                                name="calibration_time" id="calibration_time"/>
-                                            </div>
-                                        </td>
-                                        <td><input class="form-control" type="text" style="min-width:150px" value="{{ $transaction->orderform_no }}"
-                                                id="orderform_no" name="orderform_no" required /></td>
-                                        <td>
-                                            <select
-                                                class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"
-                                                name="run_no" id="run_no_id" required>
-                                                @foreach ($run_nos as $id => $run_no)
-                                                    <option value="{{ $id }}"
-                                                        {{-- {{ ($transaction->$run_no ? $transaction->$run_no->id : old('run_no')) == $id ? 'selected' : '' }}> --}}
-                                                        {{ $transaction->run_no == $id ? 'selected' : '' }}>
-                                                        {{ $run_no }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="text" style="width: 150px" class="form-control remarks" id="remarks"
-                                                name="remarks"  value="{{ $transaction->remarks }}"/>
-                                        </td>
-                                        <td>
-                                            <select
-                                                style="width: 75px"
-                                                class="form-control leadpot {{ $errors->has('leadpot') ? 'is-invalid' : '' }}"
-                                                name="cancelled" id="cancel">
-                                                <option>{{ $transaction->cancelled }}</option>
-                                                <option>NO</option>
-                                                <option>YES</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <input class="form-control calibration_date" type="date"
+                                                value="{{ $transaction->calibration_date }}" name="calibration_date"
+                                                id="calibration_date" min="{{ date('Y-m-d') }}" required />
+                                            <input class="form-control calibration_time" type="time"
+                                                value="{{ substr($transaction->calibration_time, 0, 5) ?? '' }}"
+                                                name="calibration_time" id="calibration_time" />
                         </div>
+                        </td>
+                        <td><input class="form-control" type="text" style="min-width:150px"
+                                value="{{ $transaction->orderform_no }}" id="orderform_no" name="orderform_no"
+                                required /></td>
+                        <td>
+                            <select class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"
+                                name="run_no" id="run_no_id" required>
+                                @foreach ($run_nos as $id => $run_no)
+                                    <option value="{{ $id }}" {{-- {{ ($transaction->$run_no ? $transaction->$run_no->id : old('run_no')) == $id ? 'selected' : '' }}> --}}
+                                        {{ $transaction->run_no == $id ? 'selected' : '' }}>
+                                        {{ $run_no }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" style="width: 150px" class="form-control remarks" id="remarks"
+                                name="remarks" value="{{ $transaction->remarks }}" />
+                        </td>
+                        @can('create_transport')
+                            <td>
+                                <select style="width: 120px" class="form-control can" name="can" id="can">
+                                    <option>{{ $transaction->can }}</option>
+                                    <option>RAM Can</option>
+                                    <option>Pail Can</option>
+                                </select>
+                            </td>
+                        @endcan
+                        <td>
+                            <select style="width: 75px" class="form-control cancel" name="cancelled" id="cancel">
+                                <option>{{ $transaction->cancelled }}</option>
+                                <option>NO</option>
+                                <option>YES</option>
+                            </select>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
 
-                        <div class="form-group"style="text-align:center;">
-                            <hr>
-                            <div id="show_save" class="myDiv">
-                                <button class="btn btn-danger" type="submit">
-                                    {{ trans('global.save') }}
-                                </button>
-                            </div>
+                    <div class="form-group"style="text-align:center;">
+                        <hr>
+                        <div id="show_save" class="myDiv">
+                            <button class="btn btn-danger" type="submit">
+                                {{ trans('global.save') }}
+                            </button>
                         </div>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
+    </div>
     </div>
 @endsection

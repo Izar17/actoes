@@ -6,10 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use App\{Asset_product, Product_activity, LeadPot, Procedure, RunNumber};
+use App\{Asset_product, Product_activity, LeadPot, Procedure, Transaction};
 
 class DropdownController extends Controller
 {
+    public function fetchTransaction(Request $request)
+    {
+        $data['transactions'] = Transaction::where("asset_id",$request->asset_id)
+        ->get();
+        return response()->json($data);
+    }
+
     public function fetchProduct(Request $request)
     {
         $data['asset_products'] = Asset_Product::where("asset_id",$request->asset_id)->get(["product_name", "id"]);

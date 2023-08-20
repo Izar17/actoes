@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Resources\Admin\TransactionResource;
 use App\Transaction;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionsApiController extends Controller

@@ -7,9 +7,7 @@ use App\Http\Requests\MassDestroyHospitalRequest;
 use App\Http\Requests\StoreHospitalRequest;
 use App\Http\Requests\UpdateHospitalRequest;
 use App\Hospital;
-use App\User;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -27,7 +25,7 @@ class HospitalsController extends Controller
     public function create()
     {
         abort_if(Gate::denies('hospital_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+
         return view('admin.hospitals.create');
     }
 

@@ -22,7 +22,11 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Transactions
     Route::apiResource('transactions', 'TransactionsApiController');
 
+    // Productions
+    Route::apiResource('productions', 'ProductionsApiController');
+
     // Hospitals
     Route::apiResource('hospitals', 'HospitalsApiController');
+
 
 });

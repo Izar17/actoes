@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\{Asset, Stock, Transaction, User, Hospital, LeadPot, Doserate, RunNumber, Asset_product};
+use App\{Asset, Stock, Transaction, User, Hospital, Doserate, RunNumber, Asset_product};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
@@ -12,7 +12,6 @@ use Gate;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
@@ -29,9 +28,11 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
         $transactions = Transaction::all();
 
-        return view('admin.transactions.index', compact('transactions'));
+        return view('admin.transactions.index', compact('assets','transactions'));
     }
 
     /**
@@ -71,7 +72,7 @@ class TransactionsController extends Controller
         foreach ($request->orderform_no as $key => $orderform_no) {
 
             //Format Time with AM/PM
-            $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');         
+            $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
 
             //Calibrate Date
             $cal_yr = date("Y", strtotime($request->calibration_date[$key]));
@@ -138,7 +139,7 @@ class TransactionsController extends Controller
             $mbq = number_format($activityMci * 37, 2);
             $discrepancy = ($activityMci * .10) + $activityMci;
 
-            
+
 
             $doserates = Doserate::select('max_doserate', 'doserate_m')
             ->where("asset_product_id",$request->item[$key])
@@ -172,6 +173,7 @@ class TransactionsController extends Controller
             $transactions['volume']             = $request->volume[$key];
             $transactions['created_by']         = $request->user;
             $transactions['cancelled']          = 'NO';
+            $transactions['status']             = 1;
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 
@@ -179,10 +181,7 @@ class TransactionsController extends Controller
 
     }
 
-    /**
-     * @param Transaction $transaction
-     * @return Factory|View
-     */
+
     public function edit(Transaction $transaction)
     {
         abort_if(Gate::denies('order_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -192,8 +191,9 @@ class TransactionsController extends Controller
 
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $asset_products = Asset_product::all()->pluck('product_name', 'id','asset_id')->prepend(trans('global.pleaseSelect'), '');
-        
+        $asset_products = Asset_product::all()
+        ->where("asset_id",$transaction->asset_id)->pluck('product_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.transactions.edit', compact('assets', 'asset_products', 'users', 'transaction','hospitals','run_nos'));

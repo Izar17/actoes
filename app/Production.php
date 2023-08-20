@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class Transaction extends Model
+class Production extends Model
 {
     use SoftDeletes, MultiTenantModelTrait;
 
@@ -47,6 +47,15 @@ class Transaction extends Model
         'transport_index',
         'calibration_date',
         'calibration_time',
+        'date_dispensed',
+        'time_dispensed',
+        'actual_dose',
+        'actual_mbq',
+        'actual_discrepancy',
+        'kit_prep',
+        'expiry_date',
+        'expiry_time',
+        'performed_by',
         'cancelled',
         'status',
         'created_at',

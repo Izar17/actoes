@@ -107,32 +107,17 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.transactions.index') }}"
                         class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-shopping-cart nav-icon">
-
-                        </i>
+                        <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
                         {{ trans('cruds.transaction.order_title') }}
                     </a>
                 </li>
             @endcan
             @can('production_access')
                 <li class="nav-item">
-                    <a href="{{ route('admin.transactions.index') }}"
-                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-file nav-icon">
-
-                        </i>
-                        {{ trans('cruds.transaction.production_title') }}
-                    </a>
-                </li>
-            @endcan
-            @can('drsi_access')
-                <li class="nav-item">
-                    <a href="{{ route('admin.transactions.index') }}"
-                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-file-invoice nav-icon">
-
-                        </i>
-                        {{ trans('cruds.transaction.drsi_title') }}
+                    <a href="{{ route('admin.productions.index') }}"
+                        class="nav-link {{ request()->is('admin/productions') || request()->is('admin/productions/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-file nav-icon"></i>
+                        {{ trans('cruds.production.title') }}
                     </a>
                 </li>
             @endcan

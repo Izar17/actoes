@@ -100,7 +100,7 @@
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
-                                        
+
                                         <th>
                                             <div id="show_add" class="myDiv">
                                                 <a href="javascript:void(0)" class="text-success font-50" title="Add"
@@ -290,7 +290,7 @@
 
             // Adding a row inside the tbody.
             $("#tableOrder tbody").append(`
-                <tr id="R${++rowIdx}">                  
+                <tr id="R${++rowIdx}">
                     <td class="row-index text-center"><p> ${rowIdx}</p></td>
                     <td>
                         <select
@@ -318,12 +318,12 @@
                         <input type="text" name="patient[]" id="patient"
                             list="patient_list_id" class="form-control patient" required>
                         <datalist id="patient_list_id"><option value="Confidential"></datalist>
-                    </td>             
+                    </td>
                     <td>
-                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date" required/>
+                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date"  min="{{ date('Y-m-d') }}" required/>
                         <input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
                     </td>
-                    <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]" required/></td>                                   
+                    <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]" required/></td>
                     <td>
                         <select
                             class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"

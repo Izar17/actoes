@@ -1,11 +1,11 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DropdownController;
+Route::post('api/fetch-transaction', [DropdownController::class, 'fetchTransaction']);
 Route::post('api/fetch-product', [DropdownController::class, 'fetchProduct']);
 Route::post('api/fetch-activities', [DropdownController::class, 'fetchActivity']);
 Route::post('api/fetch-leadpot', [DropdownController::class, 'fetchLeadPot']);
 Route::post('api/fetch-procedure', [DropdownController::class, 'fetchProcedure']);
-
 
 Route::redirect('/', '/login');
 Route::get('/home', function () {
@@ -48,10 +48,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('stocks/destroy', 'StocksController@massDestroy')->name('stocks.massDestroy');
     Route::resource('stocks', 'StocksController');
 
+    // Productions
+    Route::delete('productions/destroy', 'ProductionsController@massDestroy')->name('productions.massDestroy');
+    //Route::get('productions/hospitalFunction', 'ProductionsController@hospitalFunction')->name('productions.hospitalFunction');
+    Route::resource('productions', 'ProductionsController');
+
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
-    Route::post('transactions/{stock}/storeStock', 'TransactionsController@storeStock')->name('transactions.storeStock');
     Route::resource('transactions', 'TransactionsController');
+
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

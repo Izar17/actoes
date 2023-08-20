@@ -34,7 +34,7 @@ class HospitalsApiController extends Controller
     {
         abort_if(Gate::denies('hospital_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new hospitalResource($hospitals);
+        return new hospitalResource($id);
     }
 
     public function update(UpdateHospitalRequest $request, Hospital $hospital)

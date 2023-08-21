@@ -90,6 +90,12 @@
                                     {{ $transaction->id }} | {{ $transaction->created_at }}
                                 </td>
                                 <td>
+                                    @can('order_show')
+                                        <a class="btn btn-xs btn-primary"
+                                            href="{{ route('admin.transactions.show', $transaction->hospital_id) }}">
+                                            {{ trans('global.view') }}
+                                        </a>
+                                    @endcan
                                     {{ $transaction->hospital->hospital ?? '' }}
                                 </td>
                                 <td>
@@ -137,12 +143,6 @@
                                     {{ $transaction->remarks ?? '' }}
                                 </td>
                                 <td>
-                                    @can('order_show')
-                                        <a class="btn btn-xs btn-primary"
-                                            href="{{ route('admin.transactions.show', $transaction->id) }}">
-                                            {{ trans('global.view') }}
-                                        </a>
-                                    @endcan
 
                                     @can('order_edit')
                                         <a class="btn btn-xs btn-info"
@@ -162,35 +162,35 @@
 @section('scripts')
     @parent
     <script>
-        function selectAll(){
+        function selectAll() {
 
-                    // Clear existing DataTable rows
-                    $('#dataTable').DataTable().clear().draw();
-                    var currentDateTime = new Date().toISOString();
+            // Clear existing DataTable rows
+            $('#dataTable').DataTable().clear().draw();
+            var currentDateTime = new Date().toISOString();
 
-                    // Add all transactions to DataTable
-                    @foreach ($transactions as $transaction)
+            // Add all transactions to DataTable
+            @foreach ($transactions as $transaction)
 
-                        $('#dataTable').DataTable().row.add([
-                            "{{ $transaction->id }} {{ $transaction->created_at }}",
-                            "{{ $transaction->hospital->hospital }}",
-                            "{{ $transaction->asset_id }}",
-                            "{{ $transaction->remarks }}",
-                            "{{ $transaction->item }}",
-                            "{{ $transaction->orderform_no }}",
-                            "{{ $transaction->activity_mci }}",
-                            "{{ $transaction->activity_mbq }}",
-                            "{{ $transaction->discrepancy }}",
-                            "{{ $transaction->unit }}",
-                            "{{ $transaction->particular }}",
-                            "{{ $transaction->patient }}",
-                            "",
-                            "{{ $transaction->lead_pot }}",
-                            "{{ $transaction->max_doserate }}",
-                        ]).draw(false);
-                    @endforeach
+                $('#dataTable').DataTable().row.add([
+                    "{{ $transaction->id }} {{ $transaction->created_at }}",
+                    "{{ $transaction->hospital->hospital }}",
+                    "{{ $transaction->asset_id }}",
+                    "{{ $transaction->remarks }}",
+                    "{{ $transaction->item }}",
+                    "{{ $transaction->orderform_no }}",
+                    "{{ $transaction->activity_mci }}",
+                    "{{ $transaction->activity_mbq }}",
+                    "{{ $transaction->discrepancy }}",
+                    "{{ $transaction->unit }}",
+                    "{{ $transaction->particular }}",
+                    "{{ $transaction->patient }}",
+                    "",
+                    "{{ $transaction->lead_pot }}",
+                    "{{ $transaction->max_doserate }}",
+                ]).draw(false);
+            @endforeach
 
-                    return;
+            return;
         }
 
         //Onchange Asset
@@ -201,60 +201,6 @@
                 if (idAsset === "") {
                     location.reload();
                 }
-                // Make an AJAX request to fetch transactions based on the selected asset
-                $.ajax({
-                    url: "{{ url('api/fetch-transaction') }}",
-                    type: "POST",
-                    data: {
-                        asset_id: idAsset,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        var transactions = response.transactions;
-
-                        // Clear existing DataTable rows
-                        $('#dataTable').DataTable().clear().draw();
-
-                        // Append rows to DataTable
-                        for (var i = 0; i < transactions.length; i++) {
-                            var transaction = transactions[i];
-                            var calibrationDateTime = transaction.calibration_date + ' ' + transaction.calibration_time;
-                            var currentDateTime = new Date().toISOString();
-                            $('#dataTable').DataTable().row.add([
-                                transaction.id + ' | ' + transaction.created_at,
-                                transaction.hospital_id,
-                                transaction.orderform_no,
-                                transaction.rx_no,
-                                transaction.asset_id,
-                                transaction.item,
-                                transaction.activity_mci,
-                                transaction.particular,
-                                `<div style="display: flex; align-items: center;">
-                                    ${calibrationDateTime}
-                                    ${(calibrationDateTime < currentDateTime && transaction.status == 1) ? '<img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;" alt="Image">' : ''}
-                                </div>`,
-                                transaction.run_no,
-                                transaction.created_by,
-                                transaction.remarks,
-                                `@can('order_show')
-                                            <a class="btn btn-xs btn-primary"
-                                                href="{{ route('admin.transactions.show', $transaction->id) }}">
-                                                {{ trans('global.view') }}
-                                            </a>
-                                        @endcan
-
-                                        @can('order_edit')
-                                            <a class="btn btn-xs btn-info"
-                                                href="{{ route('admin.transactions.edit', $transaction->id) }}">
-                                                {{ trans('global.edit') }}
-                                            </a>
-                                        @endcan`,
-                                // Add more columns as needed
-                            ]).draw(false);
-                        }
-                    }
-                });
-
             });
         });
 

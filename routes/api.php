@@ -10,6 +10,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Users
     Route::apiResource('users', 'UsersApiController');
 
+    // Hospitals
+    Route::apiResource('hospitals', 'HospitalsApiController');
+
     // Assets
     Route::apiResource('assets', 'AssetsApiController');
 
@@ -25,8 +28,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Productions
     Route::apiResource('productions', 'ProductionsApiController');
 
-    // Hospitals
-    Route::apiResource('hospitals', 'HospitalsApiController');
+    // Drsis
+    Route::apiResource('drsis', 'DrsisApiController');
+
 
 
 });

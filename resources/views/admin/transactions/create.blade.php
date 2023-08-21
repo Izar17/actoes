@@ -37,9 +37,11 @@
                                 for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
                             <select class="form-control select2 {{ $errors->has('hospital') ? 'is-invalid' : '' }}"
                                 name="hospital_id" id="hospital_id" required>
+                                <option value="">Select Hospital</option>
                                 @foreach ($hospitals as $id => $hospital)
-                                    <option value="{{ $id }}" {{ old('hospital_id') == $id ? 'selected' : '' }}>
-                                        {{ $hospital }}</option>
+                                <option value="{{ $hospital->id }}">
+                                    {{ $hospital->hospital }}
+                                </option>
                                 @endforeach
                             </select>
                             @if ($errors->has('hospital'))
@@ -214,7 +216,6 @@
                         procedure.removeAttribute('readonly');
                         procedure.setAttribute('required', 'required');
                         volume.removeAttribute('readonly');
-                        volume.setAttribute('required', 'required');
                     } else {
                         procedure.value = '';
                         // If 'readonly' attribute is not set, add it and make the field read-only

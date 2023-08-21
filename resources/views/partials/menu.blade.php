@@ -112,6 +112,15 @@
                     </a>
                 </li>
             @endcan
+            @can('drsi_access')
+                <li class="nav-item">
+                    <a href="{{ route('admin.drsis.index') }}"
+                        class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-file nav-icon"></i>
+                        {{ trans('cruds.drsi.title') }}
+                    </a>
+                </li>
+            @endcan
             @can('production_access')
                 <li class="nav-item">
                     <a href="{{ route('admin.productions.index') }}"

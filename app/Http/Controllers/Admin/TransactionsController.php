@@ -42,7 +42,7 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('order_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $hospitals = Hospital::all()->pluck('hospital', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $hospitals = Hospital::orderBy('id', 'asc')->get(["hospital", "id"]);
 
         $run_nos = RunNumber::all()->pluck('run_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -177,7 +177,7 @@ class TransactionsController extends Controller
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 
-        return redirect()->route('admin.transactions.index');
+        return redirect()->route('admin.transactions.show',$request->hospital_id);
 
     }
 
@@ -219,13 +219,13 @@ class TransactionsController extends Controller
      * @param Transaction $transaction
      * @return Factory|View
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transactiona, $ida)
     {
         abort_if(Gate::denies('order_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transaction->load('asset', 'user');
+        $transactions = Transaction::all()->where("hospital_id",$ida);
 
-        return view('admin.transactions.show', compact('transaction'));
+        return view('admin.transactions.show', compact('transactions','ida'));
     }
 
     /**

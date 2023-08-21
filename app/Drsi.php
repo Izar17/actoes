@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class Production extends Model
+class Drsi extends Model
 {
     use SoftDeletes, MultiTenantModelTrait;
 

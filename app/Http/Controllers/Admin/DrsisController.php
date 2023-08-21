@@ -2,85 +2,43 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Drsis;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\{Asset, User, Hospital, RunNumber, Asset_product, Production, LeadPot, Drsi};
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\UpdateDrsiRequest;
+use Carbon\Carbon;
 
 class DrsisController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $drsis = Drsi::join('hospitals', 'transactions.hospital_id', '=', 'hospitals.id')
+        ->where('transactions.status', 1)
+        ->distinct('hospitals.hospital')
+        ->pluck('hospitals.hospital','hospitals.id');
+
+        return view('admin.drsis.index', compact('drsis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function edit(Drsi $drsis, $ida)
     {
-        //
+        abort_if(Gate::denies('drsi_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $productions = Production::all()->where("hospital_id",$ida);
+
+       return view('admin.drsis.edit', compact('drsis','productions','ida'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(UpdateDrsiRequest $request,Drsi $drsis)
     {
-        //
+        foreach ($request->dr_no as $key => $dr_no) {
+            $drsis->update(['dr_no' => $request->dr_no[$key]] + ['invoice_no' => $request->invoice_no[$key]] + ['price' => $request->price[$key]]);
+        }
+
+        return redirect()->route('admin.drsis.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Drsis  $drsis
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Drsis $drsis)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Drsis  $drsis
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Drsis $drsis)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Drsis  $drsis
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Drsis $drsis)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Drsis  $drsis
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Drsis $drsis)
-    {
-        //
-    }
 }

@@ -48,14 +48,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('stocks/destroy', 'StocksController@massDestroy')->name('stocks.massDestroy');
     Route::resource('stocks', 'StocksController');
 
+    // Transactions
+    Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
+    Route::resource('transactions', 'TransactionsController');
+
     // Productions
     Route::delete('productions/destroy', 'ProductionsController@massDestroy')->name('productions.massDestroy');
     //Route::get('productions/hospitalFunction', 'ProductionsController@hospitalFunction')->name('productions.hospitalFunction');
     Route::resource('productions', 'ProductionsController');
 
-    // Transactions
-    Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
-    Route::resource('transactions', 'TransactionsController');
+    // Drsis
+    Route::delete('drsis/destroy', 'DrsisController@massDestroy')->name('drsis.massDestroy');
+    Route::resource('drsis', 'DrsisController');
 
 
 });

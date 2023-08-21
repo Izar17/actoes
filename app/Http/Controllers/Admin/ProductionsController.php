@@ -7,6 +7,7 @@ use App\{Asset, User, Hospital, RunNumber, Asset_product, Production, LeadPot};
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\UpdateProductionRequest;
+use Carbon\Carbon;
 
 class ProductionsController extends Controller
 {
@@ -41,7 +42,12 @@ class ProductionsController extends Controller
 
     public function update(UpdateProductionRequest $request, Production $production)
     {
-        $production->update($request->all());
+        //Format Time with AM/PM
+        $expiry_time = Carbon::createFromFormat('H:i', $request->expiry_time)->format('h:i A');
+        $time_dispensed = Carbon::createFromFormat('H:i', $request->time_dispensed)->format('h:i A');
+
+        $production->update(['expiry_time' => $expiry_time] + ['time_dispensed' => $time_dispensed] + $request->all());
+        //$production->update($request->all());
 
         return redirect()->route('admin.productions.index');
     }

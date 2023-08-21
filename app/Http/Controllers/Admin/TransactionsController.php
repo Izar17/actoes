@@ -206,7 +206,10 @@ class TransactionsController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        $transaction->update($request->all());
+        //Format Time with AM/PM
+        $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time)->format('h:i A');
+
+        $transaction->update(['calibration_time' => $calibration_time] + $request->all());
 
         return redirect()->route('admin.transactions.index');
 

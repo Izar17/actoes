@@ -30,7 +30,7 @@ class TransactionsController extends Controller
 
         $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
 
-        $transactions = Transaction::all();
+        $transactions = Transaction::all()->where("status",1)->where("cancelled",'NO');
 
         return view('admin.transactions.index', compact('assets','transactions'));
     }
@@ -70,10 +70,13 @@ class TransactionsController extends Controller
     public function store(StoreTransactionRequest $request)
     {
         foreach ($request->orderform_no as $key => $orderform_no) {
+            //Get Month in Current Date
+            $monthDate = Carbon::now();
+            $monthAbbreviation = $monthDate->format('M');
 
             //Format Time with AM/PM
             $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
-
+            
             //Calibrate Date
             $cal_yr = date("Y", strtotime($request->calibration_date[$key]));
             $cal_date = date($request->calibration_date[$key]);
@@ -117,6 +120,16 @@ class TransactionsController extends Controller
                 }
             } else if ($request->asset_id == 3){
                 $act = 'Tl';
+            }else if ($request->asset_id == 4){
+                $act = 'Y90';
+            }else if ($request->asset_id == 5){
+                $act = 'MD';
+            }else if ($request->asset_id == 6){
+                $act = 'Gen';
+            }else if ($request->asset_id == 7){
+                $act = 'RIA-'.$monthAbbreviation;
+            }else if ($request->asset_id == 8){
+                $act = 'MISC';
             }
 
             //RX Count

@@ -54,12 +54,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Productions
     Route::delete('productions/destroy', 'ProductionsController@massDestroy')->name('productions.massDestroy');
-    //Route::get('productions/hospitalFunction', 'ProductionsController@hospitalFunction')->name('productions.hospitalFunction');
     Route::resource('productions', 'ProductionsController');
 
     // Drsis
     Route::delete('drsis/destroy', 'DrsisController@massDestroy')->name('drsis.massDestroy');
     Route::resource('drsis', 'DrsisController');
+
+    // Cancelled Order
+    Route::delete('cancelled/destroy', 'CancelledController@massDestroy')->name('cancelled.massDestroy');
+    Route::resource('cancelled', 'CancelledController');
 
 
 });

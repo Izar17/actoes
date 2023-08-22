@@ -77,8 +77,12 @@
                                         <th style="width: 20px">#</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
-                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.volume') }}</th>
+                                        @if ($transaction->asset_id == 1)
+                                            {
+                                            <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.volume') }}</th>
+                                            }
+                                        @endif
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
@@ -114,19 +118,23 @@
                                             <input type="hidden" id="activity_mbq" name="activity_mbq" />
                                             <input type="hidden" id="discrepancy" name="discrepancy" />
                                         </td>
-                                        <td>
-                                            <input type="text" name="procedure1" id="procedure"
-                                                value="{{ $transaction->procedure1 }}" list="product_activity_ids"
-                                                class="form-control procedure" required>
-                                            <datalist id="product_activity_ids"></datalist>
-                                        </td>
-                                        <td>
-                                            <input class="form-control volume" list="vol_id" type="text" id="volume"
-                                                value="{{ $transaction->volume }}" name="volume" />
-                                            <datalist id="vol_id">
-                                                <option value="N/A">
-                                            </datalist>
-                                        </td>
+                                        @if ($transaction->asset_id == 1)
+                                            {
+                                            <td>
+                                                <input type="text" name="procedure1" id="procedure"
+                                                    value="{{ $transaction->procedure1 }}" list="product_activity_ids"
+                                                    class="form-control procedure" required>
+                                                <datalist id="product_activity_ids"></datalist>
+                                            </td>
+                                            <td>
+                                                <input class="form-control volume" list="vol_id" type="text"
+                                                    id="volume" value="{{ $transaction->volume }}" name="volume" />
+                                                <datalist id="vol_id">
+                                                    <option value="N/A">
+                                                </datalist>
+                                            </td>
+                                            }
+                                        @endif
                                         <td>
                                             <input type="text" name="patient" id="patient" list="patient_list_id"
                                                 class="form-control patient" value="{{ $transaction->patient }}" required>
@@ -150,7 +158,7 @@
                             <select class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"
                                 name="run_no" id="run_no_id" required>
                                 @foreach ($run_nos as $id => $run_no)
-                                    <option value="{{ $id }}" {{-- {{ ($transaction->$run_no ? $transaction->$run_no->id : old('run_no')) == $id ? 'selected' : '' }}> --}}
+                                    <option value="{{ $id }}"
                                         {{ $transaction->run_no == $id ? 'selected' : '' }}>
                                         {{ $run_no }}</option>
                                 @endforeach

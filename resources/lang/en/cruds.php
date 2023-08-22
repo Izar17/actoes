@@ -199,6 +199,10 @@ return [
         'title'          => 'DR/SI',
         'title_singular' => 'DR/SI',
     ],
+    'cancel'           => [
+        'title'          => 'Cancelled Orders',
+        'title_singular' => 'Cancelled Order',
+    ],
     'transaction'    => [
         'order_title'               => 'Orders',
         'order_title_singular'      => 'Order',

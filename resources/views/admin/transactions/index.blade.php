@@ -24,11 +24,11 @@
             <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
 
             <div class="col-md-2">
-                <select class="form-control asset {{ $errors->has('asset') ? 'is-invalid' : '' }}" name="asset_id"
+                <select class="form-control asset" name="asset_id"
                     id="asset_id" required>
                     <option value="">Select All</option>
                     @foreach ($assets as $data)
-                        <option value="{{ $data->id }}">
+                        <option value="{{ $data->name }}">
                             {{ $data->name }}
                         </option>
                     @endforeach
@@ -83,7 +83,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="transactionTableBody">
+                    <tbody>
                         @foreach ($transactions as $key => $transaction)
                             <tr data-entry-id="{{ $transaction->id }}">
                                 <td>
@@ -161,7 +161,9 @@
 @endsection
 @section('scripts')
     @parent
+
     <script>
+        
         function selectAll() {
 
             // Clear existing DataTable rows
@@ -193,59 +195,11 @@
             return;
         }
 
-        //Onchange Asset
+        //Datatables
+        
         $(document).ready(function() {
-            $('#asset_id').on('change', function() {
-                var idAsset = this.value;
-                // Check if "Select All" option is chosen
-                if (idAsset === "") {
-                    location.reload();
-                }
-            });
-        });
-
-        $(function() {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('team_delete')
-                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-                let deleteButton = {
-                    text: deleteButtonTrans,
-                    url: "{{ route('admin.transactions.massDestroy') }}",
-                    className: 'btn-danger',
-                    action: function(e, dt, node, config) {
-                        var ids = $.map(dt.rows({
-                            selected: true
-                        }).nodes(), function(entry) {
-                            return $(entry).data('entry-id')
-                        });
-
-                        if (ids.length === 0) {
-                            alert('{{ trans('global.datatables.zero_selected') }}')
-
-                            return
-                        }
-
-                        if (confirm('{{ trans('global.areYouSure') }}')) {
-                            $.ajax({
-                                    headers: {
-                                        'x-csrf-token': _token
-                                    },
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        _method: 'DELETE'
-                                    }
-                                })
-                                .done(function() {
-                                    location.reload()
-                                })
-                        }
-                    }
-                }
-                dtButtons.push(deleteButton)
-            @endcan
-            $.extend(true, $.fn.dataTable.defaults, {
+            var table = $('#dataTable').DataTable({
+                searching: true,
                 order: [
                     [0, 'desc']
                 ],
@@ -256,14 +210,15 @@
                     targets: 0
                 }]
             });
-            $('.datatable-Transaction:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+
+            $('#asset_id').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(4)  // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
             });
-        })
+        });
+
 
         // setTimeout(function() {
         //     location.reload();

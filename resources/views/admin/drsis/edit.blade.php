@@ -6,8 +6,8 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.drsis.update', [$ida]) }}"
-                enctype="multipart/form-data" autocomplete="off">
+            <form method="POST" action="{{ route('admin.drsis.update', [$ida]) }}" enctype="multipart/form-data"
+                autocomplete="off">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
@@ -23,7 +23,7 @@
                             @foreach ($productions as $hosp => $production)
                             @endforeach
                             <input type="text" class="form-control hospital"
-                            value="{{ $production->hospital->hospital ?? ''  }}"  readonly />
+                                value="{{ $production->hospital->hospital ?? '' }}" readonly />
 
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="user">{{ trans('cruds.transaction.fields.user') }}</label>
-                            <input type="text" class="form-control user"
-                                value="{{ old('email', auth()->user()->name) }}" name="performed_by" readonly />
+                            <input type="text" class="form-control user" value="{{ old('email', auth()->user()->name) }}"
+                                name="performed_by" readonly />
                         </div>
                     </div>
                 </div>
@@ -62,6 +62,9 @@
                                 </th>
                                 <th>
                                     {{ trans('cruds.transaction.fields.activity_mci') }}
+                                </th>
+                                <th>
+                                    {{ trans('cruds.transaction.fields.patient') }}
                                 </th>
                                 <th>
                                     {{ trans('cruds.transaction.fields.particular') }}
@@ -114,6 +117,9 @@
                                         {{ $production->activity_mci ?? '' }}
                                     </td>
                                     <td>
+                                        {{ $production->patient ?? '' }}
+                                    </td>
+                                    <td>
                                         {{ $production->activity_mci ?? '' }} mCi
                                         {{ $production->asset_product->product_name ?? '' }}
                                     </td>
@@ -143,16 +149,20 @@
                                         {{ $production->remarks ?? '' }}
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control dr_no" id="dr_no" name="dr_no[]"
+                                        <input type="hidden" name="hospital" value="{{ $production->hospital_id}}"/>
+                                        <input type="hidden" class="form-control dr_no" name="item[{{ $key }}]"
+                                            style="width:50px;" value="{{ $production->id }}" />
+                                        <input type="text" class="form-control dr_no" name="dr_no[{{ $key }}]"
                                             style="width:100px;" value="{{ $production->dr_no }}" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control invoice_no" id="invoice_no"
-                                            name="invoice_no[]" style="width:100px;" value="{{ $production->invoice_no }}" />
+                                        <input type="text" class="form-control invoice_no" 
+                                            name="invoice_no[{{ $key }}]" style="width:100px;"
+                                            value="{{ $production->invoice_no }}" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control price" id="price" name="price[]"
-                                            style="width:100px;" value="{{ $production->price }}" />
+                                        <input type="text" class="form-control price" id="price" name="price[{{ $key }}]"
+                                            style="width:100px;" value="{{ $production->price }}" required />
                                     </td>
                                 </tr>
                             @endforeach

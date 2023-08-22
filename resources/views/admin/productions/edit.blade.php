@@ -77,8 +77,12 @@
                                     <tr>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.asset_product') }} </th>
                                         <th>{{ trans('cruds.transaction.fields.activity_mci') }}</th>
-                                        <th>{{ trans('cruds.transaction.fields.procedure') }}</th>
-                                        <th>{{ trans('cruds.transaction.fields.volume') }}</th>
+                                        @if ($production->asset_id == 1)
+                                            {
+                                            <th>{{ trans('cruds.transaction.fields.procedure') }}</th>
+                                            <th>{{ trans('cruds.transaction.fields.volume') }}</th>
+                                            }
+                                        @endif
                                         <th>{{ trans('cruds.transaction.fields.patient') }}</th>
                                         <th style="width:130px;">{{ trans('cruds.transaction.fields.calibration_date') }}
                                         <th>{{ trans('cruds.transaction.fields.ofm') }}</th>
@@ -101,12 +105,16 @@
                                         <td>
                                             {{ $production->activity_mci }}
                                         </td>
-                                        <td>
-                                            {{ $production->procedure1 }}
-                                        </td>
-                                        <td>
-                                            {{ $production->volume }}
-                                        </td>
+                                        @if ($production->asset_id == 1)
+                                            {
+                                            <td>
+                                                {{ $production->procedure1 }}
+                                            </td>
+                                            <td>
+                                                {{ $production->volume }}
+                                            </td>
+                                            }
+                                        @endif
                                         <td>
                                             {{ $production->patient }}
                                         </td>
@@ -166,8 +174,9 @@
                                                 name="kit_prep" />
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control actual_dose" id="actual_dose" onkeyup="actualDose()"
-                                                name="actual_dose" value="{{ $production->actual_dose }}" required/>
+                                            <input type="text" class="form-control actual_dose" id="actual_dose"
+                                                onkeyup="actualDose()" name="actual_dose"
+                                                value="{{ $production->actual_dose }}" required />
                                             <input type="hidden" class="form-control actual_mbq" id="actual_mbq"
                                                 name="actual_mbq" value="{{ $production->actual_mbq }}" />
                                             <input type="hidden" class="form-control actual_discrepancy"
@@ -220,9 +229,8 @@
             // Get the value from the first input field
             var actual_dose = document.getElementById('actual_dose').value;
 
-            document.getElementById('actual_mbq').value = actual_dose*37;
-            document.getElementById('actual_discrepancy').value = parseInt(actual_dose)+(parseInt(actual_dose)*.10);
+            document.getElementById('actual_mbq').value = actual_dose * 37;
+            document.getElementById('actual_discrepancy').value = parseInt(actual_dose) + (parseInt(actual_dose) * .10);
         }
-
     </script>
 @endsection

@@ -32,13 +32,20 @@ class DrsisController extends Controller
        return view('admin.drsis.edit', compact('drsis','productions','ida'));
     }
 
-    public function update(UpdateDrsiRequest $request,Drsi $drsis)
+    public function update(UpdateDrsiRequest $request)
     {
-        foreach ($request->dr_no as $key => $dr_no) {
-            $drsis->update(['dr_no' => $request->dr_no[$key]] + ['invoice_no' => $request->invoice_no[$key]] + ['price' => $request->price[$key]]);
+        foreach ($request->item as $key => $items) {
+            foreach ($request->item as $key => $value) {
+                $data = array(                 
+                    'dr_no'=>$request->dr_no[$key],
+                    'invoice_no'=>$request->invoice_no[$key],  
+                    'price'=>$request->price[$key],                   
+                );         
+                Drsi::where('id',$request->item[$key])
+                ->update($data); 
+          }
         }
-
-        return redirect()->route('admin.drsis.index');
+        return redirect()->route('admin.drsis.edit', $request->hospital);
     }
 
 }

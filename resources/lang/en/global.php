@@ -5,6 +5,7 @@ return [
     'add'                                  => 'Create',
     'drsi_update'                          => 'Update DR & Invoice',
     'proceed'                              => 'Proceed',
+    'Dashboard'                              => 'Dashboard',
     'allRightsReserved'                    => 'All rights reserved.',
     'areYouSure'                           => 'Are you sure?',
     'clickHereToVerify'                    => 'Click here to verify',

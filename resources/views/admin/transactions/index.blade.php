@@ -1,38 +1,35 @@
 @extends('layouts.admin')
 @section('content')
-    @can('order_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12 mt-2">
-                <a class="btn btn-success" href="{{ route('admin.transactions.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.transaction.order_title_singular') }}
-                </a>
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    @endcan
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
-
-            <div class="col-md-2">
-                <select class="form-control asset" name="asset_id"
-                    id="asset_id" required>
-                    <option value="">Select All</option>
-                    @foreach ($assets as $data)
-                        <option value="{{ $data->name }}">
-                            {{ $data->name }}
-                        </option>
-                    @endforeach
-                </select>
+            <div class="row">
+                <table>
+                    <tr>
+                        <td>
+                            <select class="form-control asset" id="asset_id" style="width:250px;">
+                                <option value="" disabled selected>Select Isotope</option>
+                                <option value="">Select All</option>
+                                @foreach ($assets as $data)
+                                    <option value="{{ $data->name }}">
+                                        {{ $data->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control asset" id="run_no" style="width:250px;">
+                                <option value="" disabled selected>Select Run #</option>
+                                <option value="">Select All</option>
+                                @foreach ($run_nos as $data)
+                                    <option value="{{ $data->run_name }}">
+                                        {{ $data->run_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -163,40 +160,7 @@
     @parent
 
     <script>
-        
-        function selectAll() {
-
-            // Clear existing DataTable rows
-            $('#dataTable').DataTable().clear().draw();
-            var currentDateTime = new Date().toISOString();
-
-            // Add all transactions to DataTable
-            @foreach ($transactions as $transaction)
-
-                $('#dataTable').DataTable().row.add([
-                    "{{ $transaction->id }} {{ $transaction->created_at }}",
-                    "{{ $transaction->hospital->hospital }}",
-                    "{{ $transaction->asset_id }}",
-                    "{{ $transaction->remarks }}",
-                    "{{ $transaction->item }}",
-                    "{{ $transaction->orderform_no }}",
-                    "{{ $transaction->activity_mci }}",
-                    "{{ $transaction->activity_mbq }}",
-                    "{{ $transaction->discrepancy }}",
-                    "{{ $transaction->unit }}",
-                    "{{ $transaction->particular }}",
-                    "{{ $transaction->patient }}",
-                    "",
-                    "{{ $transaction->lead_pot }}",
-                    "{{ $transaction->max_doserate }}",
-                ]).draw(false);
-            @endforeach
-
-            return;
-        }
-
         //Datatables
-        
         $(document).ready(function() {
             var table = $('#dataTable').DataTable({
                 searching: true,
@@ -213,15 +177,16 @@
 
             $('#asset_id').on('change', function() {
                 var selectedValue = $(this).val();
-                table.column(4)  // Replace '1' with the index of the column you want to filter
+                table.column(4) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
+            $('#run_no').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(9) // Replace '1' with the index of the column you want to filter
                     .search(selectedValue)
                     .draw();
             });
         });
-
-
-        // setTimeout(function() {
-        //     location.reload();
-        // }, 5000); // 5000 milliseconds = 5 seconds
     </script>
 @endsection

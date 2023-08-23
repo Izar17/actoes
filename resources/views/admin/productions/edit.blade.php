@@ -1,5 +1,24 @@
 @extends('layouts.admin')
 @section('content')
+@can('order_create')
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12 mt-2">
+            <a class="btn btn-success" href="{{ route('admin.transactions.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.transaction.order_title_singular') }}
+            </a>
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
+    </div>
+@endcan
     <div class="card">
         <div class="card-header">
 
@@ -78,19 +97,19 @@
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.asset_product') }} </th>
                                         <th>{{ trans('cruds.transaction.fields.activity_mci') }}</th>
                                         @if ($production->asset_id == 1)
-                                            {
                                             <th>{{ trans('cruds.transaction.fields.procedure') }}</th>
                                             <th>{{ trans('cruds.transaction.fields.volume') }}</th>
-                                            }
                                         @endif
                                         <th>{{ trans('cruds.transaction.fields.patient') }}</th>
-                                        <th style="width:130px;">{{ trans('cruds.transaction.fields.calibration_date') }}
-                                        <th>{{ trans('cruds.transaction.fields.ofm') }}</th>
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.expiry_date') }}
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.lot_no') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.leadpot') }} </th>
-                                        <th class="col-md-2"> {{ trans('cruds.transaction.fields.kitprep') }}</th>
+                                        @if ($production->asset_id !== 2)
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.expiry_date') }}
+                                            <th class="col-md-2"> {{ trans('cruds.transaction.fields.kitprep') }}</th>
+                                        @endif
                                         <th>{{ trans('cruds.transaction.fields.actual') }}</th>
                                         <th class="col-md-1">{{ trans('cruds.transaction.fields.dispense_date') }}</th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.remarks') }} |
@@ -106,14 +125,12 @@
                                             {{ $production->activity_mci }}
                                         </td>
                                         @if ($production->asset_id == 1)
-                                            {
                                             <td>
                                                 {{ $production->procedure1 }}
                                             </td>
                                             <td>
                                                 {{ $production->volume }}
                                             </td>
-                                            }
                                         @endif
                                         <td>
                                             {{ $production->patient }}
@@ -149,13 +166,6 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input class="form-control expiry_date" type="date" name="expiry_date"
-                                                value="{{ $production->expiry_date }}" id="expiry_date"
-                                                min="{{ date('Y-m-d') }}" required />
-                                            <input class="form-control expiry_time" type="time" value="12:00"
-                                                name="expiry_time" id="expiry_time" />
-                                        </td>
-                                        <td>
                                             <input type="text" class="form-control lot_no" id="lot_no" name="lot_no"
                                                 value="{{ $production->lot_no }}" />
                                         </td>
@@ -168,11 +178,26 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td>
-                                            <input type="text" class="form-control kitprep"
-                                                value="{{ substr($production->asset_product->product_name, 2) }}"
-                                                name="kit_prep" />
-                                        </td>
+                                        @if ($production->asset_id != 2)
+                                            <td>
+                                                <input class="form-control expiry_date" type="date" name="expiry_date"
+                                                    value="{{ $production->expiry_date }}" id="expiry_date"
+                                                    min="{{ date('Y-m-d') }}" required />
+                                                <input class="form-control expiry_time" type="time" value="12:00"
+                                                    name="expiry_time" id="expiry_time" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control kitprep"
+                                                    value="{{ substr($production->asset_product->product_name, 2) }}"
+                                                    name="kit_prep" />
+                                            </td>
+                                        @else
+                                                <input class="form-control expiry_date" type="hidden" name="expiry_date"/>
+                                                <input class="form-control expiry_time" type="hidden" name="expiry_time" />
+                                                    
+                                                <input type="hidden" class="form-control kitprep" name="kit_prep" />
+                                            
+                                        @endif
                                         <td>
                                             <input type="text" class="form-control actual_dose" id="actual_dose"
                                                 onkeyup="actualDose()" name="actual_dose"

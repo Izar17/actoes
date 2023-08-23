@@ -30,9 +30,11 @@ class TransactionsController extends Controller
 
         $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
 
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
         $transactions = Transaction::all()->where("status",1)->where("cancelled",'NO');
 
-        return view('admin.transactions.index', compact('assets','transactions'));
+        return view('admin.transactions.index', compact('transactions','assets','run_nos'));
     }
 
     /**
@@ -116,7 +118,7 @@ class TransactionsController extends Controller
                 if ($request->item[$key] == 13) {
                     $act = 'IC';
                 } else {
-                    $act = 'SI';
+                    $act = 'IS';
                 }
             } else if ($request->asset_id == 3){
                 $act = 'Tl';

@@ -64,6 +64,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('cancelled/destroy', 'CancelledController@massDestroy')->name('cancelled.massDestroy');
     Route::resource('cancelled', 'CancelledController');
 
+    // Dashboard
+    Route::resource('dashboard', 'DashboardController');
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

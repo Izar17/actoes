@@ -29,7 +29,11 @@ class DrsisController extends Controller
 
         $productions = Production::all()->where("hospital_id",$ida);
 
-       return view('admin.drsis.edit', compact('drsis','productions','ida'));
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+       return view('admin.drsis.edit', compact('drsis','productions','ida','assets','run_nos'));
     }
 
     public function update(UpdateDrsiRequest $request)

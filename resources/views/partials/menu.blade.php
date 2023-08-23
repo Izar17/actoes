@@ -2,6 +2,15 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
+            <li class="nav-item">
+                <a href="{{ route('admin.dashboard.index') }}"
+                    class="nav-link {{ request()->is('admin/dashboard') || request()->is('admin/dashboard/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-unlock-alt nav-icon">
+    
+                    </i>
+                    {{ trans('global.dashboard') }}
+                </a>
+            </li>
             @can('user_management_access')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
@@ -70,55 +79,76 @@
                 </li>
             @endcan
             @can('asset_management_access')
-            <li class="nav-item nav-dropdown">
-                <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="fa-fw fas fa-cogs nav-icon">
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        <i class="fa-fw fas fa-cogs nav-icon">
 
-                    </i>
-                    {{ trans('cruds.assetManagement.title') }}
-                </a>
-                <ul class="nav-dropdown-items">
-                    @can('isotope_access')
-                        <li class="nav-item">
-                            <a href="{{ route('admin.assets.index') }}"
-                                class="nav-link {{ request()->is('admin/assets') || request()->is('admin/assets/*') ? 'active' : '' }}">
-                                <i class="fa-fw fas fa-cogs nav-icon">
-
-                                </i>
-                                {{ trans('cruds.asset.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('product_access')
-                        <li class="nav-item">
-                            <a href="{{ route('admin.stocks.index') }}"
-                                class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
-                                <i class="fa-fw fas fa-cogs nav-icon">
-
-                                </i>
-                                {{ trans('cruds.stock.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    </ul>
-            </li>
-            @endcan
-            @can('order_access')
-                <li class="nav-item">
-                    <a href="{{ route('admin.transactions.index') }}"
-                        class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
-                        {{ trans('cruds.transaction.order_title') }}
+                        </i>
+                        {{ trans('cruds.assetManagement.title') }}
                     </a>
+                    <ul class="nav-dropdown-items">
+                        @can('isotope_access')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.assets.index') }}"
+                                    class="nav-link {{ request()->is('admin/assets') || request()->is('admin/assets/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-cogs nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.asset.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('product_access')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.stocks.index') }}"
+                                    class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-cogs nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.stock.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
                 </li>
             @endcan
-            @can('drsi_access')
-                <li class="nav-item">
-                    <a href="{{ route('admin.drsis.index') }}"
-                        class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-file nav-icon"></i>
-                        {{ trans('cruds.drsi.title') }}
+            @can('asset_orders_access')
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        <i class="fa-fw fas fa-cogs nav-icon">
+
+                        </i>
+                        {{ trans('cruds.assetOrder.title') }}
                     </a>
+                    <ul class="nav-dropdown-items">
+                        @can('order_create')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.transactions.create') }}"
+                                    class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
+                                    {{ trans('global.create') }} {{ trans('cruds.transaction.order_title_singular') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('order_access')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.transactions.index') }}"
+                                    class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
+                                    {{ trans('global.view') }} {{ trans('cruds.transaction.order_title') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('cancelled_access')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.cancelled.index') }}"
+                                    class="nav-link {{ request()->is('admin/cancelled') || request()->is('admin/cancelled/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-file nav-icon"></i>
+                                    {{ trans('cruds.cancel.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
                 </li>
             @endcan
             @can('production_access')
@@ -130,12 +160,12 @@
                     </a>
                 </li>
             @endcan
-            @can('cancelled_access')
+            @can('drsi_access')
                 <li class="nav-item">
-                    <a href="{{ route('admin.cancelled.index') }}"
-                        class="nav-link {{ request()->is('admin/cancelled') || request()->is('admin/cancelled/*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.drsis.index') }}"
+                        class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-file nav-icon"></i>
-                        {{ trans('cruds.cancel.title') }}
+                        {{ trans('cruds.drsi.title') }}
                     </a>
                 </li>
             @endcan

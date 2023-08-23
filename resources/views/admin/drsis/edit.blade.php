@@ -16,7 +16,7 @@
                     </a>
                 </div>
                 <div class="row my-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
 
@@ -35,11 +35,45 @@
                                 name="performed_by" readonly />
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="hospital_id">Search:</label>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select class="form-control asset" id="asset_id" style="width:200px;">
+                                        <option value="" disabled selected>Select Isotope</option>
+                                        <option value="">Select All</option>
+                                        @foreach ($assets as $data)
+                                            <option value="{{ $data->name }}">
+                                                {{ $data->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control asset" id="run_no" style="width:200px;">
+                                        <option value="" disabled selected>Select Run #</option>
+                                        <option value="">Select All</option>
+                                        @foreach ($run_nos as $data)
+                                            <option value="{{ $data->run_name }}">
+                                                {{ $data->run_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control dateRangePicker" style="width:200px;"
+                                        id="dateRangePicker" placeholder="Select date range">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
 
 
                 <div class="table-responsive">
-                    <table class=" table table-bordered table-striped table-hover datatable datatable-Production">
+                    <table id="dataTable"
+                        class=" table table-bordered table-striped table-hover datatable datatable-Production">
                         <thead>
                             <tr>
                                 <th style="width:20px;">
@@ -124,20 +158,7 @@
                                         {{ $production->asset_product->product_name ?? '' }}
                                     </td>
                                     <td>
-                                        @php
-                                            $calibrationDateTime = $production->calibration_date . ' ' . $production->calibration_time;
-                                            $currentDateTime = now();
-                                        @endphp
-                                        <div
-                                            style="
-                                            display: flex;
-                                            align-items: center;">
-                                            {{ $calibrationDateTime }}
-                                            @if ($calibrationDateTime < $currentDateTime)
-                                                <img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;"
-                                                    alt="Image">
-                                            @endif
-                                        </div>
+                                        {{ $production->calibration_date }}
                                     </td>
                                     <td>
                                         {{ $production->runNumber->run_name ?? '' }}
@@ -149,20 +170,21 @@
                                         {{ $production->remarks ?? '' }}
                                     </td>
                                     <td>
-                                        <input type="hidden" name="hospital" value="{{ $production->hospital_id}}"/>
+                                        <input type="hidden" name="hospital" value="{{ $production->hospital_id }}" />
                                         <input type="hidden" class="form-control dr_no" name="item[{{ $key }}]"
                                             style="width:50px;" value="{{ $production->id }}" />
                                         <input type="text" class="form-control dr_no" name="dr_no[{{ $key }}]"
                                             style="width:100px;" value="{{ $production->dr_no }}" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control invoice_no" 
+                                        <input type="text" class="form-control invoice_no"
                                             name="invoice_no[{{ $key }}]" style="width:100px;"
                                             value="{{ $production->invoice_no }}" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control price" id="price" name="price[{{ $key }}]"
-                                            style="width:100px;" value="{{ $production->price }}" required />
+                                        <input type="text" class="form-control price" id="price"
+                                            name="price[{{ $key }}]" style="width:100px;"
+                                            value="{{ $production->price }}" required />
                                     </td>
                                 </tr>
                             @endforeach
@@ -183,49 +205,16 @@
 @endsection
 @section('scripts')
     @parent
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css">
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
+
     <script>
-        $(function() {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('team_delete')
-                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-                let deleteButton = {
-                    text: deleteButtonTrans,
-                    url: "{{ route('admin.transactions.massDestroy') }}",
-                    className: 'btn-danger',
-                    action: function(e, dt, node, config) {
-                        var ids = $.map(dt.rows({
-                            selected: true
-                        }).nodes(), function(entry) {
-                            return $(entry).data('entry-id')
-                        });
-
-                        if (ids.length === 0) {
-                            alert('{{ trans('global.datatables.zero_selected') }}')
-
-                            return
-                        }
-
-                        if (confirm('{{ trans('global.areYouSure') }}')) {
-                            $.ajax({
-                                    headers: {
-                                        'x-csrf-token': _token
-                                    },
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        _method: 'DELETE'
-                                    }
-                                })
-                                .done(function() {
-                                    location.reload()
-                                })
-                        }
-                    }
-                }
-                dtButtons.push(deleteButton)
-            @endcan
-            $.extend(true, $.fn.dataTable.defaults, {
+        //Datatables
+        $(document).ready(function() {
+            var table = $('#dataTable').DataTable({
+                searching: true,
                 order: [
                     [0, 'desc']
                 ],
@@ -236,13 +225,49 @@
                     targets: 0
                 }]
             });
-            $('.datatable-Production:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+
+            $('#asset_id').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(4) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
             });
-        })
+            $('#run_no').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(10) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
+
+            // Initialize the date range picker
+            $('#dateRangePicker').daterangepicker({
+                opens: 'right', // or 'right'
+                startDate: moment(),
+                endDate: moment().add(7, 'days'),
+                ranges: {
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                }
+            });
+
+           
+            // Apply date filter to the DataTable
+            $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                const startDate = picker.startDate.format('YYYY-MM-DD');
+                const endDate = picker.endDate.format('YYYY-MM-DD');
+                const dateRange = startDate + ' to ' + endDate;
+                
+                table.columns(9).search(dateRange).draw();
+            });
+
+            // Clear filter and input when 'Clear' is clicked
+            $('#dateRangePicker').on('cancel.daterangepicker', function() {
+                $(this).val('');
+                table.column(9).search('').draw();
+            });
+        });
     </script>
 @endsection

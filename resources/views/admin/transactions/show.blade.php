@@ -6,15 +6,9 @@
         </div>
 
         <div class="card-body">
-            <form method="POST"
-                enctype="multipart/form-data" autocomplete="off">
+            <form method="POST" enctype="multipart/form-data" autocomplete="off">
                 @method('PUT')
                 @csrf
-                <div class="form-group">
-                    <a class="btn btn-default" href="{{ route('admin.transactions.index') }}">
-                        {{ trans('global.back_to_list') }}
-                    </a>
-                </div>
                 <div class="row my-3">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -23,7 +17,7 @@
                             @foreach ($transactions as $hosp => $transaction)
                             @endforeach
                             <input type="text" class="form-control hospital"
-                            value="{{ $transaction->hospital->hospital ?? ''  }}"  readonly />
+                                value="{{ $transaction->hospital->hospital ?? '' }}" readonly />
 
                         </div>
                     </div>
@@ -34,8 +28,8 @@
 
                             @foreach ($transactions as $cb => $transaction)
                             @endforeach
-                            <input type="text" class="form-control hospital"
-                            value="{{ $transaction->created_by ?? ''  }}"  readonly />
+                            <input type="text" class="form-control hospital" value="{{ $transaction->created_by ?? '' }}"
+                                readonly />
                         </div>
                     </div>
                 </div>
@@ -80,6 +74,9 @@
                                 </th>
                                 <th>
                                     {{ trans('cruds.transaction.fields.remarks') }}
+                                </th>
+                                <th>
+                                    Action
                                 </th>
                             </tr>
                         </thead>
@@ -135,6 +132,14 @@
                                     </td>
                                     <td>
                                         {{ $transaction->remarks ?? '' }}
+                                    </td>
+                                    <td>
+                                        @can('order_edit')
+                                            <a class="btn btn-xs btn-info"
+                                                href="{{ route('admin.transactions.edit', $transaction->id) }}">
+                                                {{ trans('global.edit') }}
+                                            </a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

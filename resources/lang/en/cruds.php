@@ -9,6 +9,10 @@ return [
         'title'          => 'Asset management',
         'title_singular' => 'Asset management',
     ],
+    'assetOrder' => [
+        'title'          => 'Order management',
+        'title_singular' => 'Order management',
+    ],
     'permission'     => [
         'title'          => 'Permissions',
         'title_singular' => 'Permission',

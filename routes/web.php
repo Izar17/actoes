@@ -69,7 +69,10 @@ Auth::routes(['register' => false]);
     Route::resource('cancelled', 'CancelledController');
 
     // Report
-    Route::get('reports/print/boxlabel', 'ReportsController@print')->name('reports.print.print');
+    Route::get('reports/print/page1', 'ReportsController@print')->name('reports.print.print');
+    Route::get('reports/print/page2', 'ReportsController@print')->name('reports.print.print');
+    Route::get('reports/print/page3', 'ReportsController@print')->name('reports.print.print');
+    Route::get('reports/print/page4', 'ReportsController@print')->name('reports.print.print');
     Route::resource('reports', 'ReportsController');
     //Route::get('/admin/reports/search', [ReportsController::class, 'search'])->name('reports.search');
 

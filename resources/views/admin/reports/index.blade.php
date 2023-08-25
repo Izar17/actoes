@@ -157,7 +157,7 @@
 
         openNewTabButton.addEventListener('click', function() {
             // Open a new tab/window when the button is clicked
-            window.open('admin.reports.print.boxLabel', '_blank');
+            window.open('admin.reports.print.page1', '_blank');
         });
     </script>
 @endsection

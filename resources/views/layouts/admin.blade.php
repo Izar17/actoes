@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ trans('panel.site_title') }}</title>
-    <link rel="shortcut icon" href="{{ asset('img/act.png') }}">
+    {{-- <link rel="shortcut icon" href="{{ asset('img/act.png') }}"> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-          <img src="{{url('/img/act.png')}}" alt="Image" style="width:50px;height:30px;padding-right:5px;"/>
+          {{-- <img src="{{url('/img/act.png')}}" alt="Image" style="width:50px;height:30px;padding-right:5px;"/> --}}
             <span class="navbar-brand-full" style="color:cyan;">{{ trans('panel.site_title') }}</span>
             <span class="navbar-brand-minimized" style="color:cyan;">{{ trans('panel.site_title') }}</span>
         </a>

@@ -6,6 +6,7 @@ Route::post('api/fetch-product', [DropdownController::class, 'fetchProduct']);
 Route::post('api/fetch-activities', [DropdownController::class, 'fetchActivity']);
 Route::post('api/fetch-leadpot', [DropdownController::class, 'fetchLeadPot']);
 Route::post('api/fetch-procedure', [DropdownController::class, 'fetchProcedure']);
+Route::post('api/fetch-form', [DropdownController::class, 'fetchForm']);
 
 Route::redirect('/', '/login');
 Route::get('/home', function () {
@@ -17,9 +18,14 @@ Route::get('/home', function () {
 });
 
 Auth::routes(['register' => false]);
-// Admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+
+    // Admin
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::redirect('/', '/login')->name('home');
+    
+    // Dashboard
+    Route::resource('dashboard', 'DashboardController');
+
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -57,15 +63,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('productions', 'ProductionsController');
 
     // Drsis
-    Route::delete('drsis/destroy', 'DrsisController@massDestroy')->name('drsis.massDestroy');
     Route::resource('drsis', 'DrsisController');
 
     // Cancelled Order
-    Route::delete('cancelled/destroy', 'CancelledController@massDestroy')->name('cancelled.massDestroy');
     Route::resource('cancelled', 'CancelledController');
 
-    // Dashboard
-    Route::resource('dashboard', 'DashboardController');
+    // Report
+    Route::get('reports/print/boxlabel', 'ReportsController@print')->name('reports.print.print');
+    Route::resource('reports', 'ReportsController');
+    //Route::get('/admin/reports/search', [ReportsController::class, 'search'])->name('reports.search');
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

@@ -169,6 +169,17 @@
                     </a>
                 </li>
             @endcan
+            @can('report_access')
+            <li class="nav-item">
+                <a href="{{ route('admin.reports.index') }}"
+                    class="nav-link {{ request()->is('admin/reports') || request()->is('admin/reports/*') ? 'active' : '' }}">
+                    <i class="fa-fw fas fa-unlock-alt nav-icon">
+    
+                    </i>
+                    {{ trans('cruds.report.title') }}
+                </a>
+            </li>
+            @endcan
             @if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
                 @can('profile_password_edit')
                     <li class="nav-item">
@@ -191,7 +202,6 @@
                 </a>
             </li>
         </ul>
-
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>
 </div>

@@ -146,7 +146,7 @@
                                             <input class="form-control calibration_date" type="date"
                                                 value="{{ $transaction->calibration_date }}" name="calibration_date"
                                                 id="calibration_date" min="{{ date('Y-m-d') }}" required />
-                                            <input class="form-control calibration_time" type="time"
+                                            <input class="form-control calibration_time" type="time" pattern="[0-9]{2}:[0-9]{2}"
                                                 value="{{ substr($transaction->calibration_time, 0, 5) ?? '' }}"
                                                 name="calibration_time" id="calibration_time" />
                         </div>

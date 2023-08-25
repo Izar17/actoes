@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use App\{Asset_product, Product_activity, LeadPot, Procedure, Transaction};
+use App\{Asset_product, Product_activity, LeadPot, Procedure, Transaction, PrintForm};
 
 class DropdownController extends Controller
 {
@@ -38,6 +38,12 @@ class DropdownController extends Controller
     public function fetchProcedure(Request $request)
     {
         $data['procedures'] = Procedure::where("product_id",$request->product_id)->get(["procedure_name", "id"]);
+        return response()->json($data);
+    }
+    
+    public function fetchForm(Request $request)
+    {
+        $data['print_forms'] = PrintForm::where("asset_id",$request->asset_id)->get(["form_name", "page_id"]);
         return response()->json($data);
     }
 }

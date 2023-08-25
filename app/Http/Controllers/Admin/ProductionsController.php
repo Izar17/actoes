@@ -15,7 +15,7 @@ class ProductionsController extends Controller
     {
         abort_if(Gate::denies('production_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $productions = Production::all()->where("status",1);
+        $productions = Production::all()->where("status",1)->where("cancelled",'NO');
 
         return view('admin.productions.index', compact('productions'));
     }
@@ -42,12 +42,17 @@ class ProductionsController extends Controller
 
     public function update(UpdateProductionRequest $request, Production $production)
     {
+        
+        // if (!empty($request->expiry_time)) {
         //Format Time with AM/PM
-        $expiry_time = Carbon::createFromFormat('H:i', $request->expiry_time)->format('h:i A');
-        $time_dispensed = Carbon::createFromFormat('H:i', $request->time_dispensed)->format('h:i A');
-
-        $production->update(['expiry_time' => $expiry_time] + ['time_dispensed' => $time_dispensed] + $request->all());
-        //$production->update($request->all());
+        // $expiry_time = Carbon::createFromFormat('H:i', $request->expiry_time)->format('h:i A');
+        // $time_dispensed = Carbon::createFromFormat('H:i', $request->time_dispensed)->format('h:i A');
+        // } else {
+        //     $expiry_time = '';
+        //     $time_dispensed = '';
+        // }
+        // $production->update(['expiry_time' => $expiry_time] + ['time_dispensed' => $time_dispensed] + $request->all());
+        $production->update($request->all());
 
         return redirect()->route('admin.productions.index');
     }

@@ -7,6 +7,9 @@
                 <table>
                     <tr>
                         <td>
+                            <input class="form-control asset" type="search" id="search_hospital" placeholder="Search by Hospital...">
+                        </td>
+                        <td>
                             <select class="form-control asset" id="asset_id" style="width:250px;">
                                 <option value="" disabled selected>Select Isotope</option>
                                 <option value="">Select All</option>
@@ -48,8 +51,11 @@
                             <th>
                                 {{ trans('cruds.transaction.fields.ofm') }}
                             </th>
-                            <th style="width:120px;">
+                            <th style="width:100px;">
                                 {{ trans('cruds.transaction.fields.rx_number') }}
+                            </th>
+                            <th style="width:80px;">
+                                {{ trans('cruds.transaction.fields.patient') }}
                             </th>
                             <th>
                                 {{ trans('cruds.transaction.fields.asset') }}
@@ -87,12 +93,12 @@
                                     {{ $transaction->id }} | {{ $transaction->created_at }}
                                 </td>
                                 <td>
-                                    @can('order_show')
+                                    {{-- @can('order_show')
                                         <a class="btn btn-xs btn-primary"
                                             href="{{ route('admin.transactions.show', $transaction->hospital_id) }}">
                                             {{ trans('global.view') }}
                                         </a>
-                                    @endcan
+                                    @endcan --}}
                                     {{ $transaction->hospital->hospital ?? '' }}
                                 </td>
                                 <td>
@@ -100,6 +106,9 @@
                                 </td>
                                 <td>
                                     {{ $transaction->rx_no ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $transaction->patient ?? '' }}
                                 </td>
                                 <td>
                                     {{ $transaction->asset->name ?? '' }}
@@ -111,22 +120,26 @@
                                     {{ $transaction->activity_mci ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $transaction->activity_mci ?? '' }} mCi
+                                    {{ $transaction->particular ?? '' }}
                                     {{ $transaction->asset_product->product_name ?? '' }}
                                 </td>
                                 <td>
                                     @php
                                         $calibrationDateTime = $transaction->calibration_date . ' ' . $transaction->calibration_time;
                                         $currentDateTime = now();
+                                        $sixHoursBefore = now()->subHours(6);
                                     @endphp
                                     <div
                                         style="
                                     display: flex;
                                     align-items: center;">
                                         {{ $calibrationDateTime }}
-                                        @if ($calibrationDateTime < $currentDateTime && $transaction->status == 1)
-                                            <img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;"
-                                                alt="Image">
+                                        @if ($calibrationDateTime < $currentDateTime && $calibrationDateTime < $sixHoursBefore && $transaction->status == 1)
+                                            <img src="{{ asset('img/yellow-warning.png') }}" style="width:30px;height:30px;" alt="Image">
+                                        @elseif ($calibrationDateTime < $currentDateTime && $transaction->status == 1)
+                                        <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
+                                            alt="Image">                                        
+                                    @else    
                                         @endif
                                     </div>
                                 </td>
@@ -140,7 +153,6 @@
                                     {{ $transaction->remarks ?? '' }}
                                 </td>
                                 <td>
-
                                     @can('order_edit')
                                         <a class="btn btn-xs btn-info"
                                             href="{{ route('admin.transactions.edit', $transaction->id) }}">
@@ -165,7 +177,7 @@
             var table = $('#dataTable').DataTable({
                 searching: true,
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ],
                 pageLength: 100,
                 columnDefs: [{
@@ -175,15 +187,19 @@
                 }]
             });
 
+            $('#search_hospital').on('keyup', function() {
+                table.column(1).search(this.value).draw();
+            });
+
             $('#asset_id').on('change', function() {
                 var selectedValue = $(this).val();
-                table.column(4) // Replace '1' with the index of the column you want to filter
+                table.column(5) // Replace '1' with the index of the column you want to filter
                     .search(selectedValue)
                     .draw();
             });
             $('#run_no').on('change', function() {
                 var selectedValue = $(this).val();
-                table.column(9) // Replace '1' with the index of the column you want to filter
+                table.column(10) // Replace '1' with the index of the column you want to filter
                     .search(selectedValue)
                     .draw();
             });

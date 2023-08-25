@@ -26,6 +26,9 @@
                                 {{ trans('cruds.transaction.fields.rx_number') }}
                             </th>
                             <th>
+                                {{ trans('cruds.transaction.fields.patient') }}
+                            </th>
+                            <th>
                                 {{ trans('cruds.transaction.fields.asset') }}
                             </th>
                             <th>
@@ -78,6 +81,9 @@
                                     {{ $production->rx_no ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $production->patient ?? '' }}
+                                </td>
+                                <td>
                                     {{ $production->asset->name ?? '' }}
                                 </td>
                                 <td>
@@ -101,7 +107,7 @@
                                             align-items: center;">
                                         {{ $calibrationDateTime }}
                                         @if ($calibrationDateTime < $currentDateTime)
-                                            <img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;"
+                                            <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
                                                 alt="Image">
                                         @endif
                                     </div>
@@ -178,7 +184,7 @@ $(function() {
             @endcan
             $.extend(true, $.fn.dataTable.defaults, {
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ],
                 pageLength: 100,
                 columnDefs: [{

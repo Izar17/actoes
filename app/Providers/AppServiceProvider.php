@@ -8,6 +8,7 @@ use App\Observers\TeamObserver;
 use App\Team;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,5 +39,10 @@ class AppServiceProvider extends ServiceProvider
 
         Asset::observe(AssetObserver::class);
         Team::observe(TeamObserver::class);
+
+        
+        Carbon::serializeUsing(function ($carbon) {
+            return $carbon->format('m/d/Y');
+        });
     }
 }

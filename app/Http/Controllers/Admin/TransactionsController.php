@@ -77,7 +77,7 @@ class TransactionsController extends Controller
             $monthAbbreviation = $monthDate->format('M');
 
             //Format Time with AM/PM
-            $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
+            //$calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
             
             //Calibrate Date
             $cal_yr = date("Y", strtotime($request->calibration_date[$key]));
@@ -166,7 +166,12 @@ class TransactionsController extends Controller
             }
 
             //particular
-            $particular = $activityMci.' mCi '.$request->item[$key];
+            if ($request->asset_id == 6) {
+                $unit='GBq';
+            } else {
+                $unit='mCi';
+            }
+            $particular = $activityMci.' '.$unit;
 
             $transactions['hospital_id']        = $request->hospital_id;
             $transactions['asset_id']           = $request->asset_id;
@@ -181,7 +186,7 @@ class TransactionsController extends Controller
             $transactions['particular']         = $particular;
             $transactions['patient']            = $request->patient[$key];
             $transactions['calibration_date']   = $request->calibration_date[$key];
-            $transactions['calibration_time']   = $calibration_time;
+            $transactions['calibration_time']   = $request->calibration_time[$key];
             $transactions['lot_no']             = $lotNumber;
             $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
@@ -222,10 +227,9 @@ class TransactionsController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         //Format Time with AM/PM
-        $calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time)->format('h:i A');
-
-        $transaction->update(['calibration_time' => $calibration_time] + $request->all());
-
+        //$calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time)->format('h:i A');
+        //$transaction->update(['calibration_time' => $calibration_time] + $request->all());
+        $transaction->update($request->all());
         return redirect()->route('admin.transactions.index');
 
     }

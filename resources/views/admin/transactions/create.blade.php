@@ -208,9 +208,13 @@
                             value
                             .id + '">' + value.product_name + '</option>');
                     });
-
+                    const timeInput = document.getElementById('calibration_time');
                     const procedure = document.getElementById("procedure" + rowId);
                     const volume = document.getElementById("volume" + rowId);
+                    if (idAsset == 2) {
+                        timeInput.value = '12:00 PM';
+                    }
+                    
                     if (idAsset == 1) {
                         // If 'readonly' attribute is already set, remove it and make the field editable
                         procedure.removeAttribute('readonly');
@@ -322,8 +326,24 @@
                     </td>
                     <td>
                         <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date"  min="{{ date('Y-m-d') }}" required/>
-                        <input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
-                    </td>
+                             
+                        <input type="text" name="calibration_time[]" id="calibration_time"
+                            list="time_id" class="form-control patient" required>
+                        <datalist id="time_id">
+                            <option value="01:00">
+                            <option value="02:00">
+                            <option value="03:00">
+                            <option value="04:00">
+                            <option value="05:00">
+                            <option value="06:00">
+                            <option value="07:00">
+                            <option value="08:00">
+                            <option value="09:00">
+                            <option value="10:00">
+                            <option value="11:00">
+                            <option value="12:00">
+                        </datalist>
+                        </td>
                     <td><input class="form-control" type="text" style="min-width:150px" id="orderform_no" name="orderform_no[]" required/></td>
                     <td>
                         <select
@@ -343,6 +363,9 @@
                     <td><a href="javascript:void(0)" class="text-danger font-18 remove" title="Remove"><i class="fa fa-trash-o"></i></a></td>
                 </tr>`);
         }
+        
+        //<input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
+                    
         //<input class="form-control activity_mci" style="width:100px" type="text" id="activity_mci" name="activity_mci[]">
         $("#tableOrder tbody").on("click", ".remove", function() {
             // Getting all the rows next to the row

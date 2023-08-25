@@ -113,7 +113,7 @@ return [
         'title'          => 'Hospitals',
         'title_singular' => 'Hospital',
         'fields'         => [
-            'id'                => 'ID',
+            'id'                => 'Hospital ID',
             'id_helper'         => '',
             'name'              => 'Name',
             'name_helper'       => '',
@@ -206,6 +206,10 @@ return [
     'cancel'           => [
         'title'          => 'Cancelled Orders',
         'title_singular' => 'Cancelled Order',
+    ],
+    'report'           => [
+        'title'          => 'Reports',
+        'title_singular' => 'Report',
     ],
     'transaction'    => [
         'order_title'               => 'Orders',

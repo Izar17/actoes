@@ -12,6 +12,7 @@ return [
     'create'                               => 'Create',
     'dashboard'                            => 'Dashboard',
     'delete'                               => 'Delete',
+    'print'                               => 'Print',
     'downloadFile'                         => 'Download file',
     'edit'                                 => 'Edit',
     'emailVerificationSuccess'             => 'User email verified successfully',

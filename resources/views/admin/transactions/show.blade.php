@@ -119,7 +119,7 @@
                                             align-items: center;">
                                             {{ $calibrationDateTime }}
                                             @if ($calibrationDateTime < $currentDateTime)
-                                                <img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;"
+                                                <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
                                                     alt="Image">
                                             @endif
                                         </div>

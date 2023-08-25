@@ -88,7 +88,7 @@ $(function() {
             @endcan
             $.extend(true, $.fn.dataTable.defaults, {
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ],
                 pageLength: 100,
                 columnDefs: [{

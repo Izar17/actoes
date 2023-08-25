@@ -62,12 +62,6 @@
                                     {{ $transaction->id }} | {{ $transaction->created_at }}
                                 </td>
                                 <td>
-                                    @can('order_show')
-                                        <a class="btn btn-xs btn-primary"
-                                            href="{{ route('admin.transactions.show', $transaction->hospital_id) }}">
-                                            {{ trans('global.view') }}
-                                        </a>
-                                    @endcan
                                     {{ $transaction->hospital->hospital ?? '' }}
                                 </td>
                                 <td>
@@ -100,7 +94,7 @@
                                     align-items: center;">
                                         {{ $calibrationDateTime }}
                                         @if ($calibrationDateTime < $currentDateTime && $transaction->status == 1)
-                                            <img src="{{ asset('img/warning.png') }}" style="width:30px;height:30px;"
+                                            <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
                                                 alt="Image">
                                         @endif
                                     </div>

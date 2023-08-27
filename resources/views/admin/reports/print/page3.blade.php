@@ -2,6 +2,8 @@
 <div class="container">
     <div class="content">
 
+        @foreach ($transactions as $key => $transaction)
+        @endforeach
         <table width="100%" border="0" align="center">
             <tr><br /><br /><br /><br /><br />
                 <td scope="col" align="center" style="font-size:18px;"><b>ASSURANCE CONTROLS TECHNOLOGIES CO., INC.
@@ -41,10 +43,7 @@
                     </strong></td>
                 <td colspan="4" align="center" style="font-size:12px; "><strong>DELIVERY</strong></td>
             </tr>
-            @php
-                $specificTransaction = $transactions->get(1);
-            @endphp
-            @if ($specificTransaction->asset_id != 2)
+            @if ($transaction->asset_id != 2)
                 <tr>
                     <td width="85" rowspan="2" align="center"><strong>ORDER<br /> FORM NUMBER</strong></td>
                     <td width="66" rowspan="2" align="center"><strong>PRODUCT</strong></td>

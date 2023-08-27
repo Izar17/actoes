@@ -199,17 +199,19 @@ return [
         'title'          => 'Productions',
         'title_singular' => 'Production',
     ],
-    'drsi'           => [
+    'drsi'               => [
         'title'          => 'DR/SI',
         'title_singular' => 'DR/SI',
     ],
-    'cancel'           => [
+    'cancel'             => [
         'title'          => 'Cancelled Orders',
         'title_singular' => 'Cancelled Order',
     ],
-    'report'           => [
+    'report'             => [
         'title'          => 'Reports',
         'title_singular' => 'Report',
+        'title_print'    => 'Print Forms',
+        'title_record'          => 'Records',
     ],
     'transaction'    => [
         'order_title'               => 'Orders',

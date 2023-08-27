@@ -6,7 +6,7 @@
                 <a href="{{ route('admin.dashboard.index') }}"
                     class="nav-link {{ request()->is('admin/dashboard') || request()->is('admin/dashboard/*') ? 'active' : '' }}">
                     <i class="fa-fw fas fa-unlock-alt nav-icon">
-    
+
                     </i>
                     {{ trans('global.dashboard') }}
                 </a>
@@ -170,15 +170,28 @@
                 </li>
             @endcan
             @can('report_access')
-            <li class="nav-item">
-                <a href="{{ route('admin.reports.index') }}"
-                    class="nav-link {{ request()->is('admin/reports') || request()->is('admin/reports/*') ? 'active' : '' }}">
-                    <i class="fa-fw fas fa-unlock-alt nav-icon">
-    
-                    </i>
-                    {{ trans('cruds.report.title') }}
-                </a>
-            </li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        <i class="fa-fw fas fa-file nav-icon"></i>
+                        {{ trans('cruds.report.title') }}
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.reports.index') }}"
+                                class="nav-link {{ request()->is('admin/reports') || request()->is('admin/reports/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.report.title_print') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.records.index') }}"
+                                class="nav-link {{ request()->is('admin/reports/records') || request()->is('admin/reports/records/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.report.title_record') }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             @endcan
             @if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
                 @can('profile_password_edit')

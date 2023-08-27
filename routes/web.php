@@ -22,7 +22,7 @@ Auth::routes(['register' => false]);
     // Admin
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::redirect('/', '/login')->name('home');
-    
+
     // Dashboard
     Route::resource('dashboard', 'DashboardController');
 
@@ -68,11 +68,14 @@ Auth::routes(['register' => false]);
     // Cancelled Order
     Route::resource('cancelled', 'CancelledController');
 
+    // Records
+    Route::resource('records', 'RecordsController');
+
     // Report
     Route::get('reports/print/page1', 'ReportsController@print')->name('reports.print.print');
-    Route::get('reports/print/page2', 'ReportsController@print')->name('reports.print.print');
-    Route::get('reports/print/page3', 'ReportsController@print')->name('reports.print.print');
-    Route::get('reports/print/page4', 'ReportsController@print')->name('reports.print.print');
+    Route::get('reports/print/page2', 'ReportsController@print')->name('reports.print.print2');
+    Route::get('reports/print/page3', 'ReportsController@print')->name('reports.print.print3');
+    Route::get('reports/print/page4', 'ReportsController@print')->name('reports.print.print4');
     Route::resource('reports', 'ReportsController');
     //Route::get('/admin/reports/search', [ReportsController::class, 'search'])->name('reports.search');
 

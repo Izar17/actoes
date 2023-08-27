@@ -69,7 +69,7 @@
                         <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
                         <td align="center">{{ $transaction->asset_product->product_name ?? '' }}</td>
                         <td width="57" align="center">{{ $transaction->rx_no ?? '' }}</td>
-                        <td align="center">&nbsp;</td>
+                        <td align="center">{{ $transaction->lot_no ?? '' }}</td>
                         <td align="center">{{ $transaction->lead_pot ?? '' }}</td>
                         <td align="center">{{ $transaction->procedure1 ?? '' }}</td>
                         <td align="center">{{ $transaction->patient ?? '' }}</td>

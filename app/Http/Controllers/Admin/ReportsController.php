@@ -8,6 +8,7 @@ use App\{Hospital, Asset, RunNumber, Transaction};
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class ReportsController extends Controller
 {
     public function index()
@@ -74,7 +75,7 @@ class ReportsController extends Controller
                     break;
 
                 default:
-                    $transactions = Transaction::where("asset_id", $request->asset_id)->get();
+                    $transactions = Transaction::where("asset_id", $request->asset_id)->simplePaginate(1);
                     break;
             }
         }

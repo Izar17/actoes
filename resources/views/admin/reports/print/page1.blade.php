@@ -5,7 +5,7 @@
         <p style="font-family: Calibri;">
             @foreach ($transactions as $key => $transaction)
                 {{-- Asset1 --}}
-                @if ($transaction->asset_id == 1 || $transaction->asset_id == 3)
+                @if ($transaction->asset_id != 2)
                     <table align="center" width="98%" border="0">
                         <tr>
                             <td height="40" align="left" scope="col">&nbsp;</td>
@@ -211,7 +211,7 @@
 
 
                     {{-- Asset2 --}}
-                @elseif($transaction->asset_id == 2)
+                @else
                     <table width="43%" height="118" border="0" align="center"
                         data-entry-id="{{ $transaction->id }}">
                         <tr>
@@ -253,16 +253,7 @@
                     </table>
                 @endif
             @endforeach
+                <div style="text-align: center;">{{ $transactions->links() }}</div>
         </p>
     </div>
 </div>
-
-@section('scripts')
-    @parent
-    <script type="text/javascript">
-        function myPrint() {
-            window.frames["myIframe"].focus();
-            window.frames.print();
-        }
-    </script>
-@endsection

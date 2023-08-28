@@ -161,12 +161,41 @@
                 </li>
             @endcan
             @can('drsi_access')
-                <li class="nav-item">
-                    <a href="{{ route('admin.drsis.index') }}"
-                        class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
                         <i class="fa-fw fas fa-file nav-icon"></i>
                         {{ trans('cruds.drsi.title') }}
                     </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.drsis.index') }}"
+                                class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.drsi.hospital') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.printdrsi.index') }}"
+                                class="nav-link {{ request()->is('admin/printdrsi') || request()->is('admin/printdrsi/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.drsi.print') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.drsis.index') }}"
+                                class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.drsi.dr') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.drsis.index') }}"
+                                class="nav-link {{ request()->is('admin/drsis') || request()->is('admin/drsis/*') ? 'active' : '' }}">
+                                <i class="fa-fw fas fa-file nav-icon"></i>
+                                {{ trans('cruds.drsi.si') }}
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             @endcan
             @can('report_access')

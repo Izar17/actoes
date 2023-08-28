@@ -64,6 +64,8 @@ Auth::routes(['register' => false]);
 
     // Drsis
     Route::resource('drsis', 'DrsisController');
+    Route::get('printdrsi/searchDrsi', 'PrintDrsiController@searchDrsi')->name('printdrsi.searchDrsi');
+    Route::resource('printdrsi', 'PrintDrsiController');
 
     // Cancelled Order
     Route::resource('cancelled', 'CancelledController');

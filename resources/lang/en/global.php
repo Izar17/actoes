@@ -34,6 +34,7 @@ return [
     'reset_password'                       => 'Reset Password',
     'send_password'                        => 'Send Password Reset Link',
     'save'                                 => 'Save',
+    'save_print'                           => 'Save & Print',
     'search'                               => 'Search',
     'searching'                            => 'Searching',
     'no_results'                           => 'No results',

@@ -47,137 +47,124 @@
 
 
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.drsis.update', 1) }}" enctype="multipart/form-data"
-                autocomplete="off">
-                @method('PUT')
-                @csrf
-                <div class="table-responsive">
-                    <table id="dataTable"
-                        class=" table table-bordered table-striped table-hover datatable datatable-Production">
-                        <thead>
-                            <tr>
-                                <th style="width:20px;">
-                                    ID
-                                </th>
-                                <th style="width:115px;">
-                                    Created Date
-                                </th>
-                                <th style="width:180px;">
-                                    {{ trans('cruds.transaction.fields.hospital') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.ofm') }}
-                                </th>
-                                <th style="width:120px;">
-                                    {{ trans('cruds.transaction.fields.rx_number') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.asset') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.asset_product') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.activity_mci') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.patient') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.particular') }}
-                                </th>
-                                <th style="width:130px;">
-                                    {{ trans('cruds.transaction.fields.calibration_date') }}
-                                </th>
-                                <th style="width:60px;">
-                                    {{ trans('cruds.transaction.fields.run_no') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.user') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.remarks') }}
-                                </th>
-                                <th class="col-md-1">
-                                    {{ trans('cruds.transaction.fields.dr') }}
-                                </th>
-                                <th class="col-md-1">
-                                    {{ trans('cruds.transaction.fields.si') }}
-                                </th>
-                                <th class="col-md-1">
-                                    {{ trans('cruds.transaction.fields.price') }}
-                                </th>
+            <div class="table-responsive">
+                <table id="dataTable"
+                    class=" table table-bordered table-striped table-hover datatable datatable-Production">
+                    <thead>
+                        <tr>
+                            <th style="width:20px;">
+                                ID
+                            </th>
+                            <th style="width:115px;">
+                                Created Date
+                            </th>
+                            <th style="width:180px;">
+                                {{ trans('cruds.transaction.fields.hospital') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.ofm') }}
+                            </th>
+                            <th style="width:120px;">
+                                {{ trans('cruds.transaction.fields.rx_number') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.asset') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.asset_product') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.activity_mci') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.patient') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.particular') }}
+                            </th>
+                            <th style="width:130px;">
+                                {{ trans('cruds.transaction.fields.calibration_date') }}
+                            </th>
+                            <th style="width:60px;">
+                                {{ trans('cruds.transaction.fields.run_no') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.user') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.transaction.fields.remarks') }}
+                            </th>
+                            <th class="col-md-1">
+                                {{ trans('cruds.transaction.fields.dr') }}
+                            </th>
+                            <th class="col-md-1">
+                                {{ trans('cruds.transaction.fields.si') }}
+                            </th>
+                            <th class="col-md-1">
+                                {{ trans('cruds.transaction.fields.price') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($productions as $key => $production)
+                            <tr data-entry-id="{{ $production->id }}">
+                                <td>
+                                    {{ $production->id }}
+                                </td>
+                                <td>
+                                    {{ $production->created_at }}
+                                </td>
+                                <td>
+                                    {{ $production->hospital->hospital ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->orderform_no ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->rx_no ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->asset->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->asset_product->product_name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->activity_mci ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->patient ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->activity_mci ?? '' }} mCi
+                                    {{ $production->asset_product->product_name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->calibration_date }}
+                                </td>
+                                <td>
+                                    {{ $production->runNumber->run_name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->created_by ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->remarks ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->dr_no ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->invoice_no ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $production->price ?? '' }}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($productions as $key => $production)
-                                <tr data-entry-id="{{ $production->id }}">
-                                    <td>
-                                        {{ $production->id }}
-                                    </td>
-                                    <td>
-                                        {{ $production->created_at }}
-                                    </td>
-                                    <td>
-                                        {{ $production->hospital->hospital ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->orderform_no ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->rx_no ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->asset->name ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->asset_product->product_name ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->activity_mci ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->patient ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->activity_mci ?? '' }} mCi
-                                        {{ $production->asset_product->product_name ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->calibration_date }}
-                                    </td>
-                                    <td>
-                                        {{ $production->runNumber->run_name ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->created_by ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->remarks ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->dr_no ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->invoice_no ?? '' }}
-                                    </td>
-                                    <td>
-                                        {{ $production->price ?? '' }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-group"style="text-align:center;">
-                    <hr>
-                    <div id="show_save" class="myDiv">
-                        <button class="btn btn-danger" type="submit">
-                            {{ trans('global.save') }}
-                        </button>
-                    </div>
-                </div>
-            </form>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @endsection

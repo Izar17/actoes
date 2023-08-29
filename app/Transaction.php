@@ -49,6 +49,8 @@ class Transaction extends Model
         'calibration_time',
         'cancelled',
         'status',
+        'delivery_charge',
+        'drsi_cancel',
         'created_at',
         'updated_at',
         'deleted_at',

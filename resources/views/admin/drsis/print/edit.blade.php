@@ -6,7 +6,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.drsis.update', [$ida]) }}" enctype="multipart/form-data"
+            <form method="POST" action="{{ route('admin.drsis.update', 17) }}" enctype="multipart/form-data"
                 autocomplete="off">
                 @method('PUT')
                 @csrf
@@ -20,10 +20,10 @@
                         <div class="form-group">
                             <label for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
 
-                            @foreach ($productions as $hosp => $production)
+                            @foreach ($transactions as $hosp => $transaction)
                             @endforeach
                             <input type="text" class="form-control hospital"
-                                value="{{ $production->hospital->hospital ?? '' }}" readonly />
+                                value="{{ $transaction->hospital->hospital ?? '' }}" readonly />
 
                         </div>
                     </div>
@@ -73,7 +73,7 @@
 
                 <div class="table-responsive">
                     <table id="dataTable"
-                        class=" table table-bordered table-striped table-hover datatable datatable-Production">
+                        class=" table table-bordered table-striped table-hover datatable datatable-transaction">
                         <thead>
                             <tr>
                                 <th style="width:20px;">
@@ -127,64 +127,64 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($productions as $key => $production)
-                                <tr data-entry-id="{{ $production->id }}">
+                            @foreach ($transactions as $key => $transaction)
+                                <tr data-entry-id="{{ $transaction->id }}">
                                     <td>
-                                        {{ $production->id }}
+                                        {{ $transaction->id }}
                                     </td>
                                     <td>
-                                        {{ $production->created_at }}
+                                        {{ $transaction->created_at }}
                                     </td>
                                     <td>
-                                        {{ $production->orderform_no ?? '' }}
+                                        {{ $transaction->orderform_no ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->rx_no ?? '' }}
+                                        {{ $transaction->rx_no ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->asset->name ?? '' }}
+                                        {{ $transaction->asset->name ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->asset_product->product_name ?? '' }}
+                                        {{ $transaction->asset_product->product_name ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->activity_mci ?? '' }}
+                                        {{ $transaction->activity_mci ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->patient ?? '' }}
+                                        {{ $transaction->patient ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->activity_mci ?? '' }} mCi
-                                        {{ $production->asset_product->product_name ?? '' }}
+                                        {{ $transaction->activity_mci ?? '' }} mCi
+                                        {{ $transaction->asset_product->product_name ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->calibration_date }}
+                                        {{ $transaction->calibration_date }}
                                     </td>
                                     <td>
-                                        {{ $production->runNumber->run_name ?? '' }}
+                                        {{ $transaction->runNumber->run_name ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->created_by ?? '' }}
+                                        {{ $transaction->created_by ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $production->remarks ?? '' }}
+                                        {{ $transaction->remarks ?? '' }}
                                     </td>
                                     <td>
-                                        <input type="hidden" name="hospital" value="{{ $production->hospital_id }}" />
+                                        <input type="hidden" name="hospital" value="{{ $transaction->hospital_id }}" />
                                         <input type="hidden" class="form-control dr_no" name="item[{{ $key }}]"
-                                            style="width:50px;" value="{{ $production->id }}" />
+                                            style="width:50px;" value="{{ $transaction->id }}" />
                                         <input type="text" class="form-control dr_no" name="dr_no[{{ $key }}]"
-                                            style="width:100px;" value="{{ $production->dr_no }}" />
+                                            style="width:100px;" value="{{ $transaction->dr_no }}" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control invoice_no"
                                             name="invoice_no[{{ $key }}]" style="width:100px;"
-                                            value="{{ $production->invoice_no }}" />
+                                            value="{{ $transaction->invoice_no }}" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control price" id="price"
                                             name="price[{{ $key }}]" style="width:100px;"
-                                            value="{{ $production->price }}" required />
+                                            value="{{ $transaction->price }}" required />
                                     </td>
                                 </tr>
                             @endforeach
@@ -253,13 +253,13 @@
                 }
             });
 
-           
+
             // Apply date filter to the DataTable
             $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
                 const startDate = picker.startDate.format('YYYY-MM-DD');
                 const endDate = picker.endDate.format('YYYY-MM-DD');
                 const dateRange = startDate + ' to ' + endDate;
-                
+
                 table.columns(9).search(dateRange).draw();
             });
 

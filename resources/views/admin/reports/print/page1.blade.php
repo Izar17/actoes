@@ -252,7 +252,8 @@
                     </table>
                 @endif
             @endforeach
-                <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
         </p>
+        <br>
+            <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
     </div>
 </div>

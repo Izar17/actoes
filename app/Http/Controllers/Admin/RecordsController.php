@@ -20,8 +20,6 @@ class RecordsController extends Controller
 
         $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
 
-        $transactions = Transaction::all()->where("status",1)->where("cancelled",'NO');
-
         return view('admin.reports.records.index', compact('transactions','assets','run_nos'));
     }
 }

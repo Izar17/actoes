@@ -1,13 +1,44 @@
 @extends('layouts.admin')
 @section('content')
     <div class="card">
-        <div class="card-header">
-            {{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}
+        <div class="card-header d-flex justify-content-between">
+            <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
+            <div class="row">
+                <table>
+                    <tr>
+                        <td>
+                            <input class="form-control asset" type="search" id="search_hospital" placeholder="Search by Hospital...">
+                        </td>
+                        <td>
+                            <select class="form-control asset" id="asset_id" style="width:250px;">
+                                <option value="" disabled selected>Select Isotope</option>
+                                <option value="">Select All</option>
+                                @foreach ($assets as $data)
+                                    <option value="{{ $data->name }}">
+                                        {{ $data->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control asset" id="run_no" style="width:250px;">
+                                <option value="" disabled selected>Select Run #</option>
+                                <option value="">Select All</option>
+                                @foreach ($run_nos as $data)
+                                    <option value="{{ $data->run_name }}">
+                                        {{ $data->run_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class=" table table-bordered table-striped table-hover datatable datatable-Production">
+                <table  id="dataTable" class=" table table-bordered table-striped table-hover datatable datatable-Production">
                     <thead>
                         <tr>
                             <th style="width:20px;">
@@ -142,47 +173,8 @@
 
 
 $(function() {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('team_delete')
-                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-                let deleteButton = {
-                    text: deleteButtonTrans,
-                    url: "{{ route('admin.transactions.massDestroy') }}",
-                    className: 'btn-danger',
-                    action: function(e, dt, node, config) {
-                        var ids = $.map(dt.rows({
-                            selected: true
-                        }).nodes(), function(entry) {
-                            return $(entry).data('entry-id')
-                        });
-
-                        if (ids.length === 0) {
-                            alert('{{ trans('global.datatables.zero_selected') }}')
-
-                            return
-                        }
-
-                        if (confirm('{{ trans('global.areYouSure') }}')) {
-                            $.ajax({
-                                    headers: {
-                                        'x-csrf-token': _token
-                                    },
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        _method: 'DELETE'
-                                    }
-                                })
-                                .done(function() {
-                                    location.reload()
-                                })
-                        }
-                    }
-                }
-                dtButtons.push(deleteButton)
-            @endcan
-            $.extend(true, $.fn.dataTable.defaults, {
+    var table = $('#dataTable').DataTable({
+                searching: true,
                 order: [
                     [0, 'asc']
                 ],
@@ -193,16 +185,26 @@ $(function() {
                     targets: 0
                 }]
             });
-            $('.datatable-Production:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+
+            $('#search_hospital').on('keyup', function() {
+                table.column(2).search(this.value).draw();
             });
-        })
+
+            $('#asset_id').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(6) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
+            $('#run_no').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(11) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
     // setTimeout(function() {
     //     location.reload();
     // }, 10000); // 5000 milliseconds = 5 seconds
+});
 </script>
 @endsection

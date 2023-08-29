@@ -15,9 +15,13 @@ class ProductionsController extends Controller
     {
         abort_if(Gate::denies('production_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
         $productions = Production::all()->where("status",1)->where("cancelled",'NO');
 
-        return view('admin.productions.index', compact('productions'));
+        return view('admin.productions.index', compact('productions','assets','run_nos'));
     }
 
     public function edit(Production $production)
@@ -42,7 +46,7 @@ class ProductionsController extends Controller
 
     public function update(UpdateProductionRequest $request, Production $production)
     {
-        
+
         // if (!empty($request->expiry_time)) {
         //Format Time with AM/PM
         // $expiry_time = Carbon::createFromFormat('H:i', $request->expiry_time)->format('h:i A');

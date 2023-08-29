@@ -4,13 +4,15 @@
         <div class="card-header d-flex justify-content-between">
             <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
             <div class="row">
+
                 <table>
                     <tr>
                         <td>
-                            <input class="form-control asset" type="search" id="search_hospital" placeholder="Search by Hospital...">
+                            <input class="clear-field form-control asset" style="width:400px;" type="search"
+                                id="search_hospital" placeholder="Search by Hospital...">
                         </td>
                         <td>
-                            <select class="form-control asset" id="asset_id" style="width:250px;">
+                            <select class="clear-field form-control asset" id="asset_id" style="width:200px;">
                                 <option value="" disabled selected>Select Isotope</option>
                                 <option value="">Select All</option>
                                 @foreach ($assets as $data)
@@ -21,7 +23,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control asset" id="run_no" style="width:250px;">
+                            <select class="clear-field form-control asset" id="run_no" style="width:200px;">
                                 <option value="" disabled selected>Select Run #</option>
                                 <option value="">Select All</option>
                                 @foreach ($run_nos as $data)
@@ -30,6 +32,13 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </td>
+                        <td>
+                            <input type="text" class="clear-field form-control dateRangePicker" style="width:200px;"
+                                id="dateRangePicker" placeholder="Select date range">
+                        </td>
+                        <td>
+                            <button class="form-control clear" id="clearBtn">Clear</button>
                         </td>
                     </tr>
                 </table>
@@ -138,8 +147,8 @@
                                             <img src="{{ asset('img/yellow-warning.png') }}" style="width:30px;height:30px;" alt="Image">
                                         @elseif ($calibrationDateTime < $currentDateTime && $transaction->status == 1)
                                         <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
-                                            alt="Image">                                        
-                                    @else    
+                                            alt="Image">
+                                    @else
                                         @endif
                                     </div>
                                 </td>
@@ -171,6 +180,11 @@
 @section('scripts')
     @parent
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css">
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
+
     <script>
         //Datatables
         $(document).ready(function() {
@@ -185,6 +199,12 @@
                     className: '',
                     targets: 0
                 }]
+            });
+
+            $('#clearBtn').on('click', function() {
+                $('.clear-field').val('');
+                $('#dateRangePicker').val('');
+                table.search('').columns().search('').draw();
             });
 
             $('#search_hospital').on('keyup', function() {
@@ -202,6 +222,43 @@
                 table.column(10) // Replace '1' with the index of the column you want to filter
                     .search(selectedValue)
                     .draw();
+            });
+
+            // Initialize the date range picker
+            // $('#dateRangePicker').daterangepicker({
+            //     opens: 'right', // or 'right'
+            //     startDate: moment(),
+            //     endDate: moment().add(7, 'days'),
+            //     ranges: {
+            //         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            //         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            //         'This Month': [moment().startOf('month'), moment().endOf('month')],
+            //         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+            //             'month').endOf('month')]
+            //     }
+            // });
+            $('#dateRangePicker').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+
+            // Apply date filter to the DataTable
+            $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                const startDate = picker.startDate.format('YYYY-MM-DD');
+                const endDate = picker.endDate.format('YYYY-MM-DD');
+                const dateRange = startDate + ' - ' + endDate;
+
+                table.columns(9).search(dateRange).draw();
+            });
+
+            // Clear filter and input when 'Clear' is clicked
+            $('#dateRangePicker').on('cancel.daterangepicker', function() {
+                $(this).val('');
+                table.column(9).search('').draw();
             });
         });
     </script>

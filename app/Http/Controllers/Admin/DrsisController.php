@@ -15,12 +15,21 @@ class DrsisController extends Controller
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $drsis = Drsi::join('hospitals', 'transactions.hospital_id', '=', 'hospitals.id')
-        ->where('transactions.status', 1)
-        ->distinct('hospitals.hospital')
-        ->pluck('hospitals.hospital','hospitals.id');
 
-        return view('admin.drsis.index', compact('drsis'));
+        $productions = Production::all()->where("status",1);
+
+        $hospitals = Hospital::all();
+
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+        // $drsis = Drsi::join('hospitals', 'transactions.hospital_id', '=', 'hospitals.id')
+        // ->where('transactions.status', 1)
+        // ->distinct('hospitals.hospital')
+        // ->pluck('hospitals.hospital','hospitals.id');
+
+        return view('admin.drsis.index', compact('productions','assets','run_nos','hospitals'));
     }
 
     public function wip()

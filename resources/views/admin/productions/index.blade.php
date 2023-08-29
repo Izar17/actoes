@@ -4,13 +4,15 @@
         <div class="card-header d-flex justify-content-between">
             <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
             <div class="row">
+
                 <table>
                     <tr>
                         <td>
-                            <input class="form-control asset" type="search" id="search_hospital" placeholder="Search by Hospital...">
+                            <input class="clear-field form-control asset" style="width:400px;" type="search"
+                                id="search_hospital" placeholder="Search by Hospital...">
                         </td>
                         <td>
-                            <select class="form-control asset" id="asset_id" style="width:250px;">
+                            <select class="clear-field form-control asset" id="asset_id" style="width:200px;">
                                 <option value="" disabled selected>Select Isotope</option>
                                 <option value="">Select All</option>
                                 @foreach ($assets as $data)
@@ -21,7 +23,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control asset" id="run_no" style="width:250px;">
+                            <select class="clear-field form-control asset" id="run_no" style="width:200px;">
                                 <option value="" disabled selected>Select Run #</option>
                                 <option value="">Select All</option>
                                 @foreach ($run_nos as $data)
@@ -30,6 +32,13 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </td>
+                        <td>
+                            <input type="text" class="clear-field form-control dateRangePicker" style="width:200px;"
+                                id="dateRangePicker" placeholder="Select date range">
+                        </td>
+                        <td>
+                            <button class="form-control clear" id="clearBtn">Clear</button>
                         </td>
                     </tr>
                 </table>
@@ -169,42 +178,86 @@
 @endsection
 @section('scripts')
 @parent
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css">
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
+
 <script>
+    //Datatables
+    $(document).ready(function() {
+        var table = $('#dataTable').DataTable({
+            searching: true,
+            order: [
+                [0, 'asc']
+            ],
+            pageLength: 100,
+            columnDefs: [{
+                orderable: true,
+                className: '',
+                targets: 0
+            }]
+        });
+
+        $('#clearBtn').on('click', function() {
+            $('.clear-field').val('');
+            $('#dateRangePicker').val('');
+            table.search('').columns().search('').draw();
+        });
+
+        $('#search_hospital').on('keyup', function() {
+            table.column(2).search(this.value).draw();
+        });
+
+        $('#asset_id').on('change', function() {
+            var selectedValue = $(this).val();
+            table.column(6) // Replace '1' with the index of the column you want to filter
+                .search(selectedValue)
+                .draw();
+        });
+        $('#run_no').on('change', function() {
+            var selectedValue = $(this).val();
+            table.column(11) // Replace '1' with the index of the column you want to filter
+                .search(selectedValue)
+                .draw();
+        });
+
+        // Initialize the date range picker
+        // $('#dateRangePicker').daterangepicker({
+        //     opens: 'right', // or 'right'
+        //     startDate: moment(),
+        //     endDate: moment().add(7, 'days'),
+        //     ranges: {
+        //         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        //         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        //         'This Month': [moment().startOf('month'), moment().endOf('month')],
+        //         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+        //             'month').endOf('month')]
+        //     }
+        // });
+        $('#dateRangePicker').daterangepicker({
+            opens: 'left',
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
 
 
-$(function() {
-    var table = $('#dataTable').DataTable({
-                searching: true,
-                order: [
-                    [0, 'asc']
-                ],
-                pageLength: 100,
-                columnDefs: [{
-                    orderable: true,
-                    className: '',
-                    targets: 0
-                }]
-            });
+        // Apply date filter to the DataTable
+        $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+            const startDate = picker.startDate.format('YYYY-MM-DD');
+            const endDate = picker.endDate.format('YYYY-MM-DD');
+            const dateRange = startDate + ' - ' + endDate;
 
-            $('#search_hospital').on('keyup', function() {
-                table.column(2).search(this.value).draw();
-            });
+            table.columns(10).search(dateRange).draw();
+        });
 
-            $('#asset_id').on('change', function() {
-                var selectedValue = $(this).val();
-                table.column(6) // Replace '1' with the index of the column you want to filter
-                    .search(selectedValue)
-                    .draw();
-            });
-            $('#run_no').on('change', function() {
-                var selectedValue = $(this).val();
-                table.column(11) // Replace '1' with the index of the column you want to filter
-                    .search(selectedValue)
-                    .draw();
-            });
-    // setTimeout(function() {
-    //     location.reload();
-    // }, 10000); // 5000 milliseconds = 5 seconds
-});
+        // Clear filter and input when 'Clear' is clicked
+        $('#dateRangePicker').on('cancel.daterangepicker', function() {
+            $(this).val('');
+            table.column(10).search('').draw();
+        });
+    });
 </script>
 @endsection

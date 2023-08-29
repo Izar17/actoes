@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Gate;
-use App\Transaction;
+use App\{Transaction,Asset,Hospital,RunNumber};
 use Symfony\Component\HttpFoundation\Response;
 
 class CancelledController extends Controller
@@ -16,6 +15,12 @@ class CancelledController extends Controller
 
         $transactions = Transaction::all()->where("cancelled",'YES');
 
-        return view('admin.cancelled.index', compact('transactions'));
+        $hospitals = Hospital::all();
+
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+        return view('admin.cancelled.index', compact('transactions','assets','run_nos','hospitals'));
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateDrsiRequest;
 use Illuminate\Http\Request;
-use App\{Hospital, Asset, RunNumber, Transaction};
+use App\{Hospital, Asset, RunNumber, Transaction, Drsi};
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -111,5 +112,29 @@ class PrintDrsiController extends Controller
 
 
         return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions'));
+    }
+
+
+
+    public function update(UpdateDrsiRequest $request)
+    {
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+        $hospitals = Hospital::all();
+
+        foreach ($request->item as $key => $items) {
+            foreach ($request->item as $key => $value) {
+                $data = array(
+                    'dr_no'=>$request->dr_no[$key],
+                    'invoice_no'=>$request->invoice_no[$key],
+                    'price'=>$request->price[$key],
+                );
+                Drsi::where('id',$request->item[$key])
+                ->update($data);
+          }
+        }
+        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos'));
     }
 }

@@ -202,11 +202,11 @@ return [
     'drsi'               => [
         'title'          => 'DR/SI',
         'title_singular' => 'DR/SI',
-        'hospital'          => 'Pending Hospitals',
-        'hospital_singular' => 'Pending Hospital',
+        'hospital'          => 'View Dr/Si',
+        'hospital_singular' => 'DR/SI',
         'print'          => 'Print DR/SI',
         'dr'          => 'Cancelled DR',
-        'si'          => 'Cancelled Invoice',
+        'si'          => 'Cancelled SI',
     ],
     'cancel'             => [
         'title'          => 'Cancelled Orders',

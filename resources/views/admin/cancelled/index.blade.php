@@ -2,8 +2,49 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <span>{{ trans('cruds.cancel.title_singular') }} {{ trans('global.list') }}</span>
+            <span>{{ trans('cruds.cancel.title') }} {{ trans('global.list') }}</span>
+            <div class="row">
+
+                <table>
+                    <tr>
+                        <td>
+                            <input class="clear-field form-control asset" style="width:400px;" type="search"
+                                id="search_hospital" placeholder="Search by Hospital...">
+                        </td>
+                        <td>
+                            <select class="clear-field form-control asset" id="asset_id" style="width:200px;">
+                                <option value="" disabled selected>Select Isotope</option>
+                                <option value="">Select All</option>
+                                @foreach ($assets as $data)
+                                    <option value="{{ $data->name }}">
+                                        {{ $data->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select class="clear-field form-control asset" id="run_no" style="width:200px;">
+                                <option value="" disabled selected>Select Run #</option>
+                                <option value="">Select All</option>
+                                @foreach ($run_nos as $data)
+                                    <option value="{{ $data->run_name }}">
+                                        {{ $data->run_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="clear-field form-control dateRangePicker" style="width:200px;"
+                                id="dateRangePicker" placeholder="Select date range">
+                        </td>
+                        <td>
+                            <button class="form-control clear" id="clearBtn">Clear</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
+
 
         <div class="card-body">
             <div class="table-responsive">
@@ -130,93 +171,19 @@
 @endsection
 @section('scripts')
     @parent
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css">
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
+
     <script>
-        function selectAll() {
-
-            // Clear existing DataTable rows
-            $('#dataTable').DataTable().clear().draw();
-            var currentDateTime = new Date().toISOString();
-
-            // Add all transactions to DataTable
-            @foreach ($transactions as $transaction)
-
-                $('#dataTable').DataTable().row.add([
-                    "{{ $transaction->id }} {{ $transaction->created_at }}",
-                    "{{ $transaction->hospital->hospital }}",
-                    "{{ $transaction->asset_id }}",
-                    "{{ $transaction->remarks }}",
-                    "{{ $transaction->item }}",
-                    "{{ $transaction->orderform_no }}",
-                    "{{ $transaction->activity_mci }}",
-                    "{{ $transaction->activity_mbq }}",
-                    "{{ $transaction->discrepancy }}",
-                    "{{ $transaction->unit }}",
-                    "{{ $transaction->particular }}",
-                    "{{ $transaction->patient }}",
-                    "",
-                    "{{ $transaction->lead_pot }}",
-                    "{{ $transaction->max_doserate }}",
-                ]).draw(false);
-            @endforeach
-
-            return;
-        }
-
-        //Onchange Asset
+        //Datatables
         $(document).ready(function() {
-            $('#asset_id').on('change', function() {
-                var idAsset = this.value;
-                // Check if "Select All" option is chosen
-                if (idAsset === "") {
-                    location.reload();
-                }
-            });
-        });
-
-        $(function() {
-            let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('team_delete')
-                let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-                let deleteButton = {
-                    text: deleteButtonTrans,
-                    url: "{{ route('admin.transactions.massDestroy') }}",
-                    className: 'btn-danger',
-                    action: function(e, dt, node, config) {
-                        var ids = $.map(dt.rows({
-                            selected: true
-                        }).nodes(), function(entry) {
-                            return $(entry).data('entry-id')
-                        });
-
-                        if (ids.length === 0) {
-                            alert('{{ trans('global.datatables.zero_selected') }}')
-
-                            return
-                        }
-
-                        if (confirm('{{ trans('global.areYouSure') }}')) {
-                            $.ajax({
-                                    headers: {
-                                        'x-csrf-token': _token
-                                    },
-                                    method: 'POST',
-                                    url: config.url,
-                                    data: {
-                                        ids: ids,
-                                        _method: 'DELETE'
-                                    }
-                                })
-                                .done(function() {
-                                    location.reload()
-                                })
-                        }
-                    }
-                }
-                dtButtons.push(deleteButton)
-            @endcan
-            $.extend(true, $.fn.dataTable.defaults, {
+            var table = $('#dataTable').DataTable({
+                searching: true,
                 order: [
-                    [0, 'desc']
+                    [0, 'asc']
                 ],
                 pageLength: 100,
                 columnDefs: [{
@@ -225,17 +192,66 @@
                     targets: 0
                 }]
             });
-            $('.datatable-Transaction:not(.ajaxTable)').DataTable({
-                buttons: dtButtons
-            })
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-        })
 
-        // setTimeout(function() {
-        //     location.reload();
-        // }, 5000); // 5000 milliseconds = 5 seconds
+            $('#clearBtn').on('click', function() {
+                $('.clear-field').val('');
+                $('#dateRangePicker').val('');
+                table.search('').columns().search('').draw();
+            });
+
+            $('#search_hospital').on('keyup', function() {
+                table.column(1).search(this.value).draw();
+            });
+
+            $('#asset_id').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(4) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
+            $('#run_no').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(9) // Replace '1' with the index of the column you want to filter
+                    .search(selectedValue)
+                    .draw();
+            });
+
+            // Initialize the date range picker
+            // $('#dateRangePicker').daterangepicker({
+            //     opens: 'right', // or 'right'
+            //     startDate: moment(),
+            //     endDate: moment().add(7, 'days'),
+            //     ranges: {
+            //         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            //         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            //         'This Month': [moment().startOf('month'), moment().endOf('month')],
+            //         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+            //             'month').endOf('month')]
+            //     }
+            // });
+            $('#dateRangePicker').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+
+
+            // Apply date filter to the DataTable
+            $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+                const startDate = picker.startDate.format('YYYY-MM-DD');
+                const endDate = picker.endDate.format('YYYY-MM-DD');
+                const dateRange = startDate + ' - ' + endDate;
+
+                table.columns(8).search(dateRange).draw();
+            });
+
+            // Clear filter and input when 'Clear' is clicked
+            $('#dateRangePicker').on('cancel.daterangepicker', function() {
+                $(this).val('');
+                table.column(8).search('').draw();
+            });
+        });
     </script>
 @endsection

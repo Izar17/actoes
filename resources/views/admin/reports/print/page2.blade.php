@@ -152,5 +152,7 @@
                 @endif
             @endforeach
         </p>
+        <br>
+            <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
     </div>
 </div>

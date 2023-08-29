@@ -23,6 +23,13 @@ class DrsisController extends Controller
         return view('admin.drsis.index', compact('drsis'));
     }
 
+    public function wip()
+    {
+        abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.drsis.wip');
+    }
+
     public function edit(Drsi $drsis, $ida)
     {
         abort_if(Gate::denies('drsi_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -40,13 +47,13 @@ class DrsisController extends Controller
     {
         foreach ($request->item as $key => $items) {
             foreach ($request->item as $key => $value) {
-                $data = array(                 
+                $data = array(
                     'dr_no'=>$request->dr_no[$key],
-                    'invoice_no'=>$request->invoice_no[$key],  
-                    'price'=>$request->price[$key],                   
-                );         
+                    'invoice_no'=>$request->invoice_no[$key],
+                    'price'=>$request->price[$key],
+                );
                 Drsi::where('id',$request->item[$key])
-                ->update($data); 
+                ->update($data);
           }
         }
         return redirect()->route('admin.drsis.edit', $request->hospital);

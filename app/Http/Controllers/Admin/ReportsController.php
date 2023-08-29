@@ -8,7 +8,6 @@ use App\{Hospital, Asset, RunNumber, Transaction};
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class ReportsController extends Controller
 {
     public function index()
@@ -28,7 +27,11 @@ class ReportsController extends Controller
     public function print(Request $request)
     {
         abort_if(Gate::denies('report_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        if ($request->asset_id == 2) {
+            $perPage = 10;
+        } else {
+            $perPage = 1;
+        }
         if ($request->rx_number != '') {
             $transactions = Transaction::where("rx_no", $request->rx_number)
                 ->where("asset_id", $request->asset_id)->get();
@@ -75,7 +78,7 @@ class ReportsController extends Controller
                     break;
 
                 default:
-                    $transactions = Transaction::where("asset_id", $request->asset_id)->simplePaginate(1);
+                    $transactions = Transaction::where("asset_id", $request->asset_id)->simplePaginate($perPage);
                     break;
             }
         }

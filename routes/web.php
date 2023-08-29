@@ -63,6 +63,7 @@ Auth::routes(['register' => false]);
     Route::resource('productions', 'ProductionsController');
 
     // Drsis
+    Route::get('drsis/wip', 'DrsisController@wip')->name('drsis.wip');
     Route::resource('drsis', 'DrsisController');
     Route::get('printdrsi/searchDrsi', 'PrintDrsiController@searchDrsi')->name('printdrsi.searchDrsi');
     Route::resource('printdrsi', 'PrintDrsiController');

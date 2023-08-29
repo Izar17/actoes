@@ -1,5 +1,4 @@
 <link href="{{ asset('css/frame.css') }}" rel="stylesheet" type="text/css" />
-
 <div class="container">
     <div class="content">
         <p style="font-family: Calibri;">
@@ -253,7 +252,7 @@
                     </table>
                 @endif
             @endforeach
-                <div style="text-align: center;">{{ $transactions->links() }}</div>
+                <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
         </p>
     </div>
 </div>

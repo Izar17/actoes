@@ -130,7 +130,6 @@ class PrintDrsiController extends Controller
                     'invoice_no'=>$request->invoice_no[$key],
                     'price'=>$request->price[$key],
                     'delivery_charge'=>$request->delivery_charge[$key],
-                    'drsi_cancel'=>$request->drsi_cancel[$key],
                 );
                 Drsi::where('id',$request->item[$key])
                 ->update($data);

@@ -202,7 +202,7 @@ return [
     'drsi'               => [
         'title'          => 'DR/SI',
         'title_singular' => 'DR/SI',
-        'hospital'          => 'View Dr/Si',
+        'hospital'          => 'Pending DR/SI',
         'hospital_singular' => 'DR/SI',
         'print'          => 'Print DR/SI',
         'dr'          => 'Cancelled DR',

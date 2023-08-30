@@ -92,7 +92,16 @@
                         <div class="card-body">
                             <table height="198px">
                                 <tr>
-                                    <td></td>
+                                    <td width="250px"><label class="required" for="dr_no">DR Number</label>
+                                        <input type="text" class="form-control dr_no" id="dr_no"
+                                            name="dr_no">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="250px"><label class="required" for="invoice_no">SI Number</label>
+                                        <input type="text" class="form-control invoice_no" id="invoice_no"
+                                            name="invoice_no">
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -244,7 +253,7 @@
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
                                 <button class="btn btn-danger" type="submit">
-                                    {{ trans('global.save_print') }}
+                                    {{ trans('global.save') }}
                                 </button>
                             </div>
                         </div>

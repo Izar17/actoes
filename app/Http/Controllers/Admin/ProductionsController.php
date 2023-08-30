@@ -57,6 +57,9 @@ class ProductionsController extends Controller
         // }
         // $production->update(['expiry_time' => $expiry_time] + ['time_dispensed' => $time_dispensed] + $request->all());
         $production->update($request->all());
+        
+        // Set a flash message
+        session()->flash('success', 'Form submitted successfully!');
 
         return redirect()->route('admin.productions.index');
     }

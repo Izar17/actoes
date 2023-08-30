@@ -72,6 +72,13 @@ class TransactionsController extends Controller
     public function store(StoreTransactionRequest $request)
     {
         foreach ($request->orderform_no as $key => $orderform_no) {
+
+            $currentDateTime = Carbon::now();
+            
+            // Format the datetime as a string
+            $formattedDateTime = $currentDateTime->format('Y-m-d H:i:s');
+
+
             //Get Month in Current Date
             $monthDate = Carbon::now();
             $monthAbbreviation = $monthDate->format('M');
@@ -197,7 +204,7 @@ class TransactionsController extends Controller
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 
-        return redirect()->route('admin.transactions.show',$request->hospital_id);
+        return redirect()->route('admin.transactions.show',$formattedDateTime);
 
     }
 
@@ -242,7 +249,7 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('order_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transactions = Transaction::all()->where("hospital_id",$ida);
+        $transactions = Transaction::all()->where("created_at",$ida);
 
         return view('admin.transactions.show', compact('transactions','ida'));
     }

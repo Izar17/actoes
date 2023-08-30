@@ -13,7 +13,6 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="hospital_id">{{ trans('cruds.transaction.fields.hospital') }}</label>
-
                             @foreach ($transactions as $hosp => $transaction)
                             @endforeach
                             <input type="text" class="form-control hospital"

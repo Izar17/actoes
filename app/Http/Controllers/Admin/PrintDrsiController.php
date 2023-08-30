@@ -111,7 +111,7 @@ class PrintDrsiController extends Controller
         }
 
 
-        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions'));
+        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions','request'));
     }
 
 

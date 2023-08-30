@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 @section('content')
+@if(session()->has('success'))
+    <div class="alert alert-success" id="success-message">
+        {{ session('success') }}
+    </div>
+@endif
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <span>{{ trans('cruds.transaction.order_title_singular') }} {{ trans('global.list') }}</span>
@@ -258,6 +263,20 @@
             $(this).val('');
             table.column(10).search('').draw();
         });
+
+
+        
+    });
+
+     // Wait for the document to be ready
+     document.addEventListener('DOMContentLoaded', function() {
+        // Get the success message element
+        var successMessage = document.getElementById('success-message');
+        
+        // Hide the success message after 5 seconds (5000 milliseconds)
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+        }, 5000); // Adjust the time interval as needed
     });
 </script>
 @endsection

@@ -41,7 +41,6 @@ class ReportsController extends Controller
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("run_no", $request->run_no)
                         ->where("asset_id", $request->asset_id)
-                        ->where("status","!=",1)
                         ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
                         ->simplePaginate($perPage);
                     break;
@@ -50,38 +49,41 @@ class ReportsController extends Controller
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("asset_id", $request->asset_id)
                         ->where("run_no", $request->run_no)
-                        ->where("status","!=",1)
-                        ->simplePaginate($perPage);
+                        ->where("status","!=",1);
                     break;
 
                 case $request->hospital_id != '' && $request->run_no == '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id == '' && $request->run_no != '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("run_no", $request->run_no)
                         ->where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id == '' && $request->run_no == '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id != '' && $request->run_no == '' && ($request->startDate == '' || $request->endDate == ''):
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
-                        ->where("asset_id", $request->asset_id)->where("status","!=",1)->simplePaginate($perPage);
+                        ->where("asset_id", $request->asset_id)->simplePaginate($perPage);
                     break;
 
                 default:
-                    $transactions = Transaction::where("asset_id", $request->asset_id)->where("status","!=",1)->simplePaginate($perPage);
-                    break;
+                if($request->printField <= 2){
+                    $transactions = Transaction::where("asset_id", $request->asset_id)->simplePaginate($perPage);
+                } else {
+                    $transactions = Transaction::where("asset_id", $request->asset_id)->get();
+                }
+                break;
             }
         }
 

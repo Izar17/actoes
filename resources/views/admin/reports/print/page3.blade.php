@@ -104,6 +104,7 @@
                         <td align="center"><strong>MBq</strong></td>
                     </tr>
 
+
                     @foreach ($transactions as $key => $transaction)
                         <tr>
                             <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
@@ -134,7 +135,7 @@
                     <tr>
                         <td width="19%" align="left" scope="col" style="font-size:12px;"></td>
                         <td colspan="2" scope="col">
-                           
+
                         </td>
                         <td width="13%" align="left" scope="col" style="font-size:12px;">
                                 </th>
@@ -154,7 +155,7 @@
                                 Dispensed:</strong></td>
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center"><strong>
-                                @php 
+                                @php
                                 $dateString = "$transaction->calibration_date";
                                 $timestamp = strtotime($dateString);
                                 $formattedDate = date("l, F j, Y", $timestamp);
@@ -224,28 +225,28 @@
                                 <tr>
                                     <td width="31%" align="left" scope="col"><strong>Red</strong></td>
                                     <td width="30%" align="left" scope="col"><strong>(R)</strong></td>
-                                    <td scope="col"> 
+                                    <td scope="col">
                                         {{-- QTY --}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong> Blue</strong></td>
                                     <td align="left" scope="col"><strong>(B)</strong></td>
-                                    <td scope="col"> 
+                                    <td scope="col">
                                         {{-- QTY --}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Silver</strong></td>
                                     <td align="left" scope="col"><strong>(S)</strong></td>
-                                    <td scope="col"> 
+                                    <td scope="col">
                                         {{-- QTY --}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Gray</strong></td>
                                     <td align="left" scope="col"><strong>(Gy)</strong></td>
-                                    <td scope="col"> 
+                                    <td scope="col">
                                         {{-- QTY --}}
                                     </td>
                                 </tr>
@@ -330,7 +331,7 @@
                                 Dispensed:</strong></td>
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center"><strong>
-                            @php 
+                            @php
                             $dateString = "$transaction->calibration_date";
                             $timestamp = strtotime($dateString);
                             $formattedDate = date("l, F j, Y", $timestamp);
@@ -361,7 +362,7 @@
                                 by:</strong></td>
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center">
-                            
+
                         </td>
                     </tr>
 
@@ -449,7 +450,7 @@
                                     <td align="center" scope="col"
                                         style="font-size:12px; font-weight:normal; border-bottom:1pt solid black"><span
                                             style="font-size:12px; font-weight:normal; border-bottom:1pt solid black">
-                                            
+
                                         </span></td>
                                 </tr>
                                 <tr>

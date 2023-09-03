@@ -39,9 +39,9 @@
                                 name="hospital_id" id="hospital_id" required>
                                 <option value="">Select Hospital</option>
                                 @foreach ($hospitals as $id => $hospital)
-                                <option value="{{ $hospital->id }}">
-                                    {{ $hospital->hospital }}
-                                </option>
+                                    <option value="{{ $hospital->id }}">
+                                        {{ $hospital->hospital }}
+                                    </option>
                                 @endforeach
                             </select>
                             @if ($errors->has('hospital'))
@@ -61,31 +61,6 @@
                     </div>
                 </div>
 
-                <div id="show1" class="myDiv">
-
-                </div>
-                <div id="show2" class="myDiv">
-                    <strong>I-131 (RAI)</strong>
-                </div>
-                <div id="show3" class="myDiv">
-                    <strong>Tl-201</strong>
-                </div>
-                <div id="show4" class="myDiv">
-                    <strong>Y-90</strong>
-                </div>
-                <div id="show5" class="myDiv">
-                    <strong>MIBG (I-131)</strong>
-                </div>
-                <div id="show6" class="myDiv">
-                    <strong>Mo99/Tc99m Generator</strong>
-                </div>
-                <div id="show7" class="myDiv">
-                    <strong>RadioImmunoassay (RIA)</strong>
-                </div>
-                <div id="show8" class="myDiv">
-                    <strong>MISC</strong>
-                </div>
-
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="table-responsive">
@@ -93,12 +68,19 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">#</th>
-                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                        <th class="col-md-2"><span
+                                                id="unit">{{ trans('cruds.transaction.fields.asset_product') }}
+                                            </span></th>
+                                        <th class="col-md-1"><span
+                                                id="act">{{ trans('cruds.transaction.fields.activity_mci') }}</span>
+                                        </th>
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
                                         <th style="width: 80px">{{ trans('cruds.transaction.fields.volume') }}</th>
-                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                        <th class="col-md-2"><span
+                                                id="uom_patient">{{ trans('cruds.transaction.fields.patient') }}</span>
+                                        </th>
+                                        <th class="col-md-1"><span
+                                                id="cal_date">{{ trans('cruds.transaction.fields.calibration_date') }}</span>
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
@@ -189,6 +171,37 @@
             ++rowId;
             $("#show_save").show();
             var idAsset = document.getElementById("asset_id").value;
+
+            //Dynamic Table Head Label
+            var act = document.getElementById('act');
+            var unit = document.getElementById('unit');
+            var cal_date = document.getElementById('cal_date');
+            var uom_patient = document.getElementById('uom_patient');
+            // Update the dynamic label based on the selected option
+            switch (idAsset) {
+                case '6':
+                    unit.innerText = 'Kit';
+                    cal_date.innerText = 'Date Needed/Gen #';
+                    act.innerText = 'Activity GBq';
+                    break;
+                case '8':
+                    act.innerText = 'Qty';
+                    cal_date.innerText = 'Date Needed/Gen #';
+                    uom_patient.innerText = 'Unit of Measurement';
+                    break;
+                case '7':
+                    cal_date.innerText = 'Calibration Month';
+                    break
+                default:
+                    act.innerText = 'Activity mCi';
+                    unit.innerText = 'Unit';
+                    cal_date.innerText = 'Calibration Date/Time';
+                    uom_patient.innerText = 'Patient';
+                    break;
+            }
+
+
+
             $("#asset_product_id" + rowId).html('');
             $.ajax({
                 url: "{{ url('api/fetch-product') }}",
@@ -208,32 +221,59 @@
                             value
                             .id + '">' + value.product_name + '</option>');
                     });
-                    const timeInput = document.getElementById('calibration_time');
+
+                    //Enabled Disabled the table column field
+                    const timeInput = document.getElementById('calibration_time' + rowId);
                     const procedure = document.getElementById("procedure" + rowId);
                     const volume = document.getElementById("volume" + rowId);
+                    const patient = document.getElementById("patient" + rowId);
+                    const calibration_date = document.getElementById("calibration_date" + rowId);
+                    const calibration_time = document.getElementById("calibration_time" + rowId);
                     if (idAsset == 2) {
                         timeInput.value = '12:00 PM';
                     }
-                    
-                    if (idAsset == 1) {
-                        // If 'readonly' attribute is already set, remove it and make the field editable
-                        procedure.removeAttribute('readonly');
-                        procedure.setAttribute('required', 'required');
-                        volume.removeAttribute('readonly');
-                    } else {
-                        procedure.value = '';
-                        // If 'readonly' attribute is not set, add it and make the field read-only
-                        procedure.setAttribute('readonly', 'readonly');
-                        procedure.removeAttribute('required');
-                        $("#procedure" + rowId).html('');
-                        volume.value = '';
-                        // If 'readonly' attribute is not set, add it and make the field read-only
-                        volume.setAttribute('readonly', 'readonly');
-                        volume.removeAttribute('required');
-                        $("#volume" + rowId).html('');
+
+                    switch (idAsset) {
+                        case '1':
+                            procedure.removeAttribute('readonly');
+                            procedure.setAttribute('required', 'required');
+                            volume.removeAttribute('readonly');
+                            break;
+                        case '7':
+                            calibration_date.type = 'text';
+                            calibration_time.type = 'hidden';
+                        case '6':
+                        case '8':
+                            procedure.value = '';
+                            procedure.setAttribute('readonly', 'readonly');
+                            procedure.removeAttribute('required');
+                            $("#procedure" + rowId).html('');
+                            volume.value = '';
+                            volume.setAttribute('readonly', 'readonly');
+                            volume.removeAttribute('required');
+                            $("#volume" + rowId).html('');
+                            if (idAsset != '8') {
+                                patient.value = '';
+                                patient.setAttribute('readonly', 'readonly');
+                                patient.removeAttribute('required');
+                                $("#patient" + rowId).html('');
+                            }
+                            break;
+                        default:
+                            if (idAsset != '5') {
+                                procedure.value = '';
+                                procedure.setAttribute('readonly', 'readonly');
+                                procedure.removeAttribute('required');
+                                $("#procedure" + rowId).html('');
+                            }
+                            volume.value = '';
+                            volume.setAttribute('readonly', 'readonly');
+                            volume.removeAttribute('required');
+                            $("#volume" + rowId).html('');
+                            break;
                     }
 
-                    $('#asset_product_id' + rowId).on('change', function() {
+                    $('#asset_product_id' + rowId).on('click', function() {
                         var idProduct = this.value;
                         $("#product_activity_id" + rowId).html('');
                         $.ajax({
@@ -320,14 +360,27 @@
                             name="volume[]" />
                     </td>
                     <td>
-                        <input type="text" name="patient[]" id="patient"
+                        <input type="text" name="patient[]" id="patient${rowIdx}"
                             list="patient_list_id" class="form-control patient" required>
                         <datalist id="patient_list_id"><option value="Confidential"></datalist>
                     </td>
                     <td>
-                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date"  min="{{ date('Y-m-d') }}" required/>
-                             
-                        <input type="text" name="calibration_time[]" id="calibration_time"
+                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date${rowIdx}"  min="{{ date('Y-m-d') }}" list="date_cal" required/>                           
+                        <datalist id="date_cal">
+                            <option value="January">January
+                            <option value="February">February
+                            <option value="March">March
+                            <option value="April">April
+                            <option value="May">May
+                            <option value="June">June
+                            <option value="July">July
+                            <option value="August">August
+                            <option value="September">September
+                            <option value="October">October
+                            <option value="November">November
+                            <option value="December">December
+                        </datalist>
+                        <input type="text" name="calibration_time[]" id="calibration_time${rowIdx}"
                             list="time_id" class="form-control patient" required>
                         <datalist id="time_id">
                             <option value="01:00">
@@ -363,9 +416,9 @@
                     <td><a href="javascript:void(0)" class="text-danger font-18 remove" title="Remove"><i class="fa fa-trash-o"></i></a></td>
                 </tr>`);
         }
-        
+
         //<input class="form-control calibration_time" type="time" value="12:00" name="calibration_time[]" id="calibration_time"/>
-                    
+
         //<input class="form-control activity_mci" style="width:100px" type="text" id="activity_mci" name="activity_mci[]">
         $("#tableOrder tbody").on("click", ".remove", function() {
             // Getting all the rows next to the row

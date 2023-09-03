@@ -53,17 +53,29 @@
                                 <th>
                                     {{ trans('cruds.transaction.fields.asset') }}
                                 </th>
+                                @if ( $transaction->asset_id == 6 )
+                                <th>
+                                    Kit
+                                </th>
+                                <th>
+                                    Activity GBq
+                                </th>
+                                <th style="width:130px;">
+                                    Date Needed | Gen #
+                                </th>
+                                @else
                                 <th>
                                     {{ trans('cruds.transaction.fields.asset_product') }}
                                 </th>
                                 <th>
                                     {{ trans('cruds.transaction.fields.activity_mci') }}
                                 </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.particular') }}
-                                </th>
                                 <th style="width:130px;">
                                     {{ trans('cruds.transaction.fields.calibration_date') }}
+                                </th>
+                                @endif
+                                <th>
+                                    {{ trans('cruds.transaction.fields.particular') }}
                                 </th>
                                 <th style="width:60px;">
                                     {{ trans('cruds.transaction.fields.run_no') }}
@@ -104,10 +116,6 @@
                                         {{ $transaction->activity_mci ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $transaction->activity_mci ?? '' }} mCi
-                                        {{ $transaction->asset_product->product_name ?? '' }}
-                                    </td>
-                                    <td>
                                         @php
                                             $calibrationDateTime = $transaction->calibration_date . ' ' . $transaction->calibration_time;
                                             $currentDateTime = now();
@@ -122,6 +130,10 @@
                                                     alt="Image">
                                             @endif
                                         </div>
+                                    </td>
+                                    <td>
+                                        {{ $transaction->activity_mci ?? '' }} mCi
+                                        {{ $transaction->asset_product->product_name ?? '' }}
                                     </td>
                                     <td>
                                         {{ $transaction->runNumber->run_name ?? '' }}

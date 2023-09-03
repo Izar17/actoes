@@ -5,7 +5,7 @@
             @foreach ($transactions as $key => $transaction)
                 {{-- Asset1 --}}
                 @if ($transaction->asset_id == 1 || $transaction->asset_id == 3)
-                    <table align="center" width="78%" border="0">
+                    <table align="center" style="margin-top:-25px;" width="79%" border="0">
                         <tr>
                             <td height="27" align="left" scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
@@ -27,7 +27,7 @@
                         </tr>
                         <tr>
                             <td height="26" scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->volume ?? '' }}&nbsp;ml</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->volume ?? '' }}&nbsp;</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
@@ -70,15 +70,17 @@
                             <td scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->patient ?? '' }}</b>
                             </td>
-                            <td colspan="2" scope="col"><b>&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b></td>
+                            <td colspan="2" scope="col">
+                                <b  style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b></td>
                         </tr>
                         <tr>
                             <td scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;&nbsp;<b>{{ $transaction->procedure1 ?? '' }}</b></td>
-                            <td scope="col"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b
-                                    style="font-size:12px; color:#f00; ">({{ $transaction->activity_mbq ?? '' }} MBq)</b><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
+                            <td><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b
+                                    style="font-size:12px; color:#f00; ">({{ $transaction->activity_mbq ?? '' }}
+                                    MBq)</b><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
@@ -89,7 +91,7 @@
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
                             </td>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
@@ -153,6 +155,15 @@
             @endforeach
         </p>
         <br>
+        <style>
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
+        </style>
+        <div class="no-print">
             <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
+        </div>
     </div>
 </div>

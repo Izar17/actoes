@@ -106,7 +106,7 @@
                             <td scope="col">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td height="29" scope="col">&nbsp;</td>
+                            <td height="17" scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
@@ -126,41 +126,33 @@
                             <td scope="col">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td scope="col">&nbsp;</td>
-                            <td scope="col">&nbsp;</td>
-                            <td scope="col">&nbsp;</td>
-                            <td scope="col">&nbsp;</td>
-                            <td scope="col">&nbsp;</td>
-                            <td scope="col">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td height="25" colspan="3" scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b>
+                            <td height="50" colspan="3" scope="col" style="font-size:14px;">
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b>
                             </td>
                             <td colspan="3" scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
-                            <td height="27" scope="col">&nbsp;</td>
+                            <td height="21" scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
                                 <b>&nbsp;&nbsp;&nbsp;{{ $transaction->patient ?? '' }}</b>
                             </td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->patient ?? '' }}</b>
                             </td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
-                            <td height="33" scope="col">&nbsp;</td>
+                            <td height="39" scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
@@ -170,14 +162,14 @@
                             <td scope="col">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td height="32" scope="col">&nbsp;</td>
+                            <td height="27" scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
                                 <b>&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b
                                     style="font-size:14px; color:#f00; ">({{ $transaction->activity_mbq ?? '' }}
                                     MBq)</b>
                             </td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
@@ -186,11 +178,11 @@
                                     MBq)</b>
                             </td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
-                            <td height="25" scope="col">&nbsp;</td>
+                            <td height="37" scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
                                 <b>&nbsp;&nbsp;&nbsp;{{ $transaction->procedure1 ?? '' }}</b>
                             </td>
@@ -233,7 +225,7 @@
                                 style="font-size:10px;font-weight:normal;">
                                 Activity:&nbsp;&nbsp;<b><u>{{ $transaction->particular ?? '' }}
                                         {{ $transaction->asset_product->product_name ?? '' }}</u></b><u> <strong
-                                        style="color:#f00;">ACTIVITY MBQ</strong></u></td>
+                                        style="color:#f00;">ACTIVITY MBq</strong></u></td>
                             <td colspan="2" align="left" style="font-size:10px;font-weight:normal;">Calibration
                                 Date:&nbsp;&nbsp;<b><u>{{ $transaction->calibration_date }}</u></b></td>
                         </tr>
@@ -254,6 +246,15 @@
             @endforeach
         </p>
         <br>
+        <style>
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
+        </style>
+        <div class="no-print">
             <div style="text-align: center;">{{ $transactions->withQueryString()->links() }}</div>
+        </div>
     </div>
 </div>

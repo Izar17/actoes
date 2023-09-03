@@ -75,16 +75,25 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">#</th>
-                                        <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                        @if ($transaction->asset_id == 6)
+                                            <th class="col-md-2">Kit</th>
+                                            <th class="col-md-1">Activity GBq</th>
+                                        @else
+                                            <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *
+                                            </th>
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                        @endif
                                         @if ($transaction->asset_id == 1)
-                                            {
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
                                             <th class="col-md-1">{{ trans('cruds.transaction.fields.volume') }}</th>
-                                            }
                                         @endif
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                        
+                                        @if ($transaction->asset_id == 6)
+                                        <th class="col-md-1">Date Needed | Gen #</th>
+                                        @else
+                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}</th>
+                                        @endif
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
@@ -119,7 +128,6 @@
                                             <input type="hidden" id="discrepancy" name="discrepancy" />
                                         </td>
                                         @if ($transaction->asset_id == 1)
-                                            {
                                             <td>
                                                 <input type="text" name="procedure1" id="procedure"
                                                     value="{{ $transaction->procedure1 }}" list="product_activity_ids"
@@ -133,11 +141,10 @@
                                                     <option value="N/A">
                                                 </datalist>
                                             </td>
-                                            }
                                         @endif
                                         <td>
                                             <input type="text" name="patient" id="patient" list="patient_list_id"
-                                                class="form-control patient" value="{{ $transaction->patient }}" required>
+                                                class="form-control patient" value="{{ $transaction->patient }}" @if ($transaction->asset_id == 6) readonly @else required @endif>
                                             <datalist id="patient_list_id">
                                                 <option value="Confidential">
                                             </datalist>
@@ -146,7 +153,7 @@
                                             <input class="form-control calibration_date" type="date"
                                                 value="{{ $transaction->calibration_date }}" name="calibration_date"
                                                 id="calibration_date" min="{{ date('Y-m-d') }}" required />
-                                            <input class="form-control calibration_time" type="time" pattern="[0-9]{2}:[0-9]{2}"
+                                            <input class="form-control calibration_time" type="text"
                                                 value="{{ substr($transaction->calibration_time, 0, 5) ?? '' }}"
                                                 name="calibration_time" id="calibration_time" />
                         </div>
@@ -165,7 +172,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" style="width: 150px" class="form-control remarks" id="remarks"
+                            <input type="text" class="form-control remarks" id="remarks"
                                 name="remarks" value="{{ $transaction->remarks }}" />
                         </td>
                         @can('create_transport')

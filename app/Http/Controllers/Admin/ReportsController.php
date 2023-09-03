@@ -41,6 +41,7 @@ class ReportsController extends Controller
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("run_no", $request->run_no)
                         ->where("asset_id", $request->asset_id)
+                        ->where("status","!=",1)
                         ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
                         ->simplePaginate($perPage);
                     break;
@@ -49,36 +50,37 @@ class ReportsController extends Controller
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("asset_id", $request->asset_id)
                         ->where("run_no", $request->run_no)
+                        ->where("status","!=",1)
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id != '' && $request->run_no == '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
                         ->where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id == '' && $request->run_no != '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("run_no", $request->run_no)
                         ->where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id == '' && $request->run_no == '' && ($request->startDate != '' || $request->endDate != ''):
                     $transactions = Transaction::where("asset_id", $request->asset_id)
-                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])
+                        ->whereBetween("calibration_date", [$request->startDate, $request->endDate])->where("status","!=",1)
                         ->simplePaginate($perPage);
                     break;
 
                 case $request->hospital_id != '' && $request->run_no == '' && ($request->startDate == '' || $request->endDate == ''):
                     $transactions = Transaction::where("hospital_id", $request->hospital_id)
-                        ->where("asset_id", $request->asset_id)->simplePaginate($perPage);
+                        ->where("asset_id", $request->asset_id)->where("status","!=",1)->simplePaginate($perPage);
                     break;
 
                 default:
-                    $transactions = Transaction::where("asset_id", $request->asset_id)->simplePaginate($perPage);
+                    $transactions = Transaction::where("asset_id", $request->asset_id)->where("status","!=",1)->simplePaginate($perPage);
                     break;
             }
         }
@@ -87,19 +89,19 @@ class ReportsController extends Controller
             case '1':
                 // Code for Form Page 1
                 return view('admin.reports.print.page1', compact('transactions'));
-
+                break;
             case '2':
                 // Code for Form Page 2
                 return view('admin.reports.print.page2', compact('transactions'));
-
+                break;
             case '3':
                 // Code for Form Page 3
                 return view('admin.reports.print.page3', compact('transactions'));
-
+                break;
             case '4':
                 // Code for Form Page 4
                 return view('admin.reports.print.page4', compact('transactions'));
-
+                break;
             // Add more cases if needed
             default:
                 break;

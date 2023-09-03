@@ -163,6 +163,7 @@ class TransactionsController extends Controller
 
 
 
+            if (isset($max_doserate)&& isset($doserates_meter)){
             $doserates = Doserate::select('max_doserate', 'doserate_m')
             ->where("asset_product_id",$request->item[$key])
             ->whereRaw('? BETWEEN CAST(lower_limit AS numeric) AND CAST(upper_limit AS numeric)',$activityMci)
@@ -170,6 +171,11 @@ class TransactionsController extends Controller
             foreach ($doserates as $doserate) {
                 $max_doserate = $doserate->max_doserate;
                 $doserates_meter = $doserate->doserate_m;
+            }
+            }
+            else{
+                $max_doserate = 0;
+                $doserates_meter =0;
             }
 
             //particular

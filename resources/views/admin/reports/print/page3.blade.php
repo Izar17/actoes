@@ -10,8 +10,7 @@
                         </style></b><br />
                     <p style="font-size:14px;">42 Montreal Street, Brgy E. Rodriguez Sr., Cubao, Quezon City,
                         Philippines<br />
-                        Tel no: (02) 8709-0185, (02) 8292-5570, Telefax no: (02) 8529-9311<br />Email:
-                        info@assurancecontrols.com
+                        Tel no: (02) 8709-0185, (02) 8292-5570, Telefax no: (02) 8529-9311<br />
                 </td>
             </tr>
         </table><br />
@@ -19,30 +18,39 @@
         @if (isset($transaction))
             <table width="95%" border="1" align="center" cellspacing="0">
                 <tr>
-                    <td colspan="7" align="center" scope="col"><strong>
+                    <td colspan="5" align="center" scope="col"><strong>
                             <p style="font-size:16px;">SHIPPER
                         </strong></td>
-                    <td colspan="6" align="center" scope="col"><strong><span
+                    <td colspan="8" align="center" scope="col"><strong><span
                                 style="font-size:16px;">CONSIGNEE</span></strong></td>
                 </tr>
                 <tr>
-                    <td colspan="7" rowspan="2" align="center"><strong>
+                    <td colspan="5" rowspan="2" align="center"><strong>
                             <p style="font-size:16px;">ASSURANCE CONTROLS TECHNOLOGIES
-                            <p style="font-size:12px;"> Diliman, Quezon City
+                            <p style="font-size:12px;"> 42 Montreal Street, Brgy E. Rodriguez Sr., Cubao, Quezon City,
+                                Philippines
                         </strong></td>
-                    <td colspan="6" align="center"><span style="font-size:16px;"><b><br />
+                    <td colspan="8" align="center"><span style="font-size:16px;"><b><br />
                                 {{ $transaction->hospital->hospital ?? '' }}
                                 <br />
                                 <br />
-                                {{ $transaction->calibration_date ?? '' }}
-                        </span></td>
+                                <strong>
+                                    @php
+                                        $dateString = "$transaction->calibration_date";
+                                        $timestamp = strtotime($dateString);
+                                        $formattedDate = date('l, F j, Y', $timestamp);
+                                        echo $formattedDate;
+                                    @endphp
+                                </strong>
+
+                        </span><br><br></td>
                 </tr>
                 <tr>
                     <td align="center" style="font-size:12px; "><strong>RUN NO.:</strong></td>
                     <td align="center" style="font-size:12px; "><strong>
-                            {{ $transaction->run_no ?? '' }}
+                            {{ $transaction->runNumber->run_name ?? '' }}
                         </strong></td>
-                    <td colspan="4" align="center" style="font-size:12px; "><strong>DELIVERY</strong></td>
+                    <td colspan="5" align="center" style="font-size:12px; "><strong>DELIVERY</strong></td>
                 </tr>
                 @if ($transaction->asset_id != 2)
                     <tr>
@@ -64,13 +72,42 @@
                         <td width="50" align="center"><strong>MBq</strong></td>
                     </tr>
 
+                    @php
+                        $countWithR = 0;
+                        $countWithB = 0;
+                        $countWithS = 0;
+                        $countWithG = 0;
+                        $countWithO = 0;
+                    @endphp
                     @foreach ($transactions as $key => $transaction)
                         <tr>
                             <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
                             <td align="center">{{ $transaction->asset_product->product_name ?? '' }}</td>
                             <td width="57" align="center">{{ $transaction->rx_no ?? '' }}</td>
                             <td align="center">{{ $transaction->lot_no ?? '' }}</td>
-                            <td align="center">{{ $transaction->lead_pot ?? '' }}</td>
+                            <td align="center">{{ $transaction->leadPot->lead_code ?? '' }}
+                                @if (isset($transaction->leadPot->lead_code))
+                                    @switch($transaction->leadPot->lead_code)
+                                        @case(strpos($transaction->leadPot->lead_code, 'R') !== false)
+                                        @case(strpos($transaction->leadPot->lead_code, 'B') !== false)
+
+                                        @case(strpos($transaction->leadPot->lead_code, 'S') !== false)
+                                        @case(strpos($transaction->leadPot->lead_code, 'G') !== false)
+
+                                        @case(strpos($transaction->leadPot->lead_code, 'O') !== false)
+                                            @php
+                                                $countWithR += strpos($transaction->leadPot->lead_code, 'R') !== false ? 1 : 0;
+                                                $countWithB += strpos($transaction->leadPot->lead_code, 'B') !== false ? 1 : 0;
+                                                $countWithS += strpos($transaction->leadPot->lead_code, 'S') !== false ? 1 : 0;
+                                                $countWithG += strpos($transaction->leadPot->lead_code, 'G') !== false ? 1 : 0;
+                                                $countWithO += strpos($transaction->leadPot->lead_code, 'O') !== false ? 1 : 0;
+                                            @endphp
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                @endif
+                            </td>
                             <td align="center">{{ $transaction->procedure1 ?? '' }}</td>
                             <td align="center">{{ $transaction->patient ?? '' }}</td>
                             <td align="center">{{ $transaction->calibration_time ?? '' }}</td>
@@ -80,7 +117,7 @@
                             </td>
                             <td align="center">{{ $transaction->actual_dose ?? '' }}</td>
                             <td align="center" style="font-size:12px; color:#f00; ">
-                                <strong>{{ $transaction->actual_mbq ?? '' }}</strong>
+                                <strong>{{ number_format($transaction->actual_mbq, 2, '.', ',') ?? '' }}</strong>
                             </td>
                         </tr>
                     @endforeach
@@ -104,14 +141,49 @@
                         <td align="center"><strong>MBq</strong></td>
                     </tr>
 
-
+                    @php
+                        $countWithBB = 0;
+                        $countWithSB = 0;
+                        $countWithP = 0;
+                        $countWithY = 0;
+                        $countWithG = 0;
+                        $countWithO = 0;
+                        $countWithW = 0;
+                    @endphp
                     @foreach ($transactions as $key => $transaction)
                         <tr>
                             <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
                             <td align="center">Iodine - 131</td>
                             <td width="56" align="center">{{ $transaction->rx_no ?? '' }}</td>
                             <td align="center">{{ $transaction->asset_product->product_name ?? '' }}</td>
-                            <td align="center">{{ $transaction->lead_pot ?? '' }}</td>
+                            <td align="center">{{ $transaction->leadPot->lead_code ?? '' }}
+                                @if (isset($transaction->leadPot->lead_code))
+                                    @switch($transaction->leadPot->lead_code)
+                                        @case(strpos($transaction->leadPot->lead_code, 'BB') !== false)
+                                        @case(strpos($transaction->leadPot->lead_code, 'SB') !== false)
+
+                                        @case(strpos($transaction->leadPot->lead_code, 'P') !== false)
+                                        @case(strpos($transaction->leadPot->lead_code, 'Y') !== false)
+
+                                        @case(strpos($transaction->leadPot->lead_code, 'G') !== false)
+                                        @case(strpos($transaction->leadPot->lead_code, 'O') !== false)
+
+                                        @case(strpos($transaction->leadPot->lead_code, 'W') !== false)
+                                            @php
+                                                $countWithBB += strpos($transaction->leadPot->lead_code, 'BB') !== false ? 1 : 0;
+                                                $countWithSB += strpos($transaction->leadPot->lead_code, 'SB') !== false ? 1 : 0;
+                                                $countWithP += strpos($transaction->leadPot->lead_code, 'P') !== false ? 1 : 0;
+                                                $countWithY += strpos($transaction->leadPot->lead_code, 'Y') !== false ? 1 : 0;
+                                                $countWithG += strpos($transaction->leadPot->lead_code, 'G') !== false ? 1 : 0;
+                                                $countWithO += strpos($transaction->leadPot->lead_code, 'O') !== false ? 1 : 0;
+                                                $countWithW += strpos($transaction->leadPot->lead_code, 'W') !== false ? 1 : 0;
+                                            @endphp
+                                        @break
+
+                                        @default
+                                    @endswitch
+                                @endif
+                            </td>
                             <td align="center">{{ $transaction->patient ?? '' }}</td>
                             <td align="center">{{ $transaction->calibration_time ?? '' }}</td>
                             <td width="52" align="center">{{ $transaction->activity_mci ?? '' }}</td>
@@ -120,7 +192,7 @@
                             </td>
                             <td width="52" align="center">{{ $transaction->actual_dose ?? '' }}</td>
                             <td align="center" style="font-size:12px; color:#f00; ">
-                                <strong>{{ $transaction->actual_mbq ?? '' }}</strong>
+                                <strong>{{ number_format($transaction->actual_mbq, 2, '.', ',') ?? '' }}</strong>
                             </td>
                         </tr>
                     @endforeach
@@ -138,7 +210,7 @@
 
                         </td>
                         <td width="13%" align="left" scope="col" style="font-size:12px;">
-                                </th>
+                            </th>
                         <td width="4%" align="left" scope="col"></td>
                         <td width="8%" scope="col">&nbsp;</td>
                         <td width="9%" scope="col">&nbsp;</td>
@@ -156,17 +228,18 @@
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center"><strong>
                                 @php
-                                $dateString = "$transaction->calibration_date";
-                                $timestamp = strtotime($dateString);
-                                $formattedDate = date("l, F j, Y", $timestamp);
-                                echo $formattedDate;
+                                    $dateString = "$transaction->calibration_date";
+                                    $timestamp = strtotime($dateString);
+                                    $formattedDate = date('l, F j, Y', $timestamp);
+                                    echo $formattedDate;
                                 @endphp
-                                </strong></td>
+                            </strong></td>
                     </tr>
                     <tr>
                         <td align="center" scope="col" style="font-size:12px;"><strong>Total Mo-99:</strong></td>
-                        <td colspan="2" scope="col" style="border-bottom:1pt solid black; font-size:12px;">
-                            {{-- TOTAL --}}
+                        <td align="center" colspan="2" scope="col"
+                            style="border-bottom:1pt solid black; font-size:12px;">
+                            {{ count($transactions) }}
                         </td>
                         <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
@@ -178,8 +251,9 @@
                     </tr>
                     <tr>
                         <td align="center" scope="col" style="font-size:12px;"><strong>Mo-99/Tc99m:</strong></td>
-                        <td colspan="2" scope="col" style="border-bottom:1pt solid black; font-size:12px;">
-                            {{-- TOTAL --}}
+                        <td align="center" colspan="2" scope="col"
+                            style="border-bottom:1pt solid black; font-size:12px;">
+
                         </td>
                         <td scope="col">&nbsp;</td>
                         <td colspan="3" align="left" scope="col" style="font-size:12px;"><strong>Performed
@@ -225,30 +299,27 @@
                                 <tr>
                                     <td width="31%" align="left" scope="col"><strong>Red</strong></td>
                                     <td width="30%" align="left" scope="col"><strong>(R)</strong></td>
-                                    <td scope="col">
-                                        {{-- QTY --}}
-                                    </td>
+                                    <td scope="col" align="center">{{ $countWithR }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong> Blue</strong></td>
                                     <td align="left" scope="col"><strong>(B)</strong></td>
-                                    <td scope="col">
-                                        {{-- QTY --}}
-                                    </td>
+                                    <td scope="col" align="center">{{ $countWithB }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Silver</strong></td>
                                     <td align="left" scope="col"><strong>(S)</strong></td>
-                                    <td scope="col">
-                                        {{-- QTY --}}
-                                    </td>
+                                    <td scope="col" align="center">{{ $countWithS }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Gray</strong></td>
                                     <td align="left" scope="col"><strong>(Gy)</strong></td>
-                                    <td scope="col">
-                                        {{-- QTY --}}
-                                    </td>
+                                    <td scope="col" align="center">{{ $countWithG }}</td>
+                                </tr>
+                                <tr>
+                                    <td align="left" scope="col"><strong>Gray</strong></td>
+                                    <td align="left" scope="col"><strong>(Gy)</strong></td>
+                                    <td scope="col" align="center">{{ $countWithO }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="center" scope="col"><strong><br />
@@ -331,19 +402,19 @@
                                 Dispensed:</strong></td>
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center"><strong>
-                            @php
-                            $dateString = "$transaction->calibration_date";
-                            $timestamp = strtotime($dateString);
-                            $formattedDate = date("l, F j, Y", $timestamp);
-                            echo $formattedDate;
-                            @endphp
+                                @php
+                                    $dateString = "$transaction->calibration_date";
+                                    $timestamp = strtotime($dateString);
+                                    $formattedDate = date('l, F j, Y', $timestamp);
+                                    echo $formattedDate;
+                                @endphp
                             </strong></td>
                     </tr>
                     <tr>
                         <td align="left" scope="col" style="font-size:12px;"><strong>Number of dose(s):</strong>
                         </td>
                         <td align="center" colspan="2" scope="col" style="border-bottom:1pt solid black">
-                            {{-- ROW COUNT --}}
+                            {{ count($transactions) }}
                         </td>
                         <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
@@ -380,39 +451,37 @@
                                 <tr>
                                     <td width="31%" align="left" scope="col"><strong>Yellow</strong></td>
                                     <td width="30%" align="left" scope="col"><strong>(Y)</strong></td>
-                                    <td scope="col">
-                                        {{-- TOTAL Y --}}
-                                    </td>
+                                    <td scope="col" align="center">{{ $countWithY }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Big Blue</strong></td>
                                     <td align="left" scope="col"><strong>(BB)</strong></td>
-                                    <td scope="col"></td>
+                                    <td scope="col" align="center">{{ $countWithBB }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Small Blue</strong></td>
                                     <td align="left" scope="col"><strong>(SB)</strong></td>
-                                    <td scope="col"></td>
+                                    <td scope="col" align="center">{{ $countWithSB }}</td>
                                 </tr>
                                 <tr>
-                                    <td align="left" scope="col"><strong>Dark Blue</strong></td>
-                                    <td align="left" scope="col"><strong>(DB)</strong></td>
-                                    <td scope="col"></td>
+                                    <td align="left" scope="col"><strong>Purple</strong></td>
+                                    <td align="left" scope="col"><strong>(P)</strong></td>
+                                    <td scope="col" align="center">{{ $countWithP }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Green</strong></td>
                                     <td align="left" scope="col"><strong>(G)</strong></td>
-                                    <td scope="col"></td>
+                                    <td scope="col" align="center">{{ $countWithG }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>Orange</strong></td>
                                     <td align="left" scope="col"><strong>(O)</strong></td>
-                                    <td scope="col"></td>
+                                    <td scope="col" align="center">{{ $countWithO }}</td>
                                 </tr>
                                 <tr>
                                     <td align="left" scope="col"><strong>White</strong></td>
                                     <td align="left" scope="col"><strong>(W)</strong></td>
-                                    <td scope="col"></td>
+                                    <td scope="col" align="center">{{ $countWithW }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="center" scope="col"><strong><br />

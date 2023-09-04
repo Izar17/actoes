@@ -109,7 +109,8 @@
 
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.lot_no') }}</th>
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.leadpot') }} </th>
-                                            @if ($production->asset_id !== 2)
+                                            {{-- @if ($production->asset_id !== 2) --}}
+                                            @if ($production->asset_id < 1)
                                                 <th class="col-md-2"> {{ trans('cruds.transaction.fields.kitprep') }}</th>
                                             @endif
                                             <th>{{ trans('cruds.transaction.fields.actual') }}</th>
@@ -198,7 +199,8 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            @if ($production->asset_id != 2)
+                                            {{-- @if ($production->asset_id != 2) --}}
+                                            @if ($production->asset_id < 1)
                                                 <td>
                                                     <input type="text" class="form-control kitprep"
                                                         value="{{ substr($production->asset_product->product_name, 3) }}"

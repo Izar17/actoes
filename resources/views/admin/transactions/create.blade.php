@@ -273,8 +273,10 @@
                             break;
                     }
 
-                    $('#asset_product_id' + rowId).on('click', function() {
+                    $('#asset_product_id' + rowId).on('change', function() {
                         var idProduct = this.value;
+                        document.getElementById("procedure" + rowId).value='';
+                        document.getElementById("activity_mci" + rowId).value='';
                         $("#product_activity_id" + rowId).html('');
                         $.ajax({
                             url: "{{ url('api/fetch-activities') }}",
@@ -365,7 +367,7 @@
                         <datalist id="patient_list_id"><option value="Confidential"></datalist>
                     </td>
                     <td>
-                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date${rowIdx}"  min="{{ date('Y-m-d') }}" list="date_cal" required/>                           
+                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date${rowIdx}"  min="{{ date('Y-m-d') }}" list="date_cal" required/>
                         <datalist id="date_cal">
                             <option value="January">January
                             <option value="February">February

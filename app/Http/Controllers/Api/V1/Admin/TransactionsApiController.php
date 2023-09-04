@@ -16,8 +16,7 @@ class TransactionsApiController extends Controller
     {
         abort_if(Gate::denies('order_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransactionResource(Transaction::with(['asset', 'user', 'hospital','asset_product','product_activity','runNumber'])->get());
-
+        return new TransactionResource(Transaction::with(['asset', 'user', 'hospital','asset_product','lead_pot','runNumber'])->get());
     }
 
     public function store(StoreTransactionRequest $request)

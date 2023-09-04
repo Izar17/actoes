@@ -78,9 +78,9 @@ class Transaction extends Model
         return $this->belongsTo(Asset_product::class, 'item');
     }
 
-    public function product_activity()
+    public function leadPot()
     {
-        return $this->belongsTo(Product_activity::class, 'lead_pot');
+        return $this->belongsTo(LeadPot::class, 'lead_pot');
     }
 
     public function runNumber()

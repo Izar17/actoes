@@ -325,8 +325,8 @@
                                     <td scope="col" align="center">{{ $countWithG }}</td>
                                 </tr>
                                 <tr>
-                                    <td align="left" scope="col"><strong>Gray</strong></td>
-                                    <td align="left" scope="col"><strong>(Gy)</strong></td>
+                                    <td align="left" scope="col"><strong>Orange</strong></td>
+                                    <td align="left" scope="col"><strong>(O)</strong></td>
                                     <td scope="col" align="center">{{ $countWithO }}</td>
                                 </tr>
                                 <tr>

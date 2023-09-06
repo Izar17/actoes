@@ -74,7 +74,7 @@ class TransactionsController extends Controller
         foreach ($request->orderform_no as $key => $orderform_no) {
 
             $currentDateTime = Carbon::now();
-            
+
             // Format the datetime as a string
             $formattedDateTime = $currentDateTime->format('Y-m-d H:i:s');
 
@@ -85,7 +85,7 @@ class TransactionsController extends Controller
 
             //Format Time with AM/PM
             //$calibration_time = Carbon::createFromFormat('H:i', $request->calibration_time[$key])->format('h:i A');
-            
+
             //Calibrate Date
             $cal_yr = date("Y", strtotime($request->calibration_date[$key]));
             $cal_date = date($request->calibration_date[$key]);
@@ -179,7 +179,7 @@ class TransactionsController extends Controller
             }
 
             //particular
-            if ($request->asset_id == 6) {
+            if ($request->asset_id == 6 || $request->asset_id == 4) {
                 $unit='GBq';
             } else {
                 $unit='mCi';
@@ -204,6 +204,7 @@ class TransactionsController extends Controller
             $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
             $transactions['volume']             = $request->volume[$key];
+            $transactions['can']                = $request->can[$key];
             $transactions['created_by']         = $request->user;
             $transactions['cancelled']          = 'NO';
             $transactions['status']             = 1;

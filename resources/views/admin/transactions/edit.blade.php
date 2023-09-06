@@ -81,21 +81,30 @@
                                         @else
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.asset_product') }} *
                                             </th>
-                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                            <th class="col-md-1">
+                                                @if ($transaction->asset_id == 4)
+                                                    Activity GBq
+                                                @else
+                                                    {{ trans('cruds.transaction.fields.activity_mci') }}
+                                                @endif
+                                            </th>
                                         @endif
                                         @if ($transaction->asset_id == 1)
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.procedure') }}</th>
                                             <th class="col-md-1">{{ trans('cruds.transaction.fields.volume') }}</th>
                                         @endif
                                         <th class="col-md-2">{{ trans('cruds.transaction.fields.patient') }}</th>
-                                        
+
                                         @if ($transaction->asset_id == 6)
-                                        <th class="col-md-1">Date Needed | Gen #</th>
+                                            <th class="col-md-1">Date Needed | Gen #</th>
                                         @else
-                                        <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}</th>
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.calibration_date') }}
+                                            </th>
                                         @endif
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
+                                        @if ($transaction->asset_id != 4)
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
+                                        @endif
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
                                         @can('create_transport')
                                             <th class="col-md-1">{{ trans('cruds.transaction.fields.can') }}</th>
@@ -126,6 +135,9 @@
                                             </datalist>
                                             <input type="hidden" id="activity_mbq" name="activity_mbq" />
                                             <input type="hidden" id="discrepancy" name="discrepancy" />
+                                            @if ($transaction->asset_id == 4)
+                                            <input type="hidden" id="run_no_id" name="run_no" value="8"/>
+                                            @endif
                                         </td>
                                         @if ($transaction->asset_id == 1)
                                             <td>
@@ -144,7 +156,8 @@
                                         @endif
                                         <td>
                                             <input type="text" name="patient" id="patient" list="patient_list_id"
-                                                class="form-control patient" value="{{ $transaction->patient }}" @if ($transaction->asset_id == 6) readonly @else required @endif>
+                                                class="form-control patient" value="{{ $transaction->patient }}"
+                                                @if ($transaction->asset_id == 6) readonly @else required @endif>
                                             <datalist id="patient_list_id">
                                                 <option value="Confidential">
                                             </datalist>
@@ -153,7 +166,10 @@
                                             <input class="form-control calibration_date" type="date"
                                                 value="{{ $transaction->calibration_date }}" name="calibration_date"
                                                 id="calibration_date" min="{{ date('Y-m-d') }}" required />
-                                            <input class="form-control calibration_time" type="text"
+                                            <input class="form-control calibration_time"
+                                                @if ($transaction->asset_id == 4) type="hidden"
+                                            @else
+                                            type="text" @endif
                                                 value="{{ substr($transaction->calibration_time, 0, 5) ?? '' }}"
                                                 name="calibration_time" id="calibration_time" />
                         </div>
@@ -161,6 +177,7 @@
                         <td><input class="form-control" type="text" style="min-width:150px"
                                 value="{{ $transaction->orderform_no }}" id="orderform_no" name="orderform_no"
                                 required /></td>
+                                @if ($transaction->asset_id != 4)
                         <td>
                             <select class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"
                                 name="run_no" id="run_no_id" required>
@@ -171,9 +188,10 @@
                                 @endforeach
                             </select>
                         </td>
+                        @endif
                         <td>
-                            <input type="text" class="form-control remarks" id="remarks"
-                                name="remarks" value="{{ $transaction->remarks }}" />
+                            <input type="text" class="form-control remarks" id="remarks" name="remarks"
+                                value="{{ $transaction->remarks }}" />
                         </td>
                         @can('create_transport')
                             <td>

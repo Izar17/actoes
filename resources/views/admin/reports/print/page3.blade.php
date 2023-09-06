@@ -236,11 +236,15 @@
                             </strong></td>
                     </tr>
                     <tr>
-                        <td align="center" scope="col" style="font-size:12px;"><strong>Total Mo-99:</strong></td>
+                        @if ($transaction->asset_id==1)
+                        <td align="center" scope="col" style="font-size:12px;"><strong>Total {{ $transaction->asset_product->product_name ?? ''  }}:</strong></td>
                         <td align="center" colspan="2" scope="col"
                             style="border-bottom:1pt solid black; font-size:12px;">
                             {{ count($transactions) }}
                         </td>
+                        @else
+                        <td scope="col" colspan="3px">&nbsp;</td>
+                        @endif
                         <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
@@ -250,11 +254,15 @@
                         <td scope="col">&nbsp;</td>
                     </tr>
                     <tr>
+                        @if ($transaction->asset_id==1)
                         <td align="center" scope="col" style="font-size:12px;"><strong>Mo-99/Tc99m:</strong></td>
                         <td align="center" colspan="2" scope="col"
                             style="border-bottom:1pt solid black; font-size:12px;">
 
                         </td>
+                        @else
+                        <td scope="col" colspan="3px">&nbsp;</td>
+                        @endif
                         <td scope="col">&nbsp;</td>
                         <td colspan="3" align="left" scope="col" style="font-size:12px;"><strong>Performed
                                 by:</strong></td>
@@ -266,8 +274,8 @@
                     <tr>
                         <td align="center" scope="col" style="font-size:12px;"><strong>Number of dose(s):</strong>
                         </td>
-                        <td align="center" colspan="2" scope="col" style="border-bottom:1pt solid black">
-                            {{-- COUNT --}}
+                        <td align="center" colspan="2" scope="col" style="border-bottom:1pt solid black; font-size:12px;">
+                            {{ count($transactions) }}
                         </td>
                         <td scope="col">&nbsp;</td>
                         <td colspan="3" align="left" scope="col" style="font-size:12px;">&nbsp;</td>

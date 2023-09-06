@@ -53,29 +53,33 @@
                                 <th>
                                     {{ trans('cruds.transaction.fields.asset') }}
                                 </th>
-                                @if ( $transaction->asset_id == 6 )
-                                <th>
-                                    Kit
-                                </th>
-                                <th>
-                                    Activity GBq
-                                </th>
-                                <th style="width:130px;">
-                                    Date Needed | Gen #
-                                </th>
+                                @if ($transaction->asset_id == 6)
+                                    <th>
+                                        Kit
+                                    </th>
+                                    <th>
+                                        Activity GBq
+                                    </th>
+                                    <th style="width:130px;">
+                                        Date Needed | Gen #
+                                    </th>
                                 @else
-                                <th>
-                                    {{ trans('cruds.transaction.fields.asset_product') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.activity_mci') }}
-                                </th>
-                                <th>
-                                    {{ trans('cruds.transaction.fields.patient') }}
-                                </th>
-                                <th style="width:130px;">
-                                    {{ trans('cruds.transaction.fields.calibration_date') }}
-                                </th>
+                                    <th>
+                                        {{ trans('cruds.transaction.fields.asset_product') }}
+                                    </th>
+                                    <th>
+                                        @if ($transaction->asset_id == 4)
+                                        Activity GBq
+                                        @else
+                                        {{ trans('cruds.transaction.fields.activity_mci') }}
+                                        @endif
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.transaction.fields.patient') }}
+                                    </th>
+                                    <th style="width:130px;">
+                                        {{ trans('cruds.transaction.fields.calibration_date') }}
+                                    </th>
                                 @endif
                                 <th>
                                     {{ trans('cruds.transaction.fields.particular') }}
@@ -132,13 +136,13 @@
                                             align-items: center;">
                                             {{ $calibrationDateTime }}
                                             @if ($calibrationDateTime < $currentDateTime)
-                                                <img src="{{ asset('img/red-warning.png') }}" style="width:30px;height:30px;"
-                                                    alt="Image">
+                                                <img src="{{ asset('img/red-warning.png') }}"
+                                                    style="width:30px;height:30px;" alt="Image">
                                             @endif
                                         </div>
                                     </td>
                                     <td>
-                                        {{ $transaction->activity_mci ?? '' }} mCi
+                                        {{ $transaction->particular ?? '' }}
                                         {{ $transaction->asset_product->product_name ?? '' }}
                                     </td>
                                     <td>

@@ -83,6 +83,9 @@
                                                 id="cal_date">{{ trans('cruds.transaction.fields.calibration_date') }}</span>
                                         <th class="col-sm-1">{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.run_no') }}</th>
+                                        @can('create_transport')
+                                            <th class="col-md-1">{{ trans('cruds.transaction.fields.can') }}</th>
+                                        @endcan
                                         <th class="col-sm-2">{{ trans('cruds.transaction.fields.remarks') }}</th>
 
                                         <th>
@@ -179,6 +182,9 @@
             var uom_patient = document.getElementById('uom_patient');
             // Update the dynamic label based on the selected option
             switch (idAsset) {
+                case '4':
+                    act.innerText = 'Activity GBq';
+                    break;
                 case '6':
                     unit.innerText = 'Kit';
                     cal_date.innerText = 'Date Needed/Gen #';
@@ -212,7 +218,7 @@
                 },
                 dataType: 'json',
                 success: function(result) {
-                    if (idAsset < 4) {
+                    if (idAsset > 0) {
                         $('#asset_product_id' + rowId).html(
                             '<option value="">Select Unit</option>');
                     }
@@ -229,6 +235,7 @@
                     const patient = document.getElementById("patient" + rowId);
                     const calibration_date = document.getElementById("calibration_date" + rowId);
                     const calibration_time = document.getElementById("calibration_time" + rowId);
+                    const run_no = document.getElementById("run_no_id" + rowId);
                     if (idAsset == 2) {
                         timeInput.value = '12:00 PM';
                     }
@@ -258,6 +265,25 @@
                                 patient.removeAttribute('required');
                                 $("#patient" + rowId).html('');
                             }
+                            break;
+                        case '4':
+                            calibration_time.type = 'hidden';
+                            // Remove all options except the one with value "NA"
+                            for (var i = run_no.options.length - 1; i >= 0; i--) {
+                                if (run_no.options[i].value !== '8') {
+                                    run_no.remove(i);
+                                }
+                            }
+                            run_no.setAttribute('readonly', 'readonly');
+                            $("#run_no" + rowId).html('');
+                            procedure.value = '';
+                            procedure.setAttribute('readonly', 'readonly');
+                            procedure.removeAttribute('required');
+                            $("#procedure" + rowId).html('');
+                            volume.value = '';
+                            volume.setAttribute('readonly', 'readonly');
+                            volume.removeAttribute('required');
+                            $("#volume" + rowId).html('');
                             break;
                         default:
                             if (idAsset != '5' && idAsset != '3') {
@@ -403,7 +429,7 @@
                     <td>
                         <select
                             class="form-control run_no {{ $errors->has('run_no') ? 'is-invalid' : '' }}"
-                            name="run_no[]" id="run_no_id" required>
+                            name="run_no[]" id="run_no_id${rowIdx}" required>
                             @foreach ($run_nos as $id => $run_no)
                                 <option value="{{ $id }}"
                                     {{ old('run_no_id') == $id ? 'selected' : '' }}>
@@ -411,6 +437,15 @@
                             @endforeach
                         </select>
                     </td>
+                        @can('create_transport')
+                            <td>
+                                <select style="width: 120px" class="form-control can" name="can" id="can${rowIdx}">
+                                    <option></option>
+                                    <option>RAM Can</option>
+                                    <option>Pail Can</option>
+                                </select>
+                            </td>
+                        @endcan
                     <td>
                         <input type="text" class="form-control remarks" id="remarks"
                             name="remarks[]" />

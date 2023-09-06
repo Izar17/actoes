@@ -1,24 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-    @can('order_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12 mt-2">
-                <a class="btn btn-success" href="{{ route('admin.transactions.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.transaction.order_title_singular') }}
-                </a>
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-    @endcan
     <div class="card">
         <div class="card-header">
 
@@ -109,7 +90,6 @@
 
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.lot_no') }}</th>
                                             <th class="col-md-2">{{ trans('cruds.transaction.fields.leadpot') }} </th>
-                                            {{-- @if ($production->asset_id !== 2) --}}
                                             @if ($production->asset_id < 1)
                                                 <th class="col-md-2"> {{ trans('cruds.transaction.fields.kitprep') }}</th>
                                             @endif
@@ -120,13 +100,27 @@
                                 @else
                                     <tr>
                                         <th>{{ trans('cruds.transaction.fields.asset_product') }} </th>
-                                        <th>{{ trans('cruds.transaction.fields.activity_mci') }}</th>
+                                        <th>
+                                            @if ($production->asset_id == 4)
+                                                Activity GBq
+                                            @else
+                                                {{ trans('cruds.transaction.fields.activity_mci') }}
+                                            @endif
+                                        </th>
                                         @if ($production->asset_id == 7)
                                             <th>{{ trans('cruds.transaction.fields.procedure') }}</th>
                                         @endif
-                                        <th>Unit of Measurement</th>
+                                        <th>
+                                            @if ($production->asset_id == 4)
+                                                Patient
+                                            @else
+                                                Unit of Measurement
+                                            @endif
+                                        </th>
                                         <th>Calibration Date</th>
-                                        <th>Gen #</th>
+                                        @if ($production->asset_id != 4)
+                                            <th>Gen #</th>
+                                        @endif
                                         <th>{{ trans('cruds.transaction.fields.ofm') }}</th>
                                         <th>{{ trans('cruds.transaction.fields.run_no') }}</th>
 
@@ -202,9 +196,9 @@
                                             {{-- @if ($production->asset_id != 2) --}}
                                             @if ($production->asset_id < 1)
                                                 <td>
-                                                    <input type="text" class="form-control kitprep"
-                                                        value="{{ substr($production->asset_product->product_name, 3) }}"
-                                                        name="kit_prep" />
+                                                        <input type="text" class="form-control kitprep"
+                                                            value="{{ substr($production->asset_product->product_name, 3) }}"
+                                                            name="kit_prep" />
                                                 </td>
                                             @else
                                                 <input class="form-control expiry_date" type="hidden" name="expiry_date" />
@@ -272,10 +266,12 @@
                                                     @endif
                                                 </div>
                                             </td>
+                                            @if ($production->asset_id != 4)
                                             <td>
                                                 <input type="text" name="calibration_time"
                                                     value="{{ $production->calibration_time }}" />
                                             </td>
+                                            @endif
                                             <td>
                                                 {{ $production->orderform_no }}
                                             </td>

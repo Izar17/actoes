@@ -354,7 +354,7 @@
                                     <td scope="col"
                                         style="font-size:12px; font-weight:normal;border-bottom:1pt solid black"
                                         align="center">
-                                        {{-- CURRENT USER --}}
+                                        {{ auth()->user()->name}}
                                     </td>
                                 </tr>
                                 <tr>

@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label for="user">{{ trans('cruds.transaction.fields.user') }}</label>
                             <input type="text" class="form-control user"
-                                value="{{ old('email', auth()->user()->name) }}" name="performed_by" readonly />
+                                value="{{ auth()->user()->name }}" name="performed_by" readonly />
                         </div>
                     </div>
                 </div>

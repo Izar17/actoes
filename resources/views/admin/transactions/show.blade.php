@@ -70,6 +70,9 @@
                                 <th>
                                     {{ trans('cruds.transaction.fields.activity_mci') }}
                                 </th>
+                                <th>
+                                    {{ trans('cruds.transaction.fields.patient') }}
+                                </th>
                                 <th style="width:130px;">
                                     {{ trans('cruds.transaction.fields.calibration_date') }}
                                 </th>
@@ -114,6 +117,9 @@
                                     </td>
                                     <td>
                                         {{ $transaction->activity_mci ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{ $transaction->patient ?? '' }}
                                     </td>
                                     <td>
                                         @php

@@ -212,7 +212,7 @@
                 },
                 dataType: 'json',
                 success: function(result) {
-                    if (idAsset < 3) {
+                    if (idAsset < 4) {
                         $('#asset_product_id' + rowId).html(
                             '<option value="">Select Unit</option>');
                     }
@@ -260,7 +260,7 @@
                             }
                             break;
                         default:
-                            if (idAsset != '5') {
+                            if (idAsset != '5' && idAsset != '3') {
                                 procedure.value = '';
                                 procedure.setAttribute('readonly', 'readonly');
                                 procedure.removeAttribute('required');
@@ -275,8 +275,8 @@
 
                     $('#asset_product_id' + rowId).on('change', function() {
                         var idProduct = this.value;
-                        document.getElementById("procedure" + rowId).value='';
-                        document.getElementById("activity_mci" + rowId).value='';
+                        document.getElementById("procedure" + rowId).value = '';
+                        document.getElementById("activity_mci" + rowId).value = '';
                         $("#product_activity_id" + rowId).html('');
                         $.ajax({
                             url: "{{ url('api/fetch-activities') }}",
@@ -296,25 +296,25 @@
                                 });
                             }
                         });
-                        $("#product_activity_ids" + rowId).html('');
-                        $.ajax({
-                            url: "{{ url('api/fetch-procedure') }}",
-                            type: "POST",
-                            data: {
-                                product_id: idProduct,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            dataType: 'json',
-                            success: function(res) {
-                                $.each(res.procedures, function(key,
-                                    value) {
-                                    $("#product_activity_ids" + rowId)
-                                        .append('<option value="' +
-                                            value
-                                            .procedure_name + '">');
-                                });
-                            }
-                        });
+                            $("#product_activity_ids" + rowId).html('');
+                            $.ajax({
+                                url: "{{ url('api/fetch-procedure') }}",
+                                type: "POST",
+                                data: {
+                                    product_id: idProduct,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                dataType: 'json',
+                                success: function(res) {
+                                    $.each(res.procedures, function(key,
+                                        value) {
+                                        $("#product_activity_ids" + rowId)
+                                            .append('<option value="' +
+                                                value
+                                                .procedure_name + '">');
+                                    });
+                                }
+                            });
                     });
                 }
             });

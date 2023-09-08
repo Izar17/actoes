@@ -178,6 +178,11 @@ class TransactionsController extends Controller
                 $doserates_meter =0;
             }
 
+            if (isset($request->can[$key])){
+                $can = $request->can[$key];
+            }else{
+                $can = '';
+            }
             //particular
             if ($request->asset_id == 6 || $request->asset_id == 4) {
                 $unit='GBq';
@@ -204,7 +209,7 @@ class TransactionsController extends Controller
             $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
             $transactions['volume']             = $request->volume[$key];
-            $transactions['can']                = $request->can[$key];
+            $transactions['can']                = $can;
             $transactions['created_by']         = $request->user;
             $transactions['cancelled']          = 'NO';
             $transactions['status']             = 1;

@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <td height="27" scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
@@ -80,7 +80,7 @@
                             <td scope="col">&nbsp;&nbsp;<b>{{ $transaction->procedure1 ?? '' }}</b></td>
                             <td><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b
                                     style="font-size:12px; color:#f00; ">({{ $transaction->activity_mbq ?? '' }}
-                                    MBq)</b><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
+                                    MBq)</b><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->rx_no ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +88,7 @@
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
                             </td>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}</b>
                             </td>
                             <td scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b>
@@ -145,7 +145,7 @@
                         <tr>
                             <td width="71%" scope="col" align="center"
                                 style="font-size:20px;font-weight:bold;border-bottom:1pt solid black;border-left:1pt solid black;">
-                                {{ $transaction->calibration_date ?? '' }}</td>
+                                {{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}</td>
                             <td align="left" width="29%" scope="col"
                                 style="font-size:20px;font-weight:bold;border-bottom:1pt solid black;border-right:1pt solid black;">
                                 {{ $transaction->rx_no ?? '' }}</td>

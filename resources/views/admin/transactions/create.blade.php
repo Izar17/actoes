@@ -322,25 +322,25 @@
                                 });
                             }
                         });
-                            $("#product_activity_ids" + rowId).html('');
-                            $.ajax({
-                                url: "{{ url('api/fetch-procedure') }}",
-                                type: "POST",
-                                data: {
-                                    product_id: idProduct,
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                dataType: 'json',
-                                success: function(res) {
-                                    $.each(res.procedures, function(key,
-                                        value) {
-                                        $("#product_activity_ids" + rowId)
-                                            .append('<option value="' +
-                                                value
-                                                .procedure_name + '">');
-                                    });
-                                }
-                            });
+                        $("#product_activity_ids" + rowId).html('');
+                        $.ajax({
+                            url: "{{ url('api/fetch-procedure') }}",
+                            type: "POST",
+                            data: {
+                                product_id: idProduct,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            dataType: 'json',
+                            success: function(res) {
+                                $.each(res.procedures, function(key,
+                                    value) {
+                                    $("#product_activity_ids" + rowId)
+                                        .append('<option value="' +
+                                            value
+                                            .procedure_name + '">');
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -440,9 +440,15 @@
                         @can('create_transport')
                             <td>
                                 <select style="width: 120px" class="form-control can" name="can" id="can${rowIdx}">
-                                    <option></option>
-                                    <option>RAM Can</option>
-                                    <option>Pail Can</option>
+                                    ${idAsset==1 ? '<option>Tc-Bag</option><option>Pail Can</option>'
+                                        :idAsset == 2 ?'<option>RAM Can</option><option>Pail Can</option>'
+                                        :idAsset==3 ? '<option>Tc-Bag</option><option>Pail Can</option>'
+                                        :idAsset==4 ? '<option>Carton Box</option>'
+                                        :idAsset==5 ? '<option>Carton Box</option>'
+                                        :idAsset==6 ? '<option>Pail Can</option>'
+                                        :idAsset==7 ? '<option>Carton Box</option>'
+                                        :idAsset==8 ? '<option>NA</option>'
+                                        : ''}
                                 </select>
                             </td>
                         @endcan

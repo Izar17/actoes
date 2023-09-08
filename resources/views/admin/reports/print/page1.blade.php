@@ -36,12 +36,12 @@
                             <td height="24" scope="col">&nbsp;</td>
                             <td scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    {{ $transaction->calibration_date ?? '' }}</b>
+                                    {{ date('m/d/Y', strtotime(date('m/d/Y', strtotime($transaction->calibration_date)))) ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;&nbsp;<b>{{ $transaction->calibration_time ?? '' }}</b></td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}</b>
                             </td>
                             <td scope="col"><b>&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_time ?? '' }}</b></td>
                         </tr>
@@ -109,12 +109,12 @@
                             <td height="17" scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->calibration_date ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ date('m/d/Y', strtotime($transaction->calibration_date)) ?? '' }}</b>
                             </td>
                         </tr>
                         <tr>
@@ -227,7 +227,7 @@
                                         {{ $transaction->asset_product->product_name ?? '' }}</u></b><u> <strong
                                         style="color:#f00;">ACTIVITY MBq</strong></u></td>
                             <td colspan="2" align="left" style="font-size:10px;font-weight:normal;">Calibration
-                                Date:&nbsp;&nbsp;<b><u>{{ $transaction->calibration_date }}</u></b></td>
+                                Date:&nbsp;&nbsp;<b><u>{{ date('m/d/Y', strtotime($transaction->calibration_date)) }}</u></b></td>
                         </tr>
                         <tr>
                             <td height="19" align="left" style="font-size:10px;font-weight:normal;">

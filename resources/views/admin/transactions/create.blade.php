@@ -247,7 +247,6 @@
                             volume.removeAttribute('readonly');
                             break;
                         case '7':
-                            calibration_date.type = 'text';
                             calibration_time.type = 'hidden';
                         case '6':
                         case '8':

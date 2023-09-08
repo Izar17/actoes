@@ -25,7 +25,7 @@
                                 style="font-size:16px;">CONSIGNEE</span></strong></td>
                 </tr>
                 <tr>
-                    <td @if ($transaction->asset_id  < 4) colspan="5"
+                    <td @if ($transaction->asset_id < 4) colspan="5"
                         @else
                         colspan="3" @endif
                         rowspan="2" align="center"><strong>
@@ -42,8 +42,17 @@
                                         $dateString = "$transaction->calibration_date";
                                         $timestamp = strtotime($dateString);
                                         $formattedDate = date('l, F j, Y', $timestamp);
-                                        echo $formattedDate;
+                                        $formattedMonth = date('F', $timestamp);
                                     @endphp
+                                    @if ($transaction->asset_id == 7)
+                                        @php
+                                            echo $formattedMonth;
+                                        @endphp
+                                    @else
+                                        @php
+                                            echo $formattedDate;
+                                        @endphp
+                                    @endif
                                 </strong>
 
                         </span><br><br></td>
@@ -65,28 +74,28 @@
                             <td width="65" rowspan="2" align="center"><strong>LEAD<br /> PIG</strong></td>
                         @endif
                         @if ($transaction->asset_id < 4)
-                        <td width="126" rowspan="2" align="center"><strong>PROCEDURE</strong></td>
+                            <td width="126" rowspan="2" align="center"><strong>PROCEDURE</strong></td>
                         @endif
                         <td width="136" rowspan="2" align="center"><strong>PATIENT'S NAME</strong></td>
                         <td width="61" rowspan="2" align="center"><strong> CAL<br /> TIME</strong></td>
                         @if ($transaction->asset_id == 8)
-                        <td colspan="2" rowspan="2" align="center"><strong>QUANTITY</strong></td>
+                            <td colspan="2" rowspan="2" align="center"><strong>QUANTITY</strong></td>
                         @else
-                        <td colspan="2" align="center"><strong>ORDER DOSE</strong></td>
+                            <td colspan="2" align="center"><strong>ORDER DOSE</strong></td>
                         @endif
-                        @if ($transaction->asset_id  < 4)
+                        @if ($transaction->asset_id < 4)
                             <td colspan="2" align="center"><strong>ACTUAL DOSE</strong></td>
                         @endif
                     </tr>
                     <tr>
                         @if ($transaction->asset_id == 4 || $transaction->asset_id == 6)
-                        <td colspan="2" align="center"><strong>GBq</strong></td>
+                            <td colspan="2" align="center"><strong>GBq</strong></td>
                         @elseif ($transaction->asset_id == 8)
                         @else
-                        <td width="47" align="center"><strong>mCi</strong></td>
-                        <td width="46" align="center"><strong>MBq</strong></td>
+                            <td width="47" align="center"><strong>mCi</strong></td>
+                            <td width="46" align="center"><strong>MBq</strong></td>
                         @endif
-                        @if ($transaction->asset_id  < 4)
+                        @if ($transaction->asset_id < 4)
                             <td width="48" align="center"><strong>mCi</strong></td>
                             <td width="50" align="center"><strong>MBq</strong></td>
                         @endif
@@ -104,7 +113,7 @@
                             <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
                             <td align="center">{{ $transaction->asset_product->product_name ?? '' }}</td>
                             <td width="57" align="center">{{ $transaction->rx_no ?? '' }}</td>
-                            @if ($transaction->asset_id  < 4)
+                            @if ($transaction->asset_id < 4)
                                 <td align="center">{{ $transaction->lot_no ?? '' }}</td>
                                 <td align="center">{{ $transaction->leadPot->lead_code ?? '' }}
                                     @if (isset($transaction->leadPot->lead_code))
@@ -131,17 +140,17 @@
                                 </td>
                             @endif
                             @if ($transaction->asset_id < 4)
-                            <td align="center">{{ $transaction->procedure1 ?? '' }}</td>
+                                <td align="center">{{ $transaction->procedure1 ?? '' }}</td>
                             @endif
                             <td align="center">{{ $transaction->patient ?? '' }}</td>
                             <td align="center">{{ $transaction->calibration_time ?? '' }}</td>
                             <td align="center">{{ $transaction->activity_mci ?? '' }}</td>
-                            @if ($transaction->asset_id != 4 && $transaction->asset_id != 6 && $transaction->asset_id !=8)
-                            <td align="center" style="font-size:12px; color:#f00; ">
-                                <strong>{{ $transaction->activity_mbq ?? '' }}</strong>
-                            </td>
+                            @if ($transaction->asset_id != 4 && $transaction->asset_id != 6 && $transaction->asset_id != 8)
+                                <td align="center" style="font-size:12px; color:#f00; ">
+                                    <strong>{{ $transaction->activity_mbq ?? '' }}</strong>
+                                </td>
                             @endif
-                            @if ($transaction->asset_id  < 4)
+                            @if ($transaction->asset_id < 4)
                                 <td align="center">{{ $transaction->actual_dose ?? '' }}</td>
                                 <td align="center" style="font-size:12px; color:#f00; ">
                                     <strong>{{ number_format($transaction->actual_mbq, 2, '.', ',') ?? '' }}</strong>
@@ -232,12 +241,9 @@
                         7,
                         U.N. 2915</strong><br /><br />
                 <table width="98%" align="center" cellspacing="0"
-                @if ($transaction->asset_id < 4)
-                style="border-collapse:collapse;"
+                    @if ($transaction->asset_id < 4) style="border-collapse:collapse;"
                 @else
-                style="border-collapse:collapse;margin-top:-70px"
-                @endif
-                >
+                style="border-collapse:collapse;margin-top:-70px" @endif>
                     <tr>
                         <td width="19%" align="left" scope="col" style="font-size:12px;"></td>
                         <td colspan="2" scope="col">
@@ -306,12 +312,15 @@
                         <td scope="col">&nbsp;</td>
 
                         @if ($transaction->asset_id < 4)
-                        <td colspan="3" align="left" scope="col" style="font-size:12px;"><strong>Performed
-                                by:</strong></td>
-                        <td colspan="3" scope="col"
-                            style="font-size:12px; font-weight:normal;border-bottom:1pt solid black" align="center">
-                            {{ $transaction->performed_by ?? '' }}
-                        </td>
+                            <td colspan="3" align="left" scope="col" style="font-size:12px;">
+                                <strong>Performed
+                                    by:</strong>
+                            </td>
+                            <td colspan="3" scope="col"
+                                style="font-size:12px; font-weight:normal;border-bottom:1pt solid black"
+                                align="center">
+                                {{ $transaction->performed_by ?? '' }}
+                            </td>
                         @endif
                     </tr>
                     <tr>

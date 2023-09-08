@@ -392,21 +392,8 @@
                         <datalist id="patient_list_id"><option value="Confidential"></datalist>
                     </td>
                     <td>
-                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date${rowIdx}"  min="{{ date('Y-m-d') }}" list="date_cal" required/>
-                        <datalist id="date_cal">
-                            <option value="January">January
-                            <option value="February">February
-                            <option value="March">March
-                            <option value="April">April
-                            <option value="May">May
-                            <option value="June">June
-                            <option value="July">July
-                            <option value="August">August
-                            <option value="September">September
-                            <option value="October">October
-                            <option value="November">November
-                            <option value="December">December
-                        </datalist>
+                        <input class="form-control calibration_date" type="date" name="calibration_date[]" id="calibration_date${rowIdx}"  min="{{ date('Y-m-d') }}" required/>
+
                         <input type="text" name="calibration_time[]" id="calibration_time${rowIdx}"
                             list="time_id" class="form-control patient" required>
                         <datalist id="time_id">

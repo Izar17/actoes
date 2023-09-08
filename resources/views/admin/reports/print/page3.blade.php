@@ -67,8 +67,10 @@
                 @if ($transaction->asset_id != 2)
                     <tr>
                         <td width="85" rowspan="2" align="center"><strong>ORDER<br /> FORM NUMBER</strong></td>
-                        <td width="66" rowspan="2" align="center"><strong>PRODUCT</strong></td>
-                        <td width="80" rowspan="2" align="center"><strong>RX NO.</strong></td>
+                        <td width="66" rowspan="2" align="center"
+                            @if ($transaction->asset_id > 3) colspan="2" @endif><strong>PRODUCT</strong></td>
+                        <td width="80" rowspan="2" align="center"
+                            @if ($transaction->asset_id > 3) colspan="2" @endif><strong>RX NO.</strong></td>
                         @if ($transaction->asset_id < 4)
                             <td width="42" rowspan="2" align="center"><strong>LOT #</strong></td>
                             <td width="65" rowspan="2" align="center"><strong>LEAD<br /> PIG</strong></td>
@@ -76,11 +78,21 @@
                         @if ($transaction->asset_id < 4)
                             <td width="126" rowspan="2" align="center"><strong>PROCEDURE</strong></td>
                         @endif
-                        <td width="136" rowspan="2" align="center"><strong>PATIENT'S NAME</strong></td>
-                        <td width="61" rowspan="2" align="center"><strong> CAL<br /> TIME</strong></td>
-                        @if ($transaction->asset_id == 8)
-                            <td colspan="2" rowspan="2" align="center"><strong>QUANTITY</strong></td>
+                        @if ($transaction->asset_id == 7)
+                            <td colspan="1" rowspan="2" align="center"><strong>QUANTITY</strong></td>
                         @else
+                            @if ($transaction->asset_id != 6 && $transaction->asset_id != 8)
+
+                                <td width="136" rowspan="2" align="center"><strong>PATIENT'S NAME</strong>
+                                </td>
+                                <td width="61" rowspan="2" align="center"><strong> CAL<br /> TIME</strong></td>
+                            @else
+                                @if ($transaction->asset_id == 8)
+                                    <td width="136" rowspan="2" align="center"><strong>UNIT OF
+                                            MEASUREMENT</strong></td>
+                                @endif
+                                <td width="61" rowspan="2" align="center"><strong> GEN #</strong></td>
+                            @endif
                             <td colspan="2" align="center"><strong>ORDER DOSE</strong></td>
                         @endif
                         @if ($transaction->asset_id < 4)
@@ -89,8 +101,8 @@
                     </tr>
                     <tr>
                         @if ($transaction->asset_id == 4 || $transaction->asset_id == 6)
-                            <td colspan="2" align="center"><strong>GBq</strong></td>
-                        @elseif ($transaction->asset_id == 8)
+                            <td colspan="2" align="center"><strong>Activity (GBq)</strong></td>
+                        @elseif ($transaction->asset_id == 8 || $transaction->asset_id == 7)
                         @else
                             <td width="47" align="center"><strong>mCi</strong></td>
                             <td width="46" align="center"><strong>MBq</strong></td>
@@ -111,8 +123,10 @@
                     @foreach ($transactions as $key => $transaction)
                         <tr>
                             <td align="center">{{ $transaction->orderform_no ?? '' }}</td>
-                            <td align="center">{{ $transaction->asset_product->product_name ?? '' }}</td>
-                            <td width="57" align="center">{{ $transaction->rx_no ?? '' }}</td>
+                            <td align="center" @if ($transaction->asset_id > 3) colspan="2" @endif>
+                                {{ $transaction->asset_product->product_name ?? '' }}</td>
+                            <td width="57" align="center" @if ($transaction->asset_id > 3) colspan="2" @endif>
+                                {{ $transaction->rx_no ?? '' }}</td>
                             @if ($transaction->asset_id < 4)
                                 <td align="center">{{ $transaction->lot_no ?? '' }}</td>
                                 <td align="center">{{ $transaction->leadPot->lead_code ?? '' }}
@@ -142,10 +156,19 @@
                             @if ($transaction->asset_id < 4)
                                 <td align="center">{{ $transaction->procedure1 ?? '' }}</td>
                             @endif
-                            <td align="center">{{ $transaction->patient ?? '' }}</td>
-                            <td align="center">{{ $transaction->calibration_time ?? '' }}</td>
+                            @if ($transaction->asset_id == 7)
+                            @else
+                                @if ($transaction->asset_id != 6)
+                                    <td align="center">{{ $transaction->patient ?? '' }}</td>
+                                @endif
+                                <td align="center">{{ $transaction->calibration_time ?? '' }}</td>
+                            @endif
                             <td align="center">{{ $transaction->activity_mci ?? '' }}</td>
-                            @if ($transaction->asset_id != 4 && $transaction->asset_id != 6 && $transaction->asset_id != 8)
+                            @if (
+                                $transaction->asset_id != 4 &&
+                                    $transaction->asset_id != 6 &&
+                                    $transaction->asset_id != 8 &&
+                                    $transaction->asset_id != 7)
                                 <td align="center" style="font-size:12px; color:#f00; ">
                                     <strong>{{ $transaction->activity_mbq ?? '' }}</strong>
                                 </td>
@@ -160,7 +183,8 @@
                     @endforeach
                 @else
                     <tr>
-                        <td width="86" rowspan="2" align="center"><strong>ORDER<br /> FORM<br /> NUMBER</strong>
+                        <td width="86" rowspan="2" align="center"><strong>ORDER<br /> FORM<br />
+                                NUMBER</strong>
                         </td>
                         <td width="83" rowspan="2" align="center"><strong>PRODUCT</strong></td>
                         <td width="80" rowspan="2" align="center"><strong>RX NUMBER</strong></td>

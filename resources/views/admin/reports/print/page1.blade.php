@@ -17,14 +17,14 @@
                         <tr>
                             <td width="8%" height="29" align="left" scope="col">&nbsp;</td>
                             <td width="22%" align="left" scope="col">
-                                <b>{{ $transaction->asset->name ?? '' }}</b>
+                                <b>{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td width="19%" scope="col"><b>&nbsp;&nbsp;{{ $transaction->particular ?? '' }} </b><b
                                     style="font-size:12px; color:#f00; ">({{ $transaction->activity_mbq ?? '' }}
                                     MBq)</b></td>
                             <td width="11%" align="left" scope="col">&nbsp;</td>
                             <td width="22%" align="left" scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td width="18%" scope="col">
                                 <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b
@@ -152,12 +152,12 @@
                         <tr>
                             <td height="39" scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col">&nbsp;</td>
                             <td scope="col" style="font-size:14px;">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;</td>
                         </tr>

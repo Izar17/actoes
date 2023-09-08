@@ -13,7 +13,7 @@
                         </tr>
                         <tr>
                             <td width="36%" height="33" align="left" scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td width="30%" scope="col">&nbsp;</td>
                             <td width="34%" scope="col">&nbsp;</td>
@@ -75,7 +75,7 @@
                         </tr>
                         <tr>
                             <td scope="col">
-                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}</b>
+                                <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->asset->name ?? '' }}  {{ $transaction->asset_product->product_name ?? '' }}</b>
                             </td>
                             <td scope="col">&nbsp;&nbsp;<b>{{ $transaction->procedure1 ?? '' }}</b></td>
                             <td><b style="font-size:14px;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->particular ?? '' }}</b><b

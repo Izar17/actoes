@@ -93,7 +93,11 @@
                                 @endif
                                 <td width="61" rowspan="2" align="center"><strong> GEN #</strong></td>
                             @endif
+                            @if ($transaction->asset_id != 8)
                             <td colspan="2" align="center"><strong>ORDER DOSE</strong></td>
+                            @else
+                            <td colspan="2" align="center"><strong>QUANTITY</strong></td>
+                            @endif
                         @endif
                         @if ($transaction->asset_id < 4)
                             <td colspan="2" align="center"><strong>ACTUAL DOSE</strong></td>

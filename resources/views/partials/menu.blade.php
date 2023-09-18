@@ -124,7 +124,7 @@
                         @can('order_create')
                             <li class="nav-item">
                                 <a href="{{ route('admin.transactions.create') }}"
-                                    class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                                    class="nav-link {{ request()->is('admin/view') || request()->is('admin/view/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
                                     {{ trans('global.create') }} {{ trans('cruds.transaction.order_title_singular') }}
                                 </a>
@@ -133,7 +133,7 @@
                         @can('order_access')
                             <li class="nav-item">
                                 <a href="{{ route('admin.transactions.index') }}"
-                                    class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">
+                                    class="nav-link {{ request()->is('admin/create') || request()->is('admin/create/*') ? 'active' : '' }}">
                                     <i class="fa-fw fas fa-shopping-cart nav-icon"></i>
                                     {{ trans('global.view') }} {{ trans('cruds.transaction.order_title') }}
                                 </a>

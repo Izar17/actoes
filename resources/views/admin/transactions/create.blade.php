@@ -425,7 +425,7 @@
                     </td>
                         @can('create_transport')
                             <td>
-                                <select style="width: 120px" class="form-control can" name="can" id="can${rowIdx}">
+                                <select style="width: 120px" class="form-control can" name="can[]" id="can${rowIdx}">
                                     ${idAsset==1 ? '<option>Tc-Bag</option><option>Pail Can</option>'
                                         :idAsset == 2 ?'<option>RAM Can</option><option>Pail Can</option>'
                                         :idAsset==3 ? '<option>Tc-Bag</option><option>Pail Can</option>'

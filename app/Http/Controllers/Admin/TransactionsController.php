@@ -179,9 +179,9 @@ class TransactionsController extends Controller
             }
 
             if (isset($request->can[$key])){
-                $can = $request->can[$key];
+                $cans = $request->can[$key];
             }else{
-                $can = '';
+                $cans = '';
             }
             //particular
             if ($request->asset_id == 6 || $request->asset_id == 4) {
@@ -209,7 +209,7 @@ class TransactionsController extends Controller
             $transactions['run_no']             = $request->run_no[$key];
             $transactions['procedure1']         = $request->procedure[$key];
             $transactions['volume']             = $request->volume[$key];
-            $transactions['can']                = $can;
+            $transactions['can']                = $cans;
             $transactions['created_by']         = $request->user;
             $transactions['cancelled']          = 'NO';
             $transactions['status']             = 1;

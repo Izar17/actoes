@@ -253,9 +253,9 @@
         $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
             const startDate = picker.startDate.format('YYYY-MM-DD');
             const endDate = picker.endDate.format('YYYY-MM-DD');
-            const dateRange = startDate + ' - ' + endDate;
+            const dateRange = startDate + '|' + endDate;
 
-            table.columns(10).search(dateRange).draw();
+            table.columns(10).search(dateRange, true, false).draw();
         });
 
         // Clear filter and input when 'Clear' is clicked
@@ -265,14 +265,14 @@
         });
 
 
-        
+
     });
 
      // Wait for the document to be ready
      document.addEventListener('DOMContentLoaded', function() {
         // Get the success message element
         var successMessage = document.getElementById('success-message');
-        
+
         // Hide the success message after 5 seconds (5000 milliseconds)
         setTimeout(function() {
             successMessage.style.display = 'none';

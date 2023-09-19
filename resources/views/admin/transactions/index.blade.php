@@ -250,9 +250,9 @@
             $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
                 const startDate = picker.startDate.format('YYYY-MM-DD');
                 const endDate = picker.endDate.format('YYYY-MM-DD');
-                const dateRange = startDate + ' - ' + endDate;
+                const dateRange = startDate + '|' + endDate;
 
-                table.columns(9).search(dateRange).draw();
+                table.columns(9).search(dateRange, true, false).draw();
             });
 
             // Clear filter and input when 'Clear' is clicked

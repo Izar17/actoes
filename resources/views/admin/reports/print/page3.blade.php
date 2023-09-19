@@ -257,7 +257,12 @@
                             </td>
                             <td width="52" align="center">{{ $transaction->actual_dose ?? '' }}</td>
                             <td align="center" style="font-size:12px; color:#f00; ">
-                                <strong>{{ number_format($transaction->actual_mbq, 2, '.', ',') ?? '' }}</strong>
+                                <strong>
+                                @if (is_numeric($transaction->actual_mbq))
+                                    {{ number_format($transaction->actual_mbq, 2, '.', ',') }}
+                                @else
+                                    {{ $transaction->actual_mbq }}
+                                @endif</strong>
                             </td>
                         </tr>
                     @endforeach

@@ -550,8 +550,9 @@
                         <td width="4%" scope="col">&nbsp;</td>
                         <td width="5%" scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
-                        <td colspan="3" align="left" scope="col" style="font-size:12px;"><strong>Date
-                                Dispensed:</strong></td>
+                        <td colspan="3" align="left" scope="col" style="font-size:12px;">
+                            <strong>Date of Printing:</strong>
+                        </td>
                         <td colspan="3" scope="col" style="font-size:12px; border-bottom:1pt solid black"
                             align="center"><strong>
                                 @php

@@ -231,6 +231,7 @@
                 opens: 'left',
                 autoUpdateInput: false,
                 locale: {
+                    format: 'YYYY-MM-DD',
                     cancelLabel: 'Clear'
                 }
             });
@@ -240,9 +241,8 @@
             $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
                 const startDate = picker.startDate.format('YYYY-MM-DD');
                 const endDate = picker.endDate.format('YYYY-MM-DD');
-                const dateRange = startDate + ' - ' + endDate;
-
-                table.columns(10).search(dateRange).draw();
+                var column10 = table.columns(10);
+                column10.search(startDate + '|' + endDate,true ,false).draw();
             });
 
             // Clear filter and input when 'Clear' is clicked

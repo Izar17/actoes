@@ -53,28 +53,6 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('team_access')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.teams.index') }}"
-                                    class="nav-link {{ request()->is('admin/teams') || request()->is('admin/teams/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-users nav-icon">
-
-                                    </i>
-                                    {{ trans('cruds.team.title') }}
-                                </a>
-                            </li>
-                        @endcan
-                        @can('hospital_access')
-                            <li class="nav-item">
-                                <a href="{{ route('admin.hospitals.index') }}"
-                                    class="nav-link {{ request()->is('admin/hospitals') || request()->is('admin/hospitals/*') ? 'active' : '' }}">
-                                    <i class="fa-fw fas fa-cogs nav-icon">
-
-                                    </i>
-                                    {{ trans('cruds.hospital.title') }}
-                                </a>
-                            </li>
-                        @endcan
                     </ul>
                 </li>
             @endcan
@@ -106,6 +84,17 @@
 
                                     </i>
                                     {{ trans('cruds.stock.title') }}
+                                </a>
+                            </li>
+                        @endcan
+                        @can('hospital_access')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.hospitals.index') }}"
+                                    class="nav-link {{ request()->is('admin/hospitals') || request()->is('admin/hospitals/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-cogs nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.hospital.title') }}
                                 </a>
                             </li>
                         @endcan

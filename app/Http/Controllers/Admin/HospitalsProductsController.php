@@ -7,13 +7,11 @@ use App\Http\Requests\MassDestroyHospitalRequest;
 use App\Http\Requests\StoreHospitalRequest;
 use App\Http\Requests\UpdateHospitalRequest;
 use App\Hospital;
-use App\Product_price;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class HospitalsController extends Controller
+class HospitalsProductsController extends Controller
 {
     public function index()
     {
@@ -52,12 +50,11 @@ class HospitalsController extends Controller
         return view('admin.hospitals.edit', compact('hospital'));
     }
 
-    public function hospitalPrice(Request $request)
+    public function prices(Hospital $hospital)
     {
         abort_if(Gate::denies('hospital_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $hospitalProducts = Product_price::all()->where('hospital_id', $request->id);
-        return view('admin.hospitals.hospital_price', compact('hospitalProducts'));
+        return view('admin.hospitals.hospital_price', compact('hospital'));
     }
 
     public function update(UpdateHospitalRequest $request, Hospital $hospital)

@@ -26,86 +26,61 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Stock">
+            <table id="dataTable" class=" table table-bordered table-striped table-hover datatable datatable-Stock">
                 <thead>
                     <tr>
                         <th>
-                            {{ trans('cruds.stock.fields.asset') }}
+                            ID
                         </th>
-                        {{-- @admin
-                            <th>
-                                Hospital
-                            </th>
-                        @endadmin --}}
                         <th>
-                            {{ trans('cruds.stock.fields.current_stock') }}
+                            Product Name
                         </th>
-                        @user
-                            <th>
-                                Add Stock
-                            </th>
-                            <th>
-                                Remove Stock
-                            </th>
-                        @enduser
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Unit
+                        </th>
                         <th>
                             &nbsp;
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($stocks as $key => $stock)
+                    @foreach($products as $key => $product)
                         <tr>
                             <td>
-                                {{ $stock->asset->name ?? '' }}
+                                {{ $product->id ?? '' }}
                             </td>
-                            {{-- @admin
-                                <td>
-                                    {{ $stock->team->name ?? '' }}
-                                </td>
-                            @endadmin --}}
                             <td>
-                                {{ $stock->current_stock ?? '' }}
+                                {{ $product->product_name ?? '' }}
                             </td>
-                            @user
-                                <td>
-                                    <form action="{{ route('admin.transactions.storeStock', $stock->id) }}" method="POST" style="display: inline-block;" class="form-inline">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="action" value="add">
-                                        <input type="number" name="stock" class="form-control form-control-sm col-4" min="1">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="ADD">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action="{{ route('admin.transactions.storeStock', $stock->id) }}" method="POST" style="display: inline-block;" class="form-inline">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="action" value="remove">
-                                        <input type="number" name="stock" class="form-control form-control-sm col-4" min="1">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="REMOVE">
-                                    </form>
-                                </td>
-                            @enduser
+                            <td>
+                                {{ $product->qty ?? '' }}
+                            </td>
+                            <td>
+                                {{ $product->unit ?? '' }}
+                            </td>
                             <td>
                                 @can('product_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.show', $stock->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.show', $product->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
                                 @can('product_edit')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.edit', $stock->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.edit', $product->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('isotope_delete')
-                                    <form action="{{ route('admin.stocks.destroy', $stock->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.stocks.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
                                 @endcan
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>
@@ -120,24 +95,21 @@
 @section('scripts')
 @parent
 <script>
-    $(function () {
-  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+    //Datatables
+    $(document).ready(function() {
+        var table = $('#dataTable').DataTable({
+            searching: true,
+            order: [
+                [0, 'asc']
+            ],
+            pageLength: 25,
+            columnDefs: [{
+                orderable: true,
+                className: '',
+                targets: 0
+            }]
+        });
 
-  $.extend(true, $.fn.dataTable.defaults, {
-    order: [[ 1, 'desc' ]],
-    pageLength: 100,
-      columnDefs: [{
-          orderable: true,
-          className: '',
-          targets: 0
-      }]
-  });
-  $('.datatable-Stock:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-        $($.fn.dataTable.tables(true)).DataTable()
-            .columns.adjust();
     });
-})
-
 </script>
 @endsection

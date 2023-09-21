@@ -48,6 +48,7 @@ Auth::routes(['register' => false]);
 
     // Hospitals
     Route::delete('hospitals/destroy', 'HospitalsController@massDestroy')->name('hospitals.massDestroy');
+    Route::get('hospitals/hospital_price', 'HospitalsController@hospitalPrice')->name('hospitals.hospital_price');
     Route::resource('hospitals', 'HospitalsController');
 
     // Stocks

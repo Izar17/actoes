@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Asset;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyStockRequest;
 use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
-use App\Stock;
+use App\Product;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StocksController extends Controller
@@ -18,9 +16,9 @@ class StocksController extends Controller
     {
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $stocks = Stock::all();
+        $products = Product::all();
 
-        return view('admin.stocks.index', compact('stocks'));
+        return view('admin.stocks.index', compact('products'));
     }
 
     public function create()

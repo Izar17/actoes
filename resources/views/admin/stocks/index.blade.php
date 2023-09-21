@@ -3,8 +3,8 @@
 @can('product_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12 mt-2">
-           <a class="btn btn-success" href="{{ route("admin.stocks.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.stock.title_singular') }}
+           <a class="btn btn-success" href="#">
+                Create Product Work in progress
             </a>
             @if(session('status'))
                 <div class="alert alert-success" role="alert">
@@ -42,6 +42,9 @@
                             Unit
                         </th>
                         <th>
+                            Price
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -62,7 +65,11 @@
                                 {{ $product->unit ?? '' }}
                             </td>
                             <td>
-                                @can('product_show')
+                                {{ $product->price ?? '' }}
+                            </td>
+                            <td>
+                                Work in progress
+                                {{-- @can('product_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.stocks.show', $product->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
@@ -79,7 +86,7 @@
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
-                                @endcan
+                                @endcan --}}
                             </td>
                         </tr>
                     @endforeach

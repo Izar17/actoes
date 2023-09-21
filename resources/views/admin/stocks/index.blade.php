@@ -42,7 +42,7 @@
                             Unit
                         </th>
                         <th>
-                            Price
+                            Standard Price
                         </th>
                         <th>
                             &nbsp;

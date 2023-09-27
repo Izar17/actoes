@@ -22,7 +22,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td scope="col">&nbsp;&nbsp;&nbsp;<strong>{{ $transaction->hospital->hospital ?? '' }}</strong>
+                    <td style="padding-left:20px;"><strong>{{ $transaction->hospital->hospital ?? '' }}</strong>
                     </td>
                     <td colspan="3" scope="col"><strong><span style="font-size:16px;"></span>
                             @php
@@ -33,6 +33,7 @@
                             @endphp</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
+                <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td></tr>
             </table><br /><br />
             <table width="95%" align="center" cellspacing="0">
                 <tr>

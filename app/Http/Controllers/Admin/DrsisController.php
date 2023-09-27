@@ -17,7 +17,7 @@ class DrsisController extends Controller
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
 
-        $productions = Production::all()->where("status",1);
+        $productions = Production::all()->where("status",1)->where("dr_no","=","");
 
         $hospitals = Hospital::all();
 

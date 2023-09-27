@@ -10,7 +10,7 @@ use \DateTimeInterface;
 class Product_price extends Model
 {
     use HasFactory;
-    public $table = 'products_hospitals';
+    public $table = 'product_hospital';
 
     protected $dates = [
         'created_at',

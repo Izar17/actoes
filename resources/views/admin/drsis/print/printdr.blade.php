@@ -52,11 +52,11 @@
             @php
                 $totalPrice = 0; // Initialize the total price variable
             @endphp
-            <table width="95%" align="center" cellspacing="0">
+            <table width="95%" align="center" style="margin-top:60px;" cellspacing="0">
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
-                        <td width="70px" style="text-align:center;">1</td>
+                        <td width="70px" style="text-align:center;padding-top:10px;">1</td>
                         <td width="70px" style="text-align:center;">dose</td>
                         <td width="70px" style="text-align:center;"></td>
                         <td>
@@ -66,8 +66,6 @@
                             {{ $transaction->particular ?? '' }},
                             {{ $transaction->rx_no ?? '' }}
                         </td>
-                        <td width="150px">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($transaction->price, 2, '.', ',') }}</td>
                     </tr>
                     @php
                         $totalPrice += $transaction->price ?? 0; // Add the transaction price to the total
@@ -77,13 +75,6 @@
                 <tr>
                     <td colspan="3"></td>
                     <td>###NOTHING FOLLOWS###</td>
-                    <td><u>________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
-                </tr>
-                <tr>
-                    <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
-                    <td style="padding-top: 20%;">
-                        <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($totalPrice, 2, '.', ',') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
-                    </td>
                 </tr>
             </table>
         @endif

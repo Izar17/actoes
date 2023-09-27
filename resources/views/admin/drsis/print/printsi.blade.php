@@ -59,11 +59,11 @@
                 $totalPrice = 0;
                 $totalDeliveryCharge = 0; // Initialize the total price variable
             @endphp
-            <table width="95%" align="center" cellspacing="0">
+            <table width="95%" align="center" style="margin-top:60px;" cellspacing="0">
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
-                        <td width="70px" style="text-align:center;">1</td>
+                        <td width="70px" style="text-align:center;padding-top:10px;">1</td>
                         <td width="70px" style="text-align:center;">dose</td>
                         <td width="70px" style="text-align:center;"></td>
                         <td colspan="2px">

@@ -28,7 +28,9 @@
                                 style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
-                <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td></tr>
+                <tr>
+                    <td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>
+                </tr>
             </table>
             <br /><br />
             <table width="95%" align="center" cellspacing="0">
@@ -73,12 +75,14 @@
                 @endforeach
                 <!-- Footer row to display the total -->
                 <tr>
-                    <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
+                    <td colspan="3"></td>
+                    <td>###NOTHING FOLLOWS###</td>
                     <td><u>________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
                 </tr>
                 <tr>
                     <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
-                    <td style="padding-top: 20%;"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($totalPrice, 2, '.', ',') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                    <td style="padding-top: 20%;">
+                        <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($totalPrice, 2, '.', ',') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
                     </td>
                 </tr>
             </table>

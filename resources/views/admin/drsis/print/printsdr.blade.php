@@ -74,7 +74,8 @@
                 @endforeach
                 <!-- Footer row to display the total -->
                 <tr>
-                    <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
+                    <td colspan="3"></td>
+                    <td>###NOTHING FOLLOWS###</td>
                     <td><u>________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
                 </tr>
                 <tr>

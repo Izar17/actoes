@@ -171,15 +171,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.drsis.wip') }}"
-                                class="nav-link {{ request()->is('admin/drsis/wip') || request()->is('admin/drsis/wip*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.drsis.cancelledDr') }}"
+                                class="nav-link {{ request()->is('admin/drsis/cancelledDr') || request()->is('admin/drsis/cancelledDr*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-briefcase nav-icon"></i>
                                 {{ trans('cruds.drsi.dr') }}
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.drsis.wip') }}"
-                                class="nav-link {{ request()->is('admin/drsis/wip') || request()->is('admin/drsis/wip*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.drsis.cancelledSi') }}"
+                                class="nav-link {{ request()->is('admin/drsis/cancelledSi') || request()->is('admin/drsis/cancelledSi*') ? 'active' : '' }}">
                                 <i class="fa-fw fas fa-briefcase nav-icon"></i>
                                 {{ trans('cruds.drsi.si') }}
                             </a>

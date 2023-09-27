@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\{Asset, User, Hospital, RunNumber, Asset_product, Production, LeadPot, Drsi};
+use App\{Asset, User, Hospital, RunNumber, Asset_product, Production, LeadPot, Drsi, CancelDrsi};
 use App\Transaction;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,19 +25,46 @@ class DrsisController extends Controller
 
         $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
 
-        // $drsis = Drsi::join('hospitals', 'transactions.hospital_id', '=', 'hospitals.id')
-        // ->where('transactions.status', 1)
-        // ->distinct('hospitals.hospital')
-        // ->pluck('hospitals.hospital','hospitals.id');
-
         return view('admin.drsis.index', compact('productions','assets','run_nos','hospitals'));
     }
 
-    public function wip()
+    public function cancelledDr()
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.drsis.wip');
+
+        $productions = Production::join('canceldrsi', 'transactions.id', '=', 'canceldrsi.transaction_id')
+        ->where('transactions.status', 1) // Adjust the conditions as needed
+        ->where('canceldrsi.status', 0) // Adjust the conditions as needed
+        ->select('transactions.*', 'canceldrsi.*','canceldrsi.created_at as cancelled_date') // Select the columns you need
+        ->get();
+
+        $hospitals = Hospital::all();
+
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+        return view('admin.drsis.cancelledDr', compact('productions','assets','run_nos','hospitals'));
+    }
+
+    public function cancelledSi()
+    {
+        abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $productions = Production::join('canceldrsi', 'transactions.id', '=', 'canceldrsi.transaction_id')
+        ->where('transactions.status', 1) // Adjust the conditions as needed
+        ->where('canceldrsi.status', 1) // Adjust the conditions as needed
+        ->select('transactions.*', 'canceldrsi.*','canceldrsi.created_at as cancelled_date') // Select the columns you need
+        ->get();
+
+        $hospitals = Hospital::all();
+
+        $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
+
+        $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
+
+        return view('admin.drsis.cancelledSi', compact('productions','assets','run_nos','hospitals'));
     }
 
     public function edit(Drsi $request, $id)

@@ -65,8 +65,14 @@ Auth::routes(['register' => false]);
 
     // Drsis
     Route::get('drsis/wip', 'DrsisController@wip')->name('drsis.wip');
+    Route::get('drsis/cancelledDr', 'DrsisController@cancelledDr')->name('drsis.cancelledDr');
+    Route::get('drsis/cancelledSi', 'DrsisController@cancelledSi')->name('drsis.cancelledSi');
     Route::resource('drsis', 'DrsisController');
+    Route::get('printdrsi/printDr', 'PrintDrsiController@printDr')->name('printdrsi.printDr');
+    Route::get('printdrsi/printSi', 'PrintDrsiController@printSi')->name('printdrsi.printSi');
     Route::get('printdrsi/searchDrsi', 'PrintDrsiController@searchDrsi')->name('printdrsi.searchDrsi');
+    Route::get('printdrsi/searchByDrsi', 'PrintDrsiController@searchByDrsi')->name('printdrsi.searchByDrsi');
+    Route::get('printdrsi/cancelDrsi', 'PrintDrsiController@cancelDrsi')->name('printdrsi.cancelDrsi');
     Route::resource('printdrsi', 'PrintDrsiController');
 
     // Cancelled Order

@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 @section('content')
+    @if (session()->has('success'))
+        <div class="alert alert-success" id="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -19,7 +24,10 @@
                                                 id="asset_id">
                                                 <option value="">All</option>
                                                 @foreach ($assets as $data)
-                                                    <option value="{{ $data->id }}">
+                                                    {{-- <option value="{{ $data->id }}"> --}}
+                                                    <option value="{{ $data->id }}"
+                                                        @if (isset($request)) @if ($data->id == $request->asset_id ?? '') selected @endif
+                                                        @endif>
                                                         {{ $data->name }}
                                                     </option>
                                                 @endforeach
@@ -27,7 +35,8 @@
                                         </td>
                                         <td width="35%"><label class="required" for="rx_no">RX Number</label>
                                             <input type="text" class="form-control rx-number" id="rx_number"
-                                                name="rx_number" placeholder="CODE-00000-YYYY">
+                                                name="rx_number" value="{{ $request->rx_number ?? '' }}"
+                                                placeholder="CODE-00000-YYYY">
                                         </td>
                                     </tr>
                                     <tr>
@@ -39,7 +48,10 @@
                                                 id="hospital_id" required>
                                                 <option value=""></option>
                                                 @foreach ($hospitals as $id => $hospital)
-                                                    <option value="{{ $hospital->id }}">
+                                                    {{-- <option value="{{ $hospital->id }}"> --}}
+                                                    <option value="{{ $hospital->id }}"
+                                                        @if (isset($request)) @if ($hospital->id == $request->hospital_id ?? '') selected @endif
+                                                        @endif>
                                                         {{ $hospital->hospital }}
                                                     </option>
                                                 @endforeach
@@ -55,7 +67,10 @@
                                                 id="run_no">
                                                 <option value="">Run #</option>
                                                 @foreach ($run_nos as $data)
-                                                    <option value="{{ $data->id }}">
+                                                    {{-- <option value="{{ $data->id }}"> --}}
+                                                    <option value="{{ $data->id }}"
+                                                        @if (isset($request)) @if ($data->id == $request->run_no ?? '') selected @endif
+                                                        @endif>
                                                         {{ $data->run_name }}
                                                     </option>
                                                 @endforeach
@@ -66,14 +81,20 @@
                                         <td> Calibration Date:</td>
                                         <td>
                                             From<input type="date" class="clear-rx-number form-control startDate"
-                                                id="startDate" name="startDate" placeholder="Start Date">
+                                                id="startDate" name="startDate"
+                                                value="@if (isset($request)) {{ $request->startDate }} @endif"
+                                                placeholder="Start Date">
                                         </td>
                                         <td>
                                             To<input type="date" class="clear-rx-number form-control endDate"
-                                                id="endDate" name="endDate" placeholder="to Date">
+                                                id="endDate" name="endDate"
+                                                value="@if (isset($request)) {{ $request->endDate }} @endif"
+                                                placeholder="to Date">
+
+                                            <input type="hidden" value="NO" name="cancel" />
                                         </td>
                                         <td style="text-align:right;" valign="bottom">
-                                            <button class="btn  btn-info" type="submit" id="earchButton">
+                                            <button class="btn  btn-info" type="submit" id="searchButton">
                                                 {{ trans('global.search') }}
                                             </button>
                                         </td>
@@ -87,23 +108,42 @@
                     <!-- Second Column Content -->
                     <div class="card">
                         <div class="card-header">
-                            Cancel DR/SI
+                            Cancel DRSI
                         </div>
                         <div class="card-body">
-                            <table height="198px">
-                                <tr>
-                                    <td width="250px"><label class="required" for="dr_no">DR Number</label>
-                                        <input type="text" class="form-control dr_no" id="dr_no"
-                                            name="dr_no">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="250px"><label class="required" for="invoice_no">SI Number</label>
-                                        <input type="text" class="form-control invoice_no" id="invoice_no"
-                                            name="invoice_no">
-                                    </td>
-                                </tr>
-                            </table>
+                            <form action="{{ route('admin.printdrsi.searchByDrsi') }}" method="GET" autocomplete="off">
+                                @csrf
+                                <table>
+                                    <tr>
+                                        <td width="250px">Search by:
+                                            <select name="selectDrsi" class="form-control selectDrsi">
+                                                <option value="ALL"></option>
+                                                <option value="DR">DR</option>
+                                                <option value="SI">SI</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="250px">Input DR or SI Number:</label>
+                                            <input type="text" class="form-control drsi" id="invoice_no" name="drsi">
+                                            <input type="hidden" value="YES" name="cancel" />
+                                        </td>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:right;" valign="bottom">
+                                            <button class="btn  btn-info" type="submit" id="searchDrSiButton">
+                                                Search
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                </table>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -224,13 +264,16 @@
                                                 <input type="hidden" name="hospital"
                                                     value="{{ $transaction->hospital_id }}" />
                                                 <input type="hidden" class="form-control dr_no"
-                                                    name="item[{{ $key }}]" style="width:50px;"
-                                                    value="{{ $transaction->id }}" />
+                                                    name="edr_no[{{ $key }}]" style="width:100px;"
+                                                    value="{{ $transaction->dr_no }}" />
                                                 <input type="text" class="form-control dr_no"
                                                     name="dr_no[{{ $key }}]" style="width:100px;"
                                                     value="{{ $transaction->dr_no }}" />
                                             </td>
                                             <td>
+                                                <input type="hidden" class="form-control invoice_no"
+                                                    name="einvoice_no[{{ $key }}]" style="width:100px;"
+                                                    value="{{ $transaction->invoice_no }}" />
                                                 <input type="text" class="form-control invoice_no"
                                                     name="invoice_no[{{ $key }}]" style="width:100px;"
                                                     value="{{ $transaction->invoice_no }}" />
@@ -244,6 +287,9 @@
                                                 <input type="text" class="form-control price" id="delivery_charge"
                                                     name="delivery_charge[{{ $key }}]" style="width:100px;"
                                                     value="{{ $transaction->delivery_charge }}" required />
+                                                <input type="hidden" class="form-control dr_no"
+                                                    name="item[{{ $key }}]" style="width:50px;"
+                                                    value="{{ $transaction->id }}" />
                                             </td>
                                         </tr>
                                     @endforeach
@@ -252,8 +298,72 @@
                         </div>
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
-                                <button class="btn btn-danger" type="submit">
-                                    {{ trans('global.save') }}
+                                <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
+                                <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
+                                <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
+                                <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
+                                <input type="hidden" name="run_no" value="{{ $request->run_no ?? '' }}" />
+                                <input type="hidden" name="startDate" value="{{ $request->startDate ?? '' }}" />
+                                <input type="hidden" name="endDate" value="{{ $request->endDate ?? '' }}" />
+
+                                <input type="hidden" value="{{ $request->cancel }}" name="cancel" />
+
+                                <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
+                                <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
+
+                                @if ($request->cancel == 'NO')
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                @else
+                                    <button class="btn btn-danger" type="submit">Cancel and Update</button>
+                                @endif
+
+                            </div>
+                        </div>
+                    </form>
+                    <form action="{{ route('admin.printdrsi.printDr') }}" method="GET" autocomplete="off"
+                        target="_blank">
+                        @csrf
+
+                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
+                        <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
+                        <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
+                        <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
+                        <input type="hidden" name="run_no" value="{{ $request->run_no ?? '' }}" />
+                        <input type="hidden" name="startDate" value="{{ $request->startDate ?? '' }}" />
+                        <input type="hidden" name="endDate" value="{{ $request->endDate ?? '' }}" />
+
+                        <input type="hidden" value="{{ $request->cancel }}" name="cancel" />
+
+                        <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
+                        <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
+                        <div class="form-group" style="text-align:center;">
+                            <div id="show_save" class="myDiv">
+                                <button class="btn btn-success" type="submit" id="earchButton">
+                                    Print Delivery Receipt
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <form action="{{ route('admin.printdrsi.printSi') }}" method="GET" autocomplete="off"
+                        target="_blank">
+                        @csrf
+
+                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
+                        <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
+                        <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
+                        <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
+                        <input type="hidden" name="run_no" value="{{ $request->run_no ?? '' }}" />
+                        <input type="hidden" name="startDate" value="{{ $request->startDate ?? '' }}" />
+                        <input type="hidden" name="endDate" value="{{ $request->endDate ?? '' }}" />
+
+                        <input type="hidden" value="{{ $request->cancel }}" name="cancel" />
+
+                        <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
+                        <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
+                        <div class="form-group" style="text-align:center;">
+                            <div id="show_save" class="myDiv">
+                                <button class="btn btn-success" type="submit" id="earchButton">
+                                    Print Sales Invoice
                                 </button>
                             </div>
                         </div>
@@ -294,11 +404,22 @@
             }
         });
 
-        const openNewTabButton = document.getElementById('searchButton');
+        const openNewTabButton = document.getElementById('printButton');
 
         openNewTabButton.addEventListener('click', function() {
             // Open a new tab/window when the button is clicked
-            window.open('admin.reports.print.page1', '_blank');
+            window.open('printdrsi', '_blank');
+        });
+
+        // Wait for the document to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the success message element
+            var successMessage = document.getElementById('success-message');
+
+            // Hide the success message after 5 seconds (5000 milliseconds)
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 5000); // Adjust the time interval as needed
         });
     </script>
 @endsection

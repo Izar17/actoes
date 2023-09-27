@@ -28,9 +28,10 @@
                                 style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
+                <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->hospital ?? '' }}</strong></td></tr>
                 <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td></tr>
             </table>
-            <br /><br />
+            <br />
             <table width="95%" align="center" cellspacing="0">
                 <tr>
                     <td style="width:50%;" align="center" scope="col"><strong></strong></td>

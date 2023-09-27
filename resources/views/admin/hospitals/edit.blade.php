@@ -11,7 +11,20 @@
                 @csrf
 
                 <div class="row my-3">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="name">Doctor Name (Special DR)</label>
+                            <input class="form-control {{ $errors->has('doctor_name') ? 'is-invalid' : '' }}" type="text"
+                            value="{{ $hospital->doctor_name ?? '' }}"  placeholder="(Optional)" name="doctor_name" id="doctor_name" >
+                            @if($errors->has('doctor_name'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('doctor_name') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.hospital.fields.name_helper') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="name">{{ trans('cruds.hospital.fields.name') }}</label>
                             <input class="form-control {{ $errors->has('hospital') ? 'is-invalid' : '' }}" type="text"

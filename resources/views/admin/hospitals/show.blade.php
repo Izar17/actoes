@@ -25,7 +25,15 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.hospital.fields.name') }}
+                            Doctor Name (Special DR)
+                        </th>
+                        <td>
+                            {{ $hospital->doctor_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Hospital {{ trans('cruds.hospital.fields.name') }}
                         </th>
                         <td>
                             {{ $hospital->hospital }}
@@ -76,7 +84,7 @@
                         </th>
                         <td>
                             {{ $hospital->created_by ?? '' }}
-                        </td> 
+                        </td>
                     </tr>
                     <tr>
                         <th>
@@ -229,7 +237,7 @@
                         </th>
                         <td>
                             {{ $hospital->forwarder_eta ?? '' }}
-                        </td> 
+                        </td>
                     </tr>
                 </tbody>
             </table>

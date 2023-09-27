@@ -56,7 +56,8 @@
                 </tr>
             </table><br /><br /><br />
             @php
-                $totalPrice = 0; // Initialize the total price variable
+                $totalPrice = 0;
+                $totalDeliveryCharge = 0; // Initialize the total price variable
             @endphp
             <table width="95%" align="center" cellspacing="0">
 
@@ -65,29 +66,62 @@
                         <td width="70px" style="text-align:center;">1</td>
                         <td width="70px" style="text-align:center;">dose</td>
                         <td width="70px" style="text-align:center;"></td>
-                        <td>
+                        <td colspan="2px">
                             {{ $transaction->asset->name ?? '' }}
 
                             {{ $transaction->asset_product->product_name ?? '' }},
                             {{ $transaction->particular ?? '' }},
                             {{ $transaction->rx_no ?? '' }}
                         </td>
-                        <td width="150px">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($transaction->price, 2, '.', ',') }}</td>
+                        <td width="100px" style="text-align: right;">
+                            {{ number_format($transaction->price, 2, '.', ',') }}</td>
+                        <td width="100px" style="text-align: right;">
+                            {{ number_format($transaction->price, 2, '.', ',') }}</td>
                     </tr>
                     @php
-                        $totalPrice += $transaction->price ?? 0; // Add the transaction price to the total
+                        $totalPrice += $transaction->price ?? 0;
+                        $totalDeliveryCharge += $transaction->delivery_charge ?? 0;
+                        $grandTotal = $totalPrice + $totalDeliveryCharge;
+                        $lessVat = $grandTotal*.10;
+                        $netVat = $grandTotal - ($grandTotal*.10);
                     @endphp
                 @endforeach
                 <!-- Footer row to display the total -->
                 <tr>
-                    <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
-                    <td><u>________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td>
+                    <td colspan="3"  style="padding-top: 20%;"></td>
+                    <td></td>
+                    <td style="text-align: right;">Delivery Charge:</td>
+                    <td></td>
+                    <td style="text-align: right;">{{ number_format($totalDeliveryCharge, 2, '.', ',') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4"></td> <!-- Adjust colspan based on your table structure -->
-                    <td style="padding-top: 20%;">
-                        <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($totalPrice, 2, '.', ',') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                    <td colspan="3" ></td>
+                    <td></td>
+                    <td style="text-align: right;">TOTAL SALES (VAT INCLUSIVE):</td>
+                    <td></td>
+                    <td style="text-align: right;">{{ number_format($grandTotal, 2, '.', ',') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td></td>
+                    <td style="text-align: right;">LESS VAT:</td>
+                    <td></td>
+                    <td style="text-align: right;">{{ number_format($lessVat, 2, '.', ',') }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>VATABLE SALES</td>
+                    <td style="text-align: right;">NET OF VAT/TOTAL:</td>
+                    <td></td>
+                    <td style="text-align: right;">{{ number_format($netVat, 2, '.', ',') }}<hr></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="padding-top: 10%;"></td>
+                    <td>VAT AMOUNT</td>
+                    <td style="text-align: right;">TOTAL AMOUNT DUE</td>
+                    <td></td>
+                    <td style="text-align: right;"><hr>
+                        {{ number_format($grandTotal, 2, '.', ',') }}<hr>
                     </td>
                 </tr>
             </table>

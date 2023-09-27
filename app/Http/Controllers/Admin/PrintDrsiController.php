@@ -74,6 +74,13 @@ class PrintDrsiController extends Controller
         return view('admin.drsis.print.printdr', compact('transactions'));
     }
 
+    public function printSdr(Request $request)
+    {
+        // Include the file from the app directory
+        include(app_path('Forms/FormDrsi.php'));
+        return view('admin.drsis.print.printsdr', compact('transactions'));
+    }
+
     public function printSi(Request $request)
     {
         // Include the file from the app directory

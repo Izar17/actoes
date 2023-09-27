@@ -338,8 +338,32 @@
                         <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
-                                <button class="btn btn-success" type="submit" id="earchButton">
+                                <button class="btn btn-success"  type="submit" id="earchButton">
                                     Print Delivery Receipt
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <form action="{{ route('admin.printdrsi.printSdr') }}" method="GET" autocomplete="off"
+                        target="_blank">
+                        @csrf
+
+                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
+                        <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
+                        <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
+                        <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
+                        <input type="hidden" name="run_no" value="{{ $request->run_no ?? '' }}" />
+                        <input type="hidden" name="startDate" value="{{ $request->startDate ?? '' }}" />
+                        <input type="hidden" name="endDate" value="{{ $request->endDate ?? '' }}" />
+
+                        <input type="hidden" value="{{ $request->cancel }}" name="cancel" />
+
+                        <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
+                        <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
+                        <div class="form-group" style="text-align:center;">
+                            <div id="show_save" class="myDiv">
+                                <button class="btn btn-success" type="submit" id="earchButton">
+                                    Print Special Delivery Receipt
                                 </button>
                             </div>
                         </div>

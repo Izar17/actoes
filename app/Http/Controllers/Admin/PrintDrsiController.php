@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateDrsiRequest;
 use Illuminate\Http\Request;
-use App\{Hospital, Asset, RunNumber, Transaction, Drsi, CancelDrsi};
+use App\{Hospital, Asset, RunNumber, Transaction, Drsi, CancelDrsi, Product_price};
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
@@ -62,8 +62,11 @@ class PrintDrsiController extends Controller
     public function searchDrsi(Request $request)
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $delCharges = Hospital::where('id',$request->hospital_id)->get('delivery_charge');
+
         include(app_path('Forms/FormDrsi.php'));
-        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request'));
+        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request','delCharges'));
     }
 
 
@@ -85,7 +88,7 @@ class PrintDrsiController extends Controller
     {
         // Include the file from the app directory
         include(app_path('Forms/FormDrsi.php'));
-        return view('admin.drsis.print.printsi', compact('transactions'));
+        return view('admin.drsis.print.printsi', compact('transactions','request'));
     }
     public function update(UpdateDrsiRequest $request)
     {
@@ -117,7 +120,6 @@ class PrintDrsiController extends Controller
                 'dr_no' => $request->dr_no[$key],
                 'invoice_no' => $request->invoice_no[$key],
                 'price' => $request->price[$key],
-                'delivery_charge' => $request->delivery_charge[$key],
             );
             Drsi::where('id', $request->item[$key])
                 ->update($data);

@@ -42,6 +42,7 @@ class Transaction extends Model
         'created_by',
         'date_dispensed',
         'can',
+        'price',
         'dimension',
         'performed_by',
         'transport_index',

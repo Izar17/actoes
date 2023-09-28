@@ -15,8 +15,9 @@
                         <div class="form-group">
                             <label for="name">Doctor Name (Special DR)</label>
                             <input class="form-control {{ $errors->has('doctor_name') ? 'is-invalid' : '' }}" type="text"
-                            value="{{ $hospital->doctor_name ?? '' }}"  placeholder="(Optional)" name="doctor_name" id="doctor_name" >
-                            @if($errors->has('doctor_name'))
+                                value="{{ $hospital->doctor_name ?? '' }}" placeholder="(Optional)" name="doctor_name"
+                                id="doctor_name">
+                            @if ($errors->has('doctor_name'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('doctor_name') }}
                                 </div>
@@ -37,11 +38,25 @@
                             <span class="help-block">{{ trans('cruds.hospital.fields.name_helper') }}</span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="address">{{ trans('cruds.hospital.fields.address') }}</label>
                             <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text"
                                 name="address" id="address" value="{{ $hospital->address ?? '' }}" required>
+                            @if ($errors->has('address'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('address') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.hospital.fields.address_helper') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="delivery_charge">Delivery Charge</label>
+                            <input class="form-control {{ $errors->has('delivery_charge') ? 'is-invalid' : '' }}"
+                                type="text" name="delivery_charge" id="delivery_charge"
+                                value="{{ $hospital->delivery_charge ?? '' }}" required>
                             @if ($errors->has('address'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('address') }}
@@ -123,11 +138,10 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label class="required"
-                                for="update_by">Update By</label>
-                            <input class="form-control {{ $errors->has('created_by') ? 'is-invalid' : '' }}" type="text"
-                                name="created_by" value="{{ old('email', auth()->user()->email) }}" id="created_by"
-                                readonly>
+                            <label class="required" for="update_by">Update By</label>
+                            <input class="form-control {{ $errors->has('created_by') ? 'is-invalid' : '' }}"
+                                type="text" name="created_by" value="{{ old('email', auth()->user()->email) }}"
+                                id="created_by" readonly>
                             @if ($errors->has('created_by'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('created_by') }}
@@ -169,7 +183,8 @@
                             <label class="required"
                                 for="airline_etd">{{ trans('cruds.hospital.fields.airline_etd') }}</label>
                             <input class="form-control {{ $errors->has('airline_etd') ? 'is-invalid' : '' }}"
-                                type="text" name="airline_etd" id="airline_etd" value="{{ $hospital->airline_etd ?? '' }}" required>
+                                type="text" name="airline_etd" id="airline_etd"
+                                value="{{ $hospital->airline_etd ?? '' }}" required>
                             @if ($errors->has('airline_etd'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('airline_etd') }}
@@ -183,7 +198,8 @@
                             <label class="required"
                                 for="airline_eta">{{ trans('cruds.hospital.fields.airline_eta') }}</label>
                             <input class="form-control {{ $errors->has('airline_eta') ? 'is-invalid' : '' }}"
-                                type="text" name="airline_eta" id="airline_eta" value="{{ $hospital->airline_eta ?? '' }}" required>
+                                type="text" name="airline_eta" id="airline_eta"
+                                value="{{ $hospital->airline_eta ?? '' }}" required>
                             @if ($errors->has('airline_eta'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('airline_eta') }}
@@ -212,7 +228,8 @@
                             <label class="required"
                                 for="vessel_etd">{{ trans('cruds.hospital.fields.vessel_etd') }}</label>
                             <input class="form-control {{ $errors->has('vessel_etd') ? 'is-invalid' : '' }}"
-                                type="text" name="vessel_etd" id="vessel_etd" value="{{ $hospital->vessel_etd ?? '' }}" required>
+                                type="text" name="vessel_etd" id="vessel_etd"
+                                value="{{ $hospital->vessel_etd ?? '' }}" required>
                             @if ($errors->has('vessel_etd'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('vessel_etd') }}
@@ -226,7 +243,8 @@
                             <label class="required"
                                 for="vessel_eta">{{ trans('cruds.hospital.fields.vessel_eta') }}</label>
                             <input class="form-control {{ $errors->has('vessel_eta') ? 'is-invalid' : '' }}"
-                                type="text" name="vessel_eta" id="vessel_eta" value="{{ $hospital->vessel_eta ?? '' }}" required>
+                                type="text" name="vessel_eta" id="vessel_eta"
+                                value="{{ $hospital->vessel_eta ?? '' }}" required>
                             @if ($errors->has('vessel_eta'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('vessel_eta') }}
@@ -296,7 +314,8 @@
                             <label class="required"
                                 for="vehicle_plate">{{ trans('cruds.hospital.fields.vehicle_plate') }}</label>
                             <input class="form-control {{ $errors->has('vehicle_plate') ? 'is-invalid' : '' }}"
-                                type="text" name="vehicle_plate" id="vehicle_plate" value="{{ $hospital->vehicle_plate ?? '' }}" required>
+                                type="text" name="vehicle_plate" id="vehicle_plate"
+                                value="{{ $hospital->vehicle_plate ?? '' }}" required>
                             @if ($errors->has('vehicle_plate'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('vehicle_plate') }}
@@ -310,7 +329,8 @@
                             <label class="required"
                                 for="vehicle_etd">{{ trans('cruds.hospital.fields.vehicle_etd') }}</label>
                             <input class="form-control {{ $errors->has('vehicle_etd') ? 'is-invalid' : '' }}"
-                                type="text" name="vehicle_etd" id="vehicle_etd" value="{{ $hospital->vehicle_etd ?? '' }}" required>
+                                type="text" name="vehicle_etd" id="vehicle_etd"
+                                value="{{ $hospital->vehicle_etd ?? '' }}" required>
                             @if ($errors->has('vehicle_etd'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('vehicle_etd') }}
@@ -324,7 +344,8 @@
                             <label class="required"
                                 for="vehicle_eta">{{ trans('cruds.hospital.fields.vehicle_eta') }}</label>
                             <input class="form-control {{ $errors->has('vehicle_eta') ? 'is-invalid' : '' }}"
-                                type="text" name="vehicle_eta" id="vehicle_eta" value="{{ $hospital->vehicle_eta ?? '' }}" required>
+                                type="text" name="vehicle_eta" id="vehicle_eta"
+                                value="{{ $hospital->vehicle_eta ?? '' }}" required>
                             @if ($errors->has('vehicle_eta'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('vehicle_eta') }}
@@ -340,7 +361,8 @@
                             <label class="required"
                                 for="forwarder">{{ trans('cruds.hospital.fields.forwarder') }}</label>
                             <input class="form-control {{ $errors->has('forwarder') ? 'is-invalid' : '' }}"
-                                type="text" name="forwarder" id="forwarder" value="{{ $hospital->forwarder ?? '' }}" required>
+                                type="text" name="forwarder" id="forwarder"
+                                value="{{ $hospital->forwarder ?? '' }}" required>
                             @if ($errors->has('forwarder'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('forwarder') }}
@@ -354,7 +376,8 @@
                             <label class="required"
                                 for="forwarder_plate">{{ trans('cruds.hospital.fields.forwarder_plate') }}</label>
                             <input class="form-control {{ $errors->has('forwarder_plate') ? 'is-invalid' : '' }}"
-                                type="text" name="forwarder_plate" id="forwarder_plate" value="{{ $hospital->forwarder_plate ?? '' }}" required>
+                                type="text" name="forwarder_plate" id="forwarder_plate"
+                                value="{{ $hospital->forwarder_plate ?? '' }}" required>
                             @if ($errors->has('forwarder_plate'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('forwarder_plate') }}
@@ -368,7 +391,8 @@
                             <label class="required"
                                 for="forwarder_etd">{{ trans('cruds.hospital.fields.forwarder_etd') }}</label>
                             <input class="form-control {{ $errors->has('forwarder_etd') ? 'is-invalid' : '' }}"
-                                type="text" name="forwarder_etd" id="forwarder_etd" value="{{ $hospital->forwarder_etd ?? '' }}" required>
+                                type="text" name="forwarder_etd" id="forwarder_etd"
+                                value="{{ $hospital->forwarder_etd ?? '' }}" required>
                             @if ($errors->has('forwarder_etd'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('forwarder_etd') }}
@@ -382,7 +406,8 @@
                             <label class="required"
                                 for="forwarder_eta">{{ trans('cruds.hospital.fields.forwarder_eta') }}</label>
                             <input class="form-control {{ $errors->has('forwarder_eta') ? 'is-invalid' : '' }}"
-                                type="text" name="forwarder_eta" id="forwarder_eta" value="{{ $hospital->forwarder_eta ?? '' }}" required>
+                                type="text" name="forwarder_eta" id="forwarder_eta"
+                                value="{{ $hospital->forwarder_eta ?? '' }}" required>
                             @if ($errors->has('forwarder_eta'))
                                 <div class="invalid-feedback">
                                     {{ $errors->first('forwarder_eta') }}

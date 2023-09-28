@@ -81,7 +81,7 @@
                     </tr>
                     @php
                         $totalPrice += $transaction->price ?? 0;
-                        $totalDeliveryCharge += $transaction->delivery_charge ?? 0;
+                        $totalDeliveryCharge = $request->delivery_charge ?? 0;
                         $grandTotal = $totalPrice + $totalDeliveryCharge;
                         $lessVat = $grandTotal*.10;
                         $netVat = $grandTotal - ($grandTotal*.10);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\{Asset, Stock, Transaction, User, Hospital, Doserate, RunNumber, Asset_product};
+use App\{Asset, Stock, Transaction, User, Hospital, Doserate, RunNumber, Asset_product, Product_price};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+
 /**
  * Class TransactionsController
  * @package App\Http\Controllers\Admin
@@ -32,9 +33,9 @@ class TransactionsController extends Controller
 
         $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
 
-        $transactions = Transaction::all()->where("status",1)->where("cancelled",'NO');
+        $transactions = Transaction::all()->where("status", 1)->where("cancelled", 'NO');
 
-        return view('admin.transactions.index', compact('transactions','assets','run_nos'));
+        return view('admin.transactions.index', compact('transactions', 'assets', 'run_nos'));
     }
 
     /**
@@ -62,7 +63,7 @@ class TransactionsController extends Controller
                 ]
             )
             ->count();
-        return view('admin.transactions.create', compact('hospitals', 'assets', 'counts','run_nos'));
+        return view('admin.transactions.create', compact('hospitals', 'assets', 'counts', 'run_nos'));
     }
 
     /**
@@ -112,7 +113,7 @@ class TransactionsController extends Controller
             }
             //Lot No.
             if ($request->asset_id == 2) {
-                $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
+                $lotNumber = 'I/' . $weekNumber . '/' . $lastTwoDigitsOfYear;
             } else {
                 $lotNumber = '';
             }
@@ -121,23 +122,23 @@ class TransactionsController extends Controller
             if ($request->asset_id == 1) {
                 $act = 'Tc';
             } else if ($request->asset_id == 2) {
-                $lotNumber = 'I/'.$weekNumber.'/'.$lastTwoDigitsOfYear;
+                $lotNumber = 'I/' . $weekNumber . '/' . $lastTwoDigitsOfYear;
                 if ($request->item[$key] == 13) {
                     $act = 'IC';
                 } else {
                     $act = 'IS';
                 }
-            } else if ($request->asset_id == 3){
+            } else if ($request->asset_id == 3) {
                 $act = 'Tl';
-            }else if ($request->asset_id == 4){
+            } else if ($request->asset_id == 4) {
                 $act = 'Y90';
-            }else if ($request->asset_id == 5){
+            } else if ($request->asset_id == 5) {
                 $act = 'MD';
-            }else if ($request->asset_id == 6){
+            } else if ($request->asset_id == 6) {
                 $act = 'Gen';
-            }else if ($request->asset_id == 7){
-                $act = 'RIA-'.$monthAbbreviation;
-            }else if ($request->asset_id == 8){
+            } else if ($request->asset_id == 7) {
+                $act = 'RIA-' . $monthAbbreviation;
+            } else if ($request->asset_id == 8) {
                 $act = 'MISC';
             }
 
@@ -160,63 +161,80 @@ class TransactionsController extends Controller
             $activityMci = $request->activity_mci[$key];
             $mbq = number_format($activityMci * 37, 2);
             $discrepancy = ($activityMci * .10) + $activityMci;
+            $actPrice = 0;
 
-
-
-            if (isset($max_doserate)&& isset($doserates_meter)){
-            $doserates = Doserate::select('max_doserate', 'doserate_m')
-            ->where("asset_product_id",$request->item[$key])
-            ->whereRaw('? BETWEEN CAST(lower_limit AS numeric) AND CAST(upper_limit AS numeric)',$activityMci)
-            ->get("doserate_m");
-            foreach ($doserates as $doserate) {
-                $max_doserate = $doserate->max_doserate;
-                $doserates_meter = $doserate->doserate_m;
+            if ($request->asset_id <= 3) {
+                    $prices = Product_price::select('price')
+                        ->where("hospital_id", $request->hospital_id)
+                        ->whereRaw('? BETWEEN CAST(lower_limit AS numeric) AND CAST(upper_limit AS numeric)', $activityMci)
+                        ->get("price");
+                    foreach ($prices as $price) {
+                        $actPrice = $price->price;
+                    }
+            } else {
+                $prices = Product_price::select('price')
+                    ->where("hospital_id", $request->hospital_id)
+                    ->where("asset_product_id", $request->item[$key])
+                    ->get("price");
+                foreach ($prices as $price) {
+                    $actPrice = $price->price;
+                }
             }
-            }
-            else{
+
+            if (isset($max_doserate) && isset($doserates_meter)) {
+                $doserates = Doserate::select('max_doserate', 'doserate_m')
+                    ->where("asset_product_id", $request->item[$key])
+                    ->whereRaw('? BETWEEN CAST(lower_limit AS numeric) AND CAST(upper_limit AS numeric)', $activityMci)
+                    ->get("doserate_m");
+                foreach ($doserates as $doserate) {
+                    $max_doserate = $doserate->max_doserate;
+                    $doserates_meter = $doserate->doserate_m;
+                }
+            } else {
                 $max_doserate = 0;
-                $doserates_meter =0;
+                $doserates_meter = 0;
             }
 
-            if (isset($request->can[$key])){
+            if (isset($request->can[$key])) {
                 $cans = $request->can[$key];
-            }else{
+            } else {
                 $cans = '';
             }
             //particular
             if ($request->asset_id == 6 || $request->asset_id == 4) {
-                $unit='GBq';
+                $unit = 'GBq';
             } else {
-                $unit='mCi';
+                $unit = 'mCi';
             }
-            $particular = $activityMci.' '.$unit;
+            $particular = $activityMci . ' ' . $unit;
 
-            $transactions['hospital_id']        = $request->hospital_id;
-            $transactions['asset_id']           = $request->asset_id;
-            $transactions['remarks']            = $request->remarks[$key];
-            $transactions['orderform_no']       = $request->orderform_no[$key];
-            $transactions['item']               = $request->item[$key];
-            $transactions['activity_mci']       = $request->activity_mci[$key];
-            $transactions['activity_mbq']       = $mbq;
-            $transactions['discrepancy']        = $discrepancy;
-            $transactions['max_doserate']       = $max_doserate;
-            $transactions['doserate_meter']     = $doserates_meter;
-            $transactions['particular']         = $particular;
-            $transactions['patient']            = $request->patient[$key];
-            $transactions['calibration_date']   = $request->calibration_date[$key];
-            $transactions['calibration_time']   = $request->calibration_time[$key];
-            $transactions['lot_no']             = $lotNumber;
-            $transactions['run_no']             = $request->run_no[$key];
-            $transactions['procedure1']         = $request->procedure[$key];
-            $transactions['volume']             = $request->volume[$key];
-            $transactions['can']                = $cans;
-            $transactions['created_by']         = $request->user;
-            $transactions['cancelled']          = 'NO';
-            $transactions['status']             = 1;
+            $transactions['hospital_id'] = $request->hospital_id;
+            $transactions['asset_id'] = $request->asset_id;
+            $transactions['remarks'] = $request->remarks[$key];
+            $transactions['orderform_no'] = $request->orderform_no[$key];
+            $transactions['item'] = $request->item[$key];
+            $transactions['activity_mci'] = $request->activity_mci[$key];
+            $transactions['activity_mbq'] = $mbq;
+            $transactions['discrepancy'] = $discrepancy;
+            $transactions['max_doserate'] = $max_doserate;
+            $transactions['doserate_meter'] = $doserates_meter;
+            $transactions['particular'] = $particular;
+            $transactions['patient'] = $request->patient[$key];
+            $transactions['calibration_date'] = $request->calibration_date[$key];
+            $transactions['calibration_time'] = $request->calibration_time[$key];
+            $transactions['lot_no'] = $lotNumber;
+            $transactions['run_no'] = $request->run_no[$key];
+            $transactions['procedure1'] = $request->procedure[$key];
+            $transactions['volume'] = $request->volume[$key];
+            $transactions['can'] = $cans;
+            $transactions['price'] = $actPrice;
+            $transactions['created_by'] = $request->user;
+            $transactions['cancelled'] = 'NO';
+            $transactions['status'] = 1;
             Transaction::create(array_merge($transactions, ['rx_no' => $rx_no]));
         }
 
-        return redirect()->route('admin.transactions.show',$formattedDateTime);
+        return redirect()->route('admin.transactions.show', $formattedDateTime);
 
     }
 
@@ -231,11 +249,11 @@ class TransactionsController extends Controller
         $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $asset_products = Asset_product::all()
-        ->where("asset_id",$transaction->asset_id)->pluck('product_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+            ->where("asset_id", $transaction->asset_id)->pluck('product_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.transactions.edit', compact('assets', 'asset_products', 'users', 'transaction','hospitals','run_nos'));
+        return view('admin.transactions.edit', compact('assets', 'asset_products', 'users', 'transaction', 'hospitals', 'run_nos'));
     }
 
     /**
@@ -261,9 +279,9 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('order_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transactions = Transaction::all()->where("created_at",$ida);
+        $transactions = Transaction::all()->where("created_at", $ida);
 
-        return view('admin.transactions.show', compact('transactions','ida'));
+        return view('admin.transactions.show', compact('transactions', 'ida'));
     }
 
     /**

@@ -34,10 +34,22 @@
                         <span class="help-block">{{ trans('cruds.hospital.fields.name_helper') }}</span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="address">{{ trans('cruds.hospital.fields.address') }}</label>
                         <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address"  required>
+                        @if($errors->has('address'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('address') }}
+                            </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.hospital.fields.address_helper') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="delivery_charge">Delivery Charge</label>
+                        <input class="form-control {{ $errors->has('delivery_charge') ? 'is-invalid' : '' }}" type="text" name="delivery_charge" id="delivery_charge"  required>
                         @if($errors->has('address'))
                             <div class="invalid-feedback">
                                 {{ $errors->first('address') }}

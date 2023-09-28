@@ -41,6 +41,12 @@ if ($request->rx_number != '') {
                 ->get();
             break;
 
+
+        case $request->asset_id == '' && $request->run_no == '' && ($request->startDate == '' || $request->endDate == ''):
+            $transactions = Transaction::where("hospital_id", $request->hospital_id)
+                ->get();
+            break;
+
         case $request->asset_id == '' && $request->run_no != '' && ($request->startDate == '' || $request->endDate == ''):
             $transactions = Transaction::where("hospital_id", $request->hospital_id)
                 ->where("run_no", $request->run_no)->where("cancelled", 'NO')
@@ -61,6 +67,9 @@ if ($request->rx_number != '') {
             break;
 
         default:
+            $transactions = Transaction::All()->where("hospital_id", $request->hospital_id)->where("cancelled", 'NO');
+            break;
+
             // $transactions = Transaction::join('product_hospital', 'transactions.asset_id', '=', 'product_hospital.asset_id')
             //     ->where("transactions.hospital_id", $request->hospital_id)
             //     ->where("cancelled", 'NO')
@@ -68,9 +77,6 @@ if ($request->rx_number != '') {
             //     ->select('transactions.*', 'product_hospital.price as actPrice')
             //     ->distinct()
             //     ->get();
-             $transactions = Transaction::All()->where("hospital_id", $request->hospital_id)->where("cancelled", 'NO');
-            break;
-
     }
 }
 

@@ -46,6 +46,7 @@ class Hospital extends Model
         'forwarder_plate',
         'forwarder_etd',
         'forwarder_eta',
+        'delivery_charge',
         'created_at',
         'updated_at',
         'deleted_at',

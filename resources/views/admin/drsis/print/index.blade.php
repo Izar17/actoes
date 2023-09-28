@@ -212,9 +212,6 @@
                                         <th>
                                             {{ trans('cruds.transaction.fields.price') }}
                                         </th>
-                                        <th>
-                                            {{ trans('cruds.transaction.fields.del_charge') }}
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -281,12 +278,7 @@
                                             <td>
                                                 <input type="text" class="form-control price" id="price"
                                                     name="price[{{ $key }}]" style="width:100px;"
-                                                    value="{{ $transaction->price }}" required />
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control price" id="delivery_charge"
-                                                    name="delivery_charge[{{ $key }}]" style="width:100px;"
-                                                    value="{{ $transaction->delivery_charge }}" required />
+                                                    value="{{ $transaction->price }}" />
                                                 <input type="hidden" class="form-control dr_no"
                                                     name="item[{{ $key }}]" style="width:50px;"
                                                     value="{{ $transaction->id }}" />
@@ -298,6 +290,7 @@
                         </div>
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
+
                                 <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
                                 <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
                                 <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
@@ -338,7 +331,7 @@
                         <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
-                                <button class="btn btn-success"  type="submit" id="earchButton">
+                                <button class="btn btn-success" type="submit" id="earchButton">
                                     Print Delivery Receipt
                                 </button>
                             </div>
@@ -384,13 +377,21 @@
 
                         <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
                         <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
-                        <div class="form-group" style="text-align:center;">
-                            <div id="show_save" class="myDiv">
-                                <button class="btn btn-success" type="submit" id="earchButton">
-                                    Print Sales Invoice
-                                </button>
+                        <center>
+                            <div class="form-group">
+                                <div id="show_save" class="myDiv">
+                                    @foreach ($delCharges as $delCharge)
+                                    @endforeach
+                                    Delivery Charge <input type="text" class="form-control price" id="delivery_charge"
+                                        name="delivery_charge" style="width:100px;"
+                                        value="{{ $delCharge->delivery_charge }}" required />
+
+                                    <button class="btn btn-success" type="submit" id="earchButton">
+                                        Print Sales Invoice
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </center>
                     </form>
                 </div>
             @endif

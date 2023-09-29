@@ -5,15 +5,15 @@
         @foreach ($transactions as $key => $transaction)
         @endforeach
         <table width="100%" border="0" align="center">
-            <tr><br /><br /><br /><br /><br />
+            <tr>
                 <td scope="col" align="center" style="font-size:18px;">
-                    </style></b><br /><br /><br />
+                    </style></b><br />
                 </td>
             </tr>
         </table><br />
 
         @if (isset($transaction))
-            <table width="95%" align="center" cellspacing="0">
+            <table width="80%" align="center" cellspacing="0">
                 <tr>
                     <td style="width:50%;" align="center" scope="col"><strong></strong></td>
                     <td colspan="8" scope="col"><strong><span style="font-size:16px;"></span></strong></td>
@@ -60,14 +60,14 @@
                 $totalPrice = 0;
                 $totalDeliveryCharge = 0; // Initialize the total price variable
             @endphp
-            <table width="95%" align="center" style="margin-top:60px;" cellspacing="0">
+            <table width="95%" align="center" style="margin-top:40px;" cellspacing="0">
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
                         <td width="70px" style="text-align:center;padding-top:10px;">1</td>
                         <td width="70px" style="text-align:center;">dose</td>
                         <td width="70px" style="text-align:center;"></td>
-                        <td colspan="2px">
+                        <td colspan="2px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             {{ $transaction->asset->name ?? '' }}
 
                             {{ $transaction->asset_product->product_name ?? '' }},
@@ -76,7 +76,7 @@
                         </td>
                         <td width="100px" style="text-align: right;">
                             {{ number_format($transaction->price, 2, '.', ',') }}</td>
-                        <td width="100px" style="text-align: right;">
+                        <td width="140px" style="text-align: right;">
                             {{ number_format($transaction->price, 2, '.', ',') }}</td>
                     </tr>
                     @php
@@ -89,7 +89,7 @@
                 @endforeach
                 <!-- Footer row to display the total -->
                 <tr>
-                    <td colspan="3"  style="padding-top: 20%;"></td>
+                    <td colspan="3"  style="padding-top: 40%;"></td>
                     <td></td>
                     <td style="text-align: right;">Delivery Charge:</td>
                     <td></td>
@@ -98,28 +98,28 @@
                 <tr>
                     <td colspan="3" ></td>
                     <td></td>
-                    <td style="text-align: right;">TOTAL SALES (VAT INCLUSIVE):</td>
+                    <td style="text-align: right;"></td>
                     <td></td>
                     <td style="text-align: right;">{{ number_format($grandTotal, 2, '.', ',') }}</td>
                 </tr>
                 <tr>
                     <td colspan="3"></td>
                     <td></td>
-                    <td style="text-align: right;">LESS VAT:</td>
+                    <td style="text-align: right;"></td>
                     <td></td>
                     <td style="text-align: right;">{{ number_format($lessVat, 2, '.', ',') }}</td>
                 </tr>
                 <tr>
                     <td colspan="3"></td>
-                    <td>VATABLE SALES</td>
-                    <td style="text-align: right;">NET OF VAT/TOTAL:</td>
+                    <td></td>
+                    <td style="text-align: right;"></td>
                     <td></td>
                     <td style="text-align: right;">{{ number_format($netVat, 2, '.', ',') }}<hr></td>
                 </tr>
                 <tr>
                     <td colspan="3" style="padding-top: 10%;"></td>
-                    <td>VAT AMOUNT</td>
-                    <td style="text-align: right;">TOTAL AMOUNT DUE</td>
+                    <td></td>
+                    <td style="text-align: right;"></td>
                     <td></td>
                     <td style="text-align: right;"><hr>
                         {{ number_format($grandTotal, 2, '.', ',') }}<hr>

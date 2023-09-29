@@ -10,40 +10,40 @@
                     </style></b><br /><br /><br />
                 </td>
             </tr>
-        </table><br />
+        </table>
 
         @if (isset($transaction))
-            <table width="95%" align="center" cellspacing="0">
+            <table width="100%" align="center" cellspacing="0">
                 <tr>
-                    <td style="width:50%;" align="center" scope="col"><strong></strong></td>
-                    <td colspan="8" scope="col"><strong><span style="font-size:16px;"></span></strong></td>
+                    <td style="width:45%;" align="center" scope="col"><strong></strong></td>
+                    <td colspan="2" scope="col"><strong><span style="font-size:16px;"></span></strong></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="padding-left:20px;"><strong>{{ $transaction->hospital->hospital ?? '' }}<br></strong>
+                    <td><strong>{{ $transaction->hospital->hospital ?? '' }}<br></strong>
                     </td>
                     <td colspan="3" scope="col"><strong><span
                                 style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
                 <tr>
-                    <td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>
+                    <td><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>
                 </tr>
             </table>
             <br /><br />
-            <table width="95%" align="center" cellspacing="0">
+            <table width="100%" align="center" cellspacing="0">
                 <tr>
-                    <td style="width:50%;" align="center" scope="col"><strong></strong></td>
+                    <td style="width:45%;"scope="col"><strong>SAME</strong></td>
                     <td colspan="3" scope="col"><strong><span
                                 style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
-            </table><br /><br /><br />
-            <table width="95%" align="center" cellspacing="0">
+            </table><br /><br /><br /><br /><br />
+            <table width="100%" align="center" cellspacing="0">
                 <tr>
-                    <td style="width:50%;" scope="col">&nbsp;&nbsp;&nbsp;<strong>SAME</strong></td>
+                    <td style="width:30%;" scope="col"></td>
                     <td colspan="5" scope="col"style="font-size:16px;text-align:center;">
                         <strong><span></span>{{ $transaction->hospital->hospital ?? '' }}</strong>
                     </td>
@@ -52,13 +52,13 @@
             @php
                 $totalPrice = 0; // Initialize the total price variable
             @endphp
-            <table width="95%" align="center" style="margin-top:60px;" cellspacing="0">
+            <table width="100%" align="center" style="margin-top:60px;" cellspacing="0">
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
-                        <td width="70px" style="text-align:center;padding-top:10px;">1</td>
-                        <td width="70px" style="text-align:center;">dose</td>
-                        <td width="70px" style="text-align:center;"></td>
+                        <td width="70px" style="padding-top:10px;">1</td>
+                        <td width="70px" style="padding-top:10px;">dose</td>
+                        <td width="70px" style="padding-top:10px;"></td>
                         <td>
                             {{ $transaction->asset->name ?? '' }}
 

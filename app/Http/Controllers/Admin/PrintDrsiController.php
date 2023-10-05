@@ -30,6 +30,8 @@ class PrintDrsiController extends Controller
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $delCharges = Hospital::where('id',$request->hospital_id)->get('delivery_charge','doctor_name');
+
         $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
 
         $run_nos = RunNumber::orderBy('id', 'asc')->get(["run_name", "id"]);
@@ -55,7 +57,7 @@ class PrintDrsiController extends Controller
             }
         }
 
-        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request'));
+        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request', 'delCharges'));
     }
 
 

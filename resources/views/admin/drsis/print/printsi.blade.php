@@ -47,12 +47,20 @@
                             @endphp</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
-            </table><br /><br /><br />
-            <table width="95%" align="center" cellspacing="0">
+            </table><br /><br />
+            <table width="80%" align="center" cellspacing="0">
+                <tr>
+                    <td style="width:50%;" scope="col"></td>
+                    <td colspan="5" scope="col"style="font-size:16px;text-align:right;">
+                        <strong>DR # {{ $transaction->dr_no ?? '' }}</strong>
+                    </td>
+                </tr>
+            </table><br /><br />
+            <table width="80%" align="center" cellspacing="0">
                 <tr>
                     <td style="width:50%;" scope="col">&nbsp;&nbsp;&nbsp;<strong>SAME</strong></td>
                     <td colspan="5" scope="col"style="font-size:16px;text-align:center;">
-                        <strong><span></span>{{ $transaction->hospital->hospital ?? '' }}</strong>
+                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $transaction->hospital->hospital ?? '' }}</strong>
                     </td>
                 </tr>
             </table><br /><br /><br />

@@ -34,8 +34,24 @@
                     <td align="center" scope="col"><strong></td>
                 </tr>
                 <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td></tr>
-            </table><br /><br />
+            </table><br />
             <table width="95%" align="center" cellspacing="0">
+
+                <tr>
+                    <td style="width:50%;" scope="col"></td>
+                    <td style="width:34%;" scope="col"></td>
+                    <td scope="col"style="font-size:16px;">
+                        <strong>
+                            @if ($transaction->hospital_id == 36)
+                                90 Days
+                            @elseif ($transaction->hospital_id == 51)
+                                60 Days
+                            @else
+                                30 Days
+                            @endif
+                        </strong>
+                    </td></tr>
+                <tr><td style="padding-left:20px;"></td><td><strong>&nbsp;</strong></td></tr>
                 <tr>
                     <td style="width:50%;" align="center" scope="col"><strong></strong></td>
                     <td colspan="3" scope="col"><strong><span style="font-size:16px;"></span>

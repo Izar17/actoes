@@ -321,7 +321,6 @@
                         target="_blank">
                         @csrf
 
-                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
                         <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
                         <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
                         <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
@@ -344,8 +343,6 @@
                     <form action="{{ route('admin.printdrsi.printSi') }}" method="GET" autocomplete="off"
                         target="_blank">
                         @csrf
-
-                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
                         <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
                         <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
                         <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
@@ -382,9 +379,6 @@
                     </form>
                     <form action="{{ route('admin.printdrsi.printSdr') }}" method="GET" autocomplete="off"
                         target="_blank">
-                        @csrf
-
-                        <input type="hidden" name="_token" value="{{ $request->_token ?? '' }}" />
                         <input type="hidden" name="asset_id" value="{{ $request->asset_id ?? '' }}" />
                         <input type="hidden" name="rx_number" value="{{ $request->rx_number ?? '' }}" />
                         <input type="hidden" name="hospital_id" value="{{ $request->hospital_id ?? '' }}" />
@@ -402,8 +396,10 @@
                                 <table>
                                     <tr>
                                         <td>
-                                        Doctor Name: <input type="text" class="form-control price" id="doc_name"
-                                        name="doc_name" style="width:200px;"
+                                            @foreach ($delCharges as $delCharge)
+                                            @endforeach
+                                        Doctor Name: <input type="text" class="form-control price" id="doctor_name"
+                                        name="doctor_name" style="width:200px;"
                                         value="{{ $delCharge->doctor_name ?? '' }}" required />
                                         </td>
                                         <td>

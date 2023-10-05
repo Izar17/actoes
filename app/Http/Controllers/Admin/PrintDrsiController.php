@@ -29,8 +29,9 @@ class PrintDrsiController extends Controller
     public function searchByDrsi(Request $request)
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $delCharges = Hospital::where('id',$request->hospital_id)->get('delivery_charge','doctor_name');
+        $delCharges = Hospital::select('delivery_charge', 'doctor_name')
+        ->where('id', $request->hospital_id)
+        ->get();
 
         $assets = Asset::orderBy('id', 'asc')->get(["name", "id"]);
 
@@ -65,10 +66,12 @@ class PrintDrsiController extends Controller
     {
         abort_if(Gate::denies('drsi_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $delCharges = Hospital::where('id',$request->hospital_id)->get('delivery_charge');
+        $delCharges = Hospital::select('delivery_charge', 'doctor_name')
+            ->where('id', $request->hospital_id)
+            ->get();
 
         include(app_path('Forms/FormDrsi.php'));
-        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request','delCharges'));
+        return view('admin.drsis.print.index', compact('hospitals', 'assets', 'run_nos', 'transactions', 'request', 'delCharges'));
     }
 
 
@@ -83,14 +86,14 @@ class PrintDrsiController extends Controller
     {
         // Include the file from the app directory
         include(app_path('Forms/FormDrsi.php'));
-        return view('admin.drsis.print.printsdr', compact('transactions'));
+        return view('admin.drsis.print.printsdr', compact('transactions','request'));
     }
 
     public function printSi(Request $request)
     {
         // Include the file from the app directory
         include(app_path('Forms/FormDrsi.php'));
-        return view('admin.drsis.print.printsi', compact('transactions','request'));
+        return view('admin.drsis.print.printsi', compact('transactions', 'request'));
     }
     public function update(UpdateDrsiRequest $request)
     {

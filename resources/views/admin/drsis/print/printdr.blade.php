@@ -60,10 +60,14 @@
                         <td width="70px" style="padding-top:10px;">dose</td>
                         <td width="70px" style="padding-top:10px;"></td>
                         <td>
-                            {{ $transaction->asset->name ?? '' }}
-
                             {{ $transaction->asset_product->product_name ?? '' }},
+
+                            @if ($transaction->asset_id == 8)
+                                {{ $transaction->activity_mci?? '' }}
+                                {{ $transaction->patient?? '' }},
+                            @else
                             {{ $transaction->particular ?? '' }},
+                            @endif
                             {{ $transaction->rx_no ?? '' }}
                         </td>
                     </tr>

@@ -92,12 +92,16 @@
                         <td width="70px" style="text-align:center;">dose</td>
                         <td width="70px" style="text-align:center;"></td>
                         <td colspan="2px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ $transaction->asset->name ?? '' }}
+                                {{ $transaction->asset_product->product_name ?? '' }},
 
-                            {{ $transaction->asset_product->product_name ?? '' }},
-                            {{ $transaction->particular ?? '' }},
-                            {{ $transaction->rx_no ?? '' }}
-                        </td>
+                                @if ($transaction->asset_id == 8)
+                                    {{ $transaction->activity_mci?? '' }}
+                                    {{ $transaction->patient?? '' }},
+                                @else
+                                {{ $transaction->particular ?? '' }},
+                                @endif
+                                {{ $transaction->rx_no ?? '' }}
+                            </td>
                         <td width="100px" style="text-align: right;">
                             {{ number_format($transaction->price, 2, '.', ',') }}</td>
                         <td width="140px" style="text-align: right;">

@@ -33,7 +33,9 @@
                             @endphp</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
-                <tr><td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td></tr>
+                <tr>
+                    <td style="padding-left:20px;"><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>
+                </tr>
             </table><br />
             <table width="95%" align="center" cellspacing="0">
 
@@ -50,8 +52,12 @@
                                 30 Days
                             @endif
                         </strong>
-                    </td></tr>
-                <tr><td style="padding-left:20px;"></td><td><strong>&nbsp;</strong></td></tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:20px;"></td>
+                    <td><strong>&nbsp;</strong></td>
+                </tr>
                 <tr>
                     <td style="width:50%;" align="center" scope="col"><strong></strong></td>
                     <td colspan="3" scope="col"><strong><span style="font-size:16px;"></span>
@@ -88,20 +94,36 @@
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
-                        <td width="70px" style="text-align:center;padding-top:10px;">1</td>
-                        <td width="70px" style="text-align:center;">dose</td>
+                        <td width="70px" style="text-align:center;padding-top:10px;">
+                            @if ($transaction->asset_id == 8)
+                                {{ $transaction->activity_mci ?? '' }}
+                            @else
+                                1
+                            @endif
+                        </td>
+                        <td width="70px" style="text-align:center;">
+                            @if ($transaction->asset_id == 8)
+                                {{ $transaction->patient ?? '' }}
+                            @else
+                                dose
+                            @endif
+                        </td>
                         <td width="70px" style="text-align:center;"></td>
                         <td colspan="2px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                {{ $transaction->asset_product->product_name ?? '' }},
+                            
+                            @if ($transaction->asset_id == 2)
+                            {{ $transaction->asset->name ?? '' }}
+                            @endif
+                            {{ $transaction->asset_product->product_name ?? '' }},
 
-                                @if ($transaction->asset_id == 8)
-                                    {{ $transaction->activity_mci?? '' }}
-                                    {{ $transaction->patient?? '' }},
-                                @else
+                            @if ($transaction->asset_id == 8)
+                                {{-- {{ $transaction->activity_mci?? '' }}
+                                    {{ $transaction->patient?? '' }}, --}}
+                            @else
                                 {{ $transaction->particular ?? '' }},
-                                @endif
-                                {{ $transaction->rx_no ?? '' }}
-                            </td>
+                            @endif
+                            {{ $transaction->rx_no ?? '' }}
+                        </td>
                         <td width="100px" style="text-align: right;">
                             {{ number_format($transaction->price, 2, '.', ',') }}</td>
                         <td width="140px" style="text-align: right;">
@@ -111,20 +133,20 @@
                         $totalPrice += $transaction->price ?? 0;
                         $totalDeliveryCharge = $request->delivery_charge ?? 0;
                         $grandTotal = $totalPrice + $totalDeliveryCharge;
-                        $lessVat = $grandTotal*.10;
-                        $netVat = $grandTotal - ($grandTotal*.10);
+                        $lessVat = $grandTotal * 0.1;
+                        $netVat = $grandTotal - $grandTotal * 0.1;
                     @endphp
                 @endforeach
                 <!-- Footer row to display the total -->
                 <tr>
-                    <td colspan="3"  style="padding-top: 40%;"></td>
+                    <td colspan="3" style="padding-top: 40%;"></td>
                     <td></td>
                     <td style="text-align: right;">Delivery Charge:</td>
                     <td></td>
                     <td style="text-align: right;">{{ number_format($totalDeliveryCharge, 2, '.', ',') }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3" ></td>
+                    <td colspan="3"></td>
                     <td></td>
                     <td style="text-align: right;"></td>
                     <td></td>
@@ -142,15 +164,19 @@
                     <td></td>
                     <td style="text-align: right;"></td>
                     <td></td>
-                    <td style="text-align: right;">{{ number_format($netVat, 2, '.', ',') }}<hr></td>
+                    <td style="text-align: right;">{{ number_format($netVat, 2, '.', ',') }}
+                        <hr>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="3" style="padding-top: 10%;"></td>
                     <td></td>
                     <td style="text-align: right;"></td>
                     <td></td>
-                    <td style="text-align: right;"><hr>
-                        {{ number_format($grandTotal, 2, '.', ',') }}<hr>
+                    <td style="text-align: right;">
+                        <hr>
+                        {{ number_format($grandTotal, 2, '.', ',') }}
+                        <hr>
                     </td>
                 </tr>
             </table>

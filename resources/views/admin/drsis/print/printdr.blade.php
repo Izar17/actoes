@@ -56,16 +56,32 @@
 
                 @foreach ($transactions as $key => $transaction)
                     <tr>
-                        <td width="70px" style="padding-top:10px;">1</td>
-                        <td width="70px" style="padding-top:10px;">dose</td>
+                        <td width="70px" style="padding-top:10px;">
+                            @if ($transaction->asset_id == 8)
+                            {{ $transaction->activity_mci?? '' }}
+                            @else
+                            1
+                            @endif
+                        </td>
+                        <td width="70px" style="padding-top:10px;">
+                            @if ($transaction->asset_id == 8)
+                            {{ $transaction->patient?? '' }}
+                            @else
+                            dose
+                            @endif
+                        </td>
                         <td width="70px" style="padding-top:10px;"></td>
                         <td>
+                            @if ($transaction->asset_id == 2)
+                            {{ $transaction->asset->name ?? '' }}
+                            @endif
                             {{ $transaction->asset_product->product_name ?? '' }},
 
                             @if ($transaction->asset_id == 8)
-                                {{ $transaction->activity_mci?? '' }}
-                                {{ $transaction->patient?? '' }},
+                                {{-- {{ $transaction->activity_mci?? '' }} --}}
+                                {{-- {{ $transaction->patient?? '' }}, --}}
                             @else
+                           
                             {{ $transaction->particular ?? '' }},
                             @endif
                             {{ $transaction->rx_no ?? '' }}

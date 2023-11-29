@@ -104,6 +104,8 @@
                         <td width="70px" style="text-align:center;">
                             @if ($transaction->asset_id == 8)
                                 {{ $transaction->patient ?? '' }}
+                            @elseif ($transaction->asset_id == 6)
+                                set
                             @else
                                 dose
                             @endif

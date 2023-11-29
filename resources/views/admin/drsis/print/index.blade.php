@@ -344,7 +344,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            Date: <input type="text" class="form-control calDate" name="calDate"
+                                            Date: <input type="text" class="form-control calDate" name="calDate" id="calDate"
                                                 style="width:150px;" value="{{ $transaction->calibration_date ?? '' }}"
                                                 required /></td>
                                         <td>&nbsp;<br>

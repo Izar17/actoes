@@ -85,6 +85,9 @@
                             {{ $transaction->particular ?? '' }},
                             @endif
                             {{ $transaction->rx_no ?? '' }}
+                            @if($transaction->remarks)
+                            ({{ $transaction->remarks ?? '' }})
+                            @endif
                         </td>
                     </tr>
                     @php

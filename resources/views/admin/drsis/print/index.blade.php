@@ -345,7 +345,7 @@
                                     <tr>
                                         <td>
                                             Date: <input type="text" class="form-control calDate" name="calDate"
-                                                style="width:150px;" value="{{ $delCharge->calibration_date ?? '' }}"
+                                                style="width:150px;" value="{{ $transaction->calibration_date ?? '' }}"
                                                 required /></td>
                                         <td>&nbsp;<br>
                                             <button class="btn btn-success" type="submit" id="earchButton">

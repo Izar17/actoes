@@ -25,7 +25,7 @@
                     <td><strong>{{ $transaction->hospital->hospital ?? '' }}<br></strong>
                     </td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
+                                style="font-size:16px;"></span>{{ $request->delivery_charge->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
                 <tr>
@@ -37,7 +37,7 @@
                 <tr>
                     <td style="width:45%;"scope="col"><strong>SAME</strong></td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ now()->format('m/d/Y') }}</strong></td>
+                                style="font-size:16px;"></span>{{ $request->delivery_charge->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
             </table><br /><br /><br /><br /><br />
@@ -81,7 +81,7 @@
                                 {{-- {{ $transaction->activity_mci?? '' }} --}}
                                 {{-- {{ $transaction->patient?? '' }}, --}}
                             @else
-                           
+
                             {{ $transaction->particular ?? '' }},
                             @endif
                             {{ $transaction->rx_no ?? '' }}

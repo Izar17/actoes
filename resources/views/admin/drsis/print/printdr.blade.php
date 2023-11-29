@@ -25,11 +25,11 @@
                     <td><strong>{{ $transaction->hospital->hospital ?? '' }}<br></strong>
                     </td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ $request->calDate }}</strong></td>
+                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
                 <tr>
-                    <td><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>z
+                    <td><strong>{{ $transaction->hospital->address ?? '' }}</strong></td>
                 </tr>
             </table>
             <br /><br />
@@ -37,7 +37,7 @@
                 <tr>
                     <td style="width:45%;"scope="col"><strong>SAME</strong></td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ $request->calDate }}</strong></td>
+                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong></td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
             </table><br /><br /><br /><br /><br />

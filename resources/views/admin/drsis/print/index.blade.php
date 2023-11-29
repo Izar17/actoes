@@ -82,12 +82,12 @@
                                         <td>
                                             From<input type="date" class="clear-rx-number form-control startDate"
                                                 id="startDate" name="startDate"
-                                                value="@if(isset($request)){{$request->startDate}}@endif">
+                                                value="@if (isset($request)) {{ $request->startDate }} @endif">
                                         </td>
                                         <td>
                                             To<input type="date" class="clear-rx-number form-control endDate"
                                                 id="endDate" name="endDate"
-                                                value="@if(isset($request)){{$request->endDate}}@endif">
+                                                value="@if (isset($request)) {{ $request->endDate }} @endif">
 
                                             <input type="hidden" value="NO" name="cancel" />
                                         </td>
@@ -263,9 +263,12 @@
                                                     value="{{ $transaction->dr_no }}" />
                                                 <input type="text" class="form-control dr_no"
                                                     name="dr_no[{{ $key }}]" style="width:100px;"
-                                                    value="{{ $transaction->dr_no }}" list="dr_list_id" @if($request->selectDrsi == 'SI') readonly @endif/>
+                                                    value="{{ $transaction->dr_no }}" list="dr_list_id"
+                                                    @if ($request->selectDrsi == 'SI') readonly @endif />
                                                 <datalist id="dr_list_id">
-                                                    @if($request->selectDrsi == 'DR')<option value="Cancel"> @endif
+                                                    @if ($request->selectDrsi == 'DR')
+                                                        <option value="Cancel">
+                                                    @endif
                                                 </datalist>
                                             </td>
                                             <td>
@@ -274,9 +277,12 @@
                                                     value="{{ $transaction->invoice_no }}" />
                                                 <input type="text" class="form-control invoice_no"
                                                     name="invoice_no[{{ $key }}]" style="width:100px;"
-                                                    value="{{ $transaction->invoice_no }}" list="si_list_id" @if($request->selectDrsi == 'DR') readonly @endif/>
+                                                    value="{{ $transaction->invoice_no }}" list="si_list_id"
+                                                    @if ($request->selectDrsi == 'DR') readonly @endif />
                                                 <datalist id="si_list_id">
-                                                    @if($request->selectDrsi == 'SI')<option value="Cancel"> @endif
+                                                    @if ($request->selectDrsi == 'SI')
+                                                        <option value="Cancel">
+                                                    @endif
                                                 </datalist>
                                             </td>
                                             <td>
@@ -333,11 +339,23 @@
                         <input type="hidden" value="{{ $request->selectDrsi ?? '' }}" name="selectDrsi" />
                         <input type="hidden" value="{{ $request->drsi ?? '' }}" name="drsi" />
                         <div class="form-group" style="text-align:center;">
+                            <center>
                             <div id="show_save" class="myDiv">
-                                <button class="btn btn-success" type="submit" id="earchButton">
-                                    Print Delivery Receipt
-                                </button>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Date: <input type="text" class="form-control calDate" name="calDate"
+                                                style="width:150px;" value="{{ $delCharge->calibration_date ?? '' }}"
+                                                required /></td>
+                                        <td>&nbsp;<br>
+                                            <button class="btn btn-success" type="submit" id="earchButton">
+                                                Print Delivery Receipt
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
+                            </center>
                         </div>
                     </form>
                     <form action="{{ route('admin.printdrsi.printSi') }}" method="GET" autocomplete="off"
@@ -362,14 +380,14 @@
                                     <table>
                                         <tr>
                                             <td>
-                                            Delivery Charge: <input type="text" class="form-control price" id="delivery_charge"
-                                            name="delivery_charge" style="width:100px;"
-                                            value="{{ $delCharge->delivery_charge ?? 0 }}" required />
+                                                Delivery Charge: <input type="text" class="form-control price"
+                                                    id="delivery_charge" name="delivery_charge" style="width:100px;"
+                                                    value="{{ $delCharge->delivery_charge ?? 0 }}" required />
                                             </td>
                                             <td>&nbsp;<br>
-                                            <button class="btn btn-success" type="submit" id="earchButton">
-                                                Print Sales Invoice
-                                            </button>
+                                                <button class="btn btn-success" type="submit" id="earchButton">
+                                                    Print Sales Invoice
+                                                </button>
                                             </td>
                                         </tr>
                                     </table>
@@ -393,28 +411,28 @@
                         <div class="form-group" style="text-align:center;">
                             <div id="show_save" class="myDiv">
                                 <center>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            @foreach ($delCharges as $delCharge)
-                                            @endforeach
-                                        Doctor Name: <input type="text" class="form-control price" id="doctor_name"
-                                        name="doctor_name" style="width:200px;"
-                                        value="{{ $delCharge->doctor_name ?? '' }}" required />
-                                        </td>
-                                        <td>
-                                        Delivery Charge: <input type="text" class="form-control price" id="delivery_charge"
-                                        name="delivery_charge" style="width:100px;"
-                                        value="{{ $delCharge->delivery_charge ?? 0 }}" required />
-                                        </td>
-                                        <td>&nbsp;<br>
-                                            <button class="btn btn-success" type="submit" id="earchButton">
-                                                Print Special Delivery Receipt
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </center>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                @foreach ($delCharges as $delCharge)
+                                                @endforeach
+                                                Doctor Name: <input type="text" class="form-control price"
+                                                    id="doctor_name" name="doctor_name" style="width:200px;"
+                                                    value="{{ $delCharge->doctor_name ?? '' }}" required />
+                                            </td>
+                                            <td>
+                                                Delivery Charge: <input type="text" class="form-control price"
+                                                    id="delivery_charge" name="delivery_charge" style="width:100px;"
+                                                    value="{{ $delCharge->delivery_charge ?? 0 }}" required />
+                                            </td>
+                                            <td>&nbsp;<br>
+                                                <button class="btn btn-success" type="submit" id="earchButton">
+                                                    Print Special Delivery Receipt
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </center>
                             </div>
                         </div>
                     </form>

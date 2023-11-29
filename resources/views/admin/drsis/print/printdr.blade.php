@@ -25,7 +25,8 @@
                     <td><strong>{{ $transaction->hospital->hospital ?? '' }}<br></strong>
                     </td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong></td>
+                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong>
+                    </td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
                 <tr>
@@ -37,7 +38,8 @@
                 <tr>
                     <td style="width:45%;"scope="col"><strong>SAME</strong></td>
                     <td colspan="3" scope="col"><strong><span
-                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong></td>
+                                style="font-size:16px;"></span>{{ \Carbon\Carbon::parse($request->calDate)->format('m/d/Y') }}</strong>
+                    </td>
                     <td align="center" scope="col"><strong></td>
                 </tr>
             </table><br /><br /><br /><br /><br />
@@ -58,22 +60,22 @@
                     <tr>
                         <td width="70px" style="padding-top:10px;">
                             @if ($transaction->asset_id == 8)
-                            {{ $transaction->activity_mci?? '' }}
+                                {{ $transaction->activity_mci ?? '' }}
                             @else
-                            1
+                                1
                             @endif
                         </td>
                         <td width="70px" style="padding-top:10px;">
                             @if ($transaction->asset_id == 8)
-                            {{ $transaction->patient?? '' }}
+                                {{ $transaction->patient ?? '' }}
                             @else
-                            dose
+                                dose
                             @endif
                         </td>
                         <td width="70px" style="padding-top:10px;"></td>
                         <td>
                             @if ($transaction->asset_id == 2)
-                            {{ $transaction->asset->name ?? '' }}
+                                {{ $transaction->asset->name ?? '' }}
                             @endif
                             {{ $transaction->asset_product->product_name ?? '' }},
 
@@ -81,12 +83,11 @@
                                 {{-- {{ $transaction->activity_mci?? '' }} --}}
                                 {{-- {{ $transaction->patient?? '' }}, --}}
                             @else
-
-                            {{ $transaction->particular ?? '' }},
+                                {{ $transaction->particular ?? '' }},
                             @endif
                             {{ $transaction->rx_no ?? '' }}
-                            @if($transaction->remarks)
-                            ({{ $transaction->remarks ?? '' }})
+                            @if ($transaction->remarks)
+                                ({{ $transaction->remarks ?? '' }})
                             @endif
                         </td>
                     </tr>

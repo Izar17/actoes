@@ -110,7 +110,7 @@
                         </td>
                         <td width="70px" style="text-align:center;"></td>
                         <td colspan="2px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            
+
                             @if ($transaction->asset_id == 2)
                             {{ $transaction->asset->name ?? '' }}
                             @endif
@@ -123,6 +123,9 @@
                                 {{ $transaction->particular ?? '' }},
                             @endif
                             {{ $transaction->rx_no ?? '' }}
+                            @if ($transaction->remarks)
+                                ({{ $transaction->remarks ?? '' }})
+                            @endif
                         </td>
                         <td width="100px" style="text-align: right;">
                             {{ number_format($transaction->price, 2, '.', ',') }}</td>
